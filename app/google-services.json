@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "301558904373",
+    "project_id": "arshop-e6058",
+    "storage_bucket": "arshop-e6058.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:301558904373:android:04deb284f775ee74f4237c",
+        "android_client_info": {
+          "package_name": "com.shop"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "301558904373-plu8hcqagnjm9qknnd7ge7kqonj7uku0.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.shop",
+            "certificate_hash": "f15c73993da29fae2304c6e1049ddd498915335a"
+          }
+        },
+        {
+          "client_id": "301558904373-glv9ujjng4dkhc93qoo96m3u4899q6g2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDjC3SPXPJzE1zsYoWouPXkJS3EZhLS218"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "301558904373-glv9ujjng4dkhc93qoo96m3u4899q6g2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
