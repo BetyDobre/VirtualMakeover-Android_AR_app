@@ -35,8 +35,7 @@
         android:id="@+id/main_login_btn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true"
+        android:layout_above="@id/main_google_btn"
         android:layout_marginBottom="10dp"
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
@@ -63,6 +62,17 @@
         android:text="Join now"
         android:textColor="@color/white"
         android:textStyle="bold"
+        />
+
+    <com.google.android.gms.common.SignInButton
+        android:id="@+id/main_google_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
         />
 
 </RelativeLayout>

@@ -30,6 +30,15 @@ public class AdminCategoryActivity extends AppCompatActivity {
             }
         });
 
+        decorations.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(AdminCategoryActivity.this, AdminAddNewProductActivity.class);
+                intent.putExtra("category", "decorations");
+                startActivity(intent);
+            }
+        });
+
         lipsticks.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
