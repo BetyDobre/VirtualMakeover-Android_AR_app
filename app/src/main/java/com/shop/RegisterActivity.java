@@ -119,7 +119,7 @@ public class RegisterActivity extends AppCompatActivity {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
                                     if (task.isSuccessful()){
-                                        Toast.makeText(RegisterActivity.this, "Your accound was created succesfully", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(RegisterActivity.this, "Your account was created succesfully", Toast.LENGTH_SHORT).show();
                                         loadingBar.dismiss();
 
                                         Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
