@@ -213,6 +213,7 @@ public class MainActivity extends AppCompatActivity {
                             loadingBar.dismiss();
 
                             Intent intent = new Intent(MainActivity.this, HomeActivity.class);
+                            Prevalent.currentOnlineUser = userData;
                             startActivity(intent);
                         }
                         else {
