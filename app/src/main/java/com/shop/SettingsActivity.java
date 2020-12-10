@@ -39,7 +39,7 @@ public class SettingsActivity extends AppCompatActivity {
 
     private CircleImageView profileImageView;
     private EditText fullnameEditText, userEmailEditText, addressEditText, passwordEditText, confirmNewPasswordEditText;
-    private TextView profileChangeTextBtn, closeTextBtn, saveTextBtn;
+    private TextView profileChangeTextBtn, closeTextBtn, saveTextBtn, currentPasswordTxt;
 
     private Uri imageUri;
     private String myURL = "";
@@ -63,6 +63,7 @@ public class SettingsActivity extends AppCompatActivity {
         profileChangeTextBtn = findViewById(R.id.profile_image_change_btn);
         closeTextBtn = findViewById(R.id.close_settings);
         saveTextBtn = findViewById(R.id.update_account_settings);
+        currentPasswordTxt = findViewById(R.id.settings_current_password);
 
         userInfoDisplay(profileImageView, fullnameEditText, userEmailEditText, addressEditText, passwordEditText, confirmNewPasswordEditText);
 
@@ -103,19 +104,31 @@ public class SettingsActivity extends AppCompatActivity {
         userMap.put("address", addressEditText.getText().toString());
         userMap.put("email", userEmailEditText.getText().toString());
 
-        if((passwordEditText.getText().toString()).equals(confirmNewPasswordEditText.getText().toString())){
+        if((passwordEditText.getText().toString()).equals(confirmNewPasswordEditText.getText().toString()) && passwordEditText.getText().toString().trim().length() > 3){
             userMap.put("password", passwordEditText.getText().toString());
+            ref.child(EncodeString(Prevalent.currentOnlineUser.getEmail())).updateChildren(userMap);
+            startActivity(new Intent(SettingsActivity.this, MainActivity.class));
+            Toast.makeText(SettingsActivity.this, "Profile info updated successfully!", Toast.LENGTH_SHORT).show();
+            finish();
         }
-        else if(confirmNewPasswordEditText.getText().toString().trim().length() > 0){
+        else if (passwordEditText.getText().toString().trim().length() == 0){
+            userMap.put("password", currentPasswordTxt.getText().toString());
+            ref.child(EncodeString(Prevalent.currentOnlineUser.getEmail())).updateChildren(userMap);
+            startActivity(new Intent(SettingsActivity.this, HomeActivity.class));
+            Toast.makeText(SettingsActivity.this, "Profile info updated successfully!", Toast.LENGTH_SHORT).show();
+        }
+        else if (passwordEditText.getText().toString().trim().length() < 4){
+            ref.child(EncodeString(Prevalent.currentOnlineUser.getEmail())).updateChildren(userMap);
+            Toast.makeText(SettingsActivity.this, "Password too short(minimum 4 characters)", Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(SettingsActivity.this, SettingsActivity.class));
+            finish();
+        }
+        else if(!(passwordEditText.getText().toString()).equals(confirmNewPasswordEditText.getText().toString())){
+            ref.child(EncodeString(Prevalent.currentOnlineUser.getEmail())).updateChildren(userMap);
             Toast.makeText(SettingsActivity.this, "Passwords don't match", Toast.LENGTH_SHORT).show();
             startActivity(new Intent(SettingsActivity.this, SettingsActivity.class));
             finish();
         }
-
-        ref.child(EncodeString(Prevalent.currentOnlineUser.getEmail())).updateChildren(userMap);
-        startActivity(new Intent(SettingsActivity.this, MainActivity.class));
-        Toast.makeText(SettingsActivity.this, "Profile info updated successfully!", Toast.LENGTH_SHORT).show();
-        finish();
 
     }
 
@@ -183,20 +196,32 @@ public class SettingsActivity extends AppCompatActivity {
                         userMap.put("address", addressEditText.getText().toString());
                         userMap.put("email", userEmailEditText.getText().toString());
                         userMap.put("image", myURL);
-                        if(passwordEditText.getText().toString().equals(confirmNewPasswordEditText.getText().toString())){
+
+                        if((passwordEditText.getText().toString()).equals(confirmNewPasswordEditText.getText().toString()) && passwordEditText.getText().toString().trim().length() > 3){
                             userMap.put("password", passwordEditText.getText().toString());
+                            ref.child(EncodeString(Prevalent.currentOnlineUser.getEmail())).updateChildren(userMap);
+                            startActivity(new Intent(SettingsActivity.this, MainActivity.class));
+                            Toast.makeText(SettingsActivity.this, "Profile info updated successfully!", Toast.LENGTH_SHORT).show();
+                            finish();
                         }
-                        else {
-                            Toast.makeText(SettingsActivity.this, "Passwords don't match!", Toast.LENGTH_SHORT).show();
+                        else if (passwordEditText.getText().toString().trim().length() == 0){
+                            userMap.put("password", currentPasswordTxt.getText().toString());
+                            ref.child(EncodeString(Prevalent.currentOnlineUser.getEmail())).updateChildren(userMap);
+                            startActivity(new Intent(SettingsActivity.this, HomeActivity.class));
+                            Toast.makeText(SettingsActivity.this, "Profile info updated successfully!", Toast.LENGTH_SHORT).show();
+                        }
+                        else if (passwordEditText.getText().toString().trim().length() < 4){
+                            ref.child(EncodeString(Prevalent.currentOnlineUser.getEmail())).updateChildren(userMap);
+                            Toast.makeText(SettingsActivity.this, "Password too short(minimum 4 characters)", Toast.LENGTH_SHORT).show();
                             startActivity(new Intent(SettingsActivity.this, SettingsActivity.class));
                             finish();
                         }
-                        ref.child(EncodeString(Prevalent.currentOnlineUser.getEmail())).updateChildren(userMap);
-
-                        progressDialog.dismiss();
-                        startActivity(new Intent(SettingsActivity.this, MainActivity.class));
-                        Toast.makeText(SettingsActivity.this, "Profile image/info updated successfully!", Toast.LENGTH_SHORT).show();
-                        finish();
+                        else if(!(passwordEditText.getText().toString()).equals(confirmNewPasswordEditText.getText().toString())){
+                            ref.child(EncodeString(Prevalent.currentOnlineUser.getEmail())).updateChildren(userMap);
+                            Toast.makeText(SettingsActivity.this, "Passwords don't match", Toast.LENGTH_SHORT).show();
+                            startActivity(new Intent(SettingsActivity.this, SettingsActivity.class));
+                            finish();
+                        }
                     }
                     else {
                         Toast.makeText(SettingsActivity.this, "Error", Toast.LENGTH_SHORT).show();
@@ -232,7 +257,7 @@ public class SettingsActivity extends AppCompatActivity {
                         fullnameEditText.setText(name);
                         userEmailEditText.setText(email);
                         addressEditText.setText(address);
-                        passwordEditText.setText(password);
+                        currentPasswordTxt.setText(password);
                     }
                 }
             }
