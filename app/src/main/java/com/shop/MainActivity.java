@@ -149,7 +149,6 @@ public class MainActivity extends AppCompatActivity {
                     GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(getApplicationContext());
                     String email = account.getEmail();
                     String name = account.getDisplayName();
-                    String password = "";
 
                     final DatabaseReference RootRef;
                     RootRef = FirebaseDatabase.getInstance().getReference();

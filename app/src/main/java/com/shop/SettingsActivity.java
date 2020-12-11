@@ -9,11 +9,22 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.auth.api.signin.GoogleSignInResult;
+import com.google.android.gms.common.api.GoogleApi;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.OptionalPendingResult;
+import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -46,6 +57,9 @@ public class SettingsActivity extends AppCompatActivity {
     private StorageTask uploadTask;
     private StorageReference storageProfilePictureReference;
     private String checker = "";
+
+    private GoogleSignInClient mGoogleSignInClient;
+    private GoogleApiClient mGoogleApiClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,6 +109,7 @@ public class SettingsActivity extends AppCompatActivity {
                         .start(SettingsActivity.this);
             }
         });
+
     }
 
     private void updateOnlyUserInfo() {
@@ -103,6 +118,7 @@ public class SettingsActivity extends AppCompatActivity {
         userMap.put("name", fullnameEditText.getText().toString());
         userMap.put("address", addressEditText.getText().toString());
         userMap.put("email", userEmailEditText.getText().toString());
+        Prevalent.currentOnlineUser.setName(fullnameEditText.getText().toString());
 
         if((passwordEditText.getText().toString()).equals(confirmNewPasswordEditText.getText().toString()) && passwordEditText.getText().toString().trim().length() > 3){
             userMap.put("password", passwordEditText.getText().toString());
@@ -196,10 +212,13 @@ public class SettingsActivity extends AppCompatActivity {
                         userMap.put("address", addressEditText.getText().toString());
                         userMap.put("email", userEmailEditText.getText().toString());
                         userMap.put("image", myURL);
+                        Prevalent.currentOnlineUser.setName(fullnameEditText.getText().toString());
+                        Prevalent.currentOnlineUser.setImage(myURL);
 
                         if((passwordEditText.getText().toString()).equals(confirmNewPasswordEditText.getText().toString()) && passwordEditText.getText().toString().trim().length() > 3){
                             userMap.put("password", passwordEditText.getText().toString());
                             ref.child(EncodeString(Prevalent.currentOnlineUser.getEmail())).updateChildren(userMap);
+                            Picasso.get().load(myURL).into(profileImageView);
                             startActivity(new Intent(SettingsActivity.this, MainActivity.class));
                             Toast.makeText(SettingsActivity.this, "Profile info updated successfully!", Toast.LENGTH_SHORT).show();
                             finish();
@@ -207,6 +226,7 @@ public class SettingsActivity extends AppCompatActivity {
                         else if (passwordEditText.getText().toString().trim().length() == 0){
                             userMap.put("password", currentPasswordTxt.getText().toString());
                             ref.child(EncodeString(Prevalent.currentOnlineUser.getEmail())).updateChildren(userMap);
+                            Picasso.get().load(myURL).into(profileImageView);
                             startActivity(new Intent(SettingsActivity.this, HomeActivity.class));
                             Toast.makeText(SettingsActivity.this, "Profile info updated successfully!", Toast.LENGTH_SHORT).show();
                         }
