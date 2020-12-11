@@ -36,6 +36,7 @@ public class ProductDetailsActivity extends AppCompatActivity {
     private ElegantNumberButton numberBtn;
     private TextView productPrice, productDescription, productName;
     private String productID = "";
+    private String image;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,6 +87,7 @@ public class ProductDetailsActivity extends AppCompatActivity {
         cartMap.put("time", saveCurrentTime);
         cartMap.put("quantity", numberBtn.getNumber());
         cartMap.put("discount", "");
+        cartMap.put("image", image);
 
         cartListRef.child("User View").child(EncodeString(Prevalent.currentOnlineUser.getEmail()))
                 .child("Products")
@@ -127,12 +129,12 @@ public class ProductDetailsActivity extends AppCompatActivity {
                     productDescription.setText(product.getDescription());
                     productPrice.setText(product.getPrice()+ " lei");
                     Picasso.get().load(product.getImage()).into(productImage);
+                    image = product.getImage();
                 }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
             }
         });
     }

@@ -17,7 +17,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ARShop"
         tools:replace="android:icon,android:theme">
-        <activity android:name=".CartActivity"></activity>
+        <activity android:name=".OrderActivity"></activity>
+        <activity android:name=".CartActivity" />
         <activity android:name=".ProductDetailsActivity" />
         <activity android:name=".SettingsGoogleActivity" />
         <activity android:name=".SettingsActivity" />
