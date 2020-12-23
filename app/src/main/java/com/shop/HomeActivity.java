@@ -86,11 +86,11 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             Picasso.get().load(Prevalent.currentOnlineUser.getImage()).placeholder(R.drawable.profile).into(profileImageView);
         }
         else {
-//            GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(getApplicationContext());
-//            String name = account.getDisplayName();
-//            Uri picture = account.getPhotoUrl();
-//            userNameTextView.setText(name);
-//            Picasso.get().load(picture).placeholder(R.drawable.profile).into(profileImageView);
+            GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(getApplicationContext());
+            String name = account.getDisplayName();
+            Uri picture = account.getPhotoUrl();
+            userNameTextView.setText(name);
+            Picasso.get().load(picture).placeholder(R.drawable.profile).into(profileImageView);
         }
 
         recyclerView = findViewById(R.id.recycler_menu);
