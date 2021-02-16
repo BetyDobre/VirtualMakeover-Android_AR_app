@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,8 +21,11 @@ import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.shop.models.Cart;
 import com.shop.prevalent.Prevalent;
 import com.shop.viewholders.CartViewHolder;
@@ -32,7 +36,8 @@ public class CartActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private RecyclerView.LayoutManager layoutManager;
     private Button nextBtn;
-    private TextView totalPriceTxt;
+    private TextView totalPriceTxt, txtMsg1;
+    private ImageView loadingImg, deliveryImg;
     private int totalPrice = 0;
 
     @Override
@@ -48,6 +53,9 @@ public class CartActivity extends AppCompatActivity {
         nextBtn = findViewById(R.id.next_btn);
         totalPriceTxt = findViewById(R.id.total_price);
 
+        txtMsg1 = findViewById(R.id.msg1);
+        loadingImg = findViewById(R.id.loading_image);
+        deliveryImg = findViewById(R.id.delivery_image);
 
         nextBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -69,6 +77,8 @@ public class CartActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
 
+        CheckOrderState();
+
         final DatabaseReference cartListRef = FirebaseDatabase.getInstance().getReference().child("Cart List");
         FirebaseRecyclerOptions<Cart> options =
                 new FirebaseRecyclerOptions.Builder<Cart>()
@@ -79,7 +89,7 @@ public class CartActivity extends AppCompatActivity {
                 new FirebaseRecyclerAdapter<Cart, CartViewHolder>(options) {
                     @Override
                     protected void onBindViewHolder(@NonNull CartViewHolder holder, int position, @NonNull Cart model) {
-                            holder.productQuantityTxt.setText("Quantity: " +model.getQuantity());
+                            holder.productQuantityTxt.setText("Quantity: " + model.getQuantity());
                             holder.productNameTxt.setText(model.getPname());
                             holder.productPriceTxt.setText("Price: " + model.getQuantity() + "x" +model.getPrice() + " lei");
                             Picasso.get().load(model.getImage()).into(holder.productImage);
@@ -105,6 +115,7 @@ public class CartActivity extends AppCompatActivity {
                                             if (i == 0){
                                                 Intent intent = new Intent(CartActivity.this, ProductDetailsActivity.class);
                                                 intent.putExtra("pid", model.getPid());
+                                                intent.putExtra("quantity", model.getQuantity());
                                                 startActivity(intent);
                                             }
                                             //delete
@@ -118,6 +129,19 @@ public class CartActivity extends AppCompatActivity {
                                                                 public void onComplete(@NonNull Task<Void> task) {
                                                                     if (task.isSuccessful()){
                                                                         Toast.makeText(CartActivity.this, "Item removed from the cart!", Toast.LENGTH_SHORT).show();
+                                                                        Intent intent = new Intent(CartActivity.this, CartActivity.class);
+                                                                        startActivity(intent);
+                                                                    }
+                                                                }
+                                                            });
+                                                    cartListRef.child("Admin View").child(EncodeString(Prevalent.currentOnlineUser.getEmail()))
+                                                            .child("Products")
+                                                            .child(model.getPid())
+                                                            .removeValue()
+                                                            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                                @Override
+                                                                public void onComplete(@NonNull Task<Void> task) {
+                                                                    if (task.isSuccessful()){
                                                                         Intent intent = new Intent(CartActivity.this, CartActivity.class);
                                                                         startActivity(intent);
                                                                     }
@@ -142,5 +166,42 @@ public class CartActivity extends AppCompatActivity {
 
         recyclerView.setAdapter(adapter);
         adapter.startListening();
+    }
+
+    private void CheckOrderState(){
+        DatabaseReference ordersRef = FirebaseDatabase.getInstance().getReference().child("Orders").child(EncodeString(Prevalent.currentOnlineUser.getEmail()));
+
+        ordersRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()){
+                    String shippingState = snapshot.child("state").getValue().toString();
+                    String userName = snapshot.child("name").getValue().toString();
+
+                    if (shippingState.equals("shipped")){
+                        totalPriceTxt.setText("Dear " + userName + ",\n Order has been shipped successfully");
+                        recyclerView.setVisibility(View.GONE);
+
+                        deliveryImg.setVisibility(View.VISIBLE);
+                        txtMsg1.setVisibility(View.VISIBLE);
+                        nextBtn.setVisibility(View.GONE);
+                    }
+                    else if (shippingState.equals("not shipped")) {
+                        totalPriceTxt.setText("Dear " + userName + ",\n Your order is not shipped yet.");
+                        recyclerView.setVisibility(View.GONE);
+
+                        loadingImg.setVisibility(View.VISIBLE);
+                        txtMsg1.setText("Congratulations, your order has been placed successfully. It will be verified and shipped soon.");
+                        txtMsg1.setVisibility(View.VISIBLE);
+                        nextBtn.setVisibility(View.GONE);
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 }

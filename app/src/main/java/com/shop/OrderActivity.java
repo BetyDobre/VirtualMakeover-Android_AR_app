@@ -25,7 +25,7 @@ import java.util.HashMap;
 
     private EditText nameEdiText, phoneEditText, addressEditText, cityEditText;
     private Button placeOrderBtn;
-    private String totalPrice = "";
+    private String totalPrice = "", email;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,6 +37,7 @@ import java.util.HashMap;
         addressEditText = findViewById(R.id.shippment_address);
         cityEditText = findViewById(R.id.shippment_city);
         totalPrice = getIntent().getStringExtra("Total price");
+        email = Prevalent.currentOnlineUser.getEmail();
 
         placeOrderBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -83,6 +84,7 @@ import java.util.HashMap;
 
          HashMap<String, Object> ordersMap = new HashMap<>();
          ordersMap.put("totalAmount", totalPrice);
+
          ordersMap.put("name", nameEdiText.getText().toString());
          ordersMap.put("phone", phoneEditText.getText().toString());
          ordersMap.put("address", addressEditText.getText().toString());
@@ -90,6 +92,7 @@ import java.util.HashMap;
          ordersMap.put("date", saveCurrentDate);
          ordersMap.put("time", saveCurrentTime);
          ordersMap.put("state", "not shipped");
+         ordersMap.put("email", email);
 
          ordersRef.updateChildren(ordersMap).addOnCompleteListener(new OnCompleteListener<Void>() {
              @Override

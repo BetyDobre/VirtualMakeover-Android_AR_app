@@ -49,7 +49,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-
         ProductsRef = FirebaseDatabase.getInstance().getReference().child("Products");
 
         Paper.init(this);
@@ -152,14 +151,12 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     }
 
 
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.home, menu);
         return true;
     }
-
 
 
     @Override

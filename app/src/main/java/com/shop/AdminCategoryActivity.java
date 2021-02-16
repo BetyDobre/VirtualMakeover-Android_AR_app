@@ -5,11 +5,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 
 public class AdminCategoryActivity extends AppCompatActivity {
 
     private ImageView glasses, lipsticks, decorations, foundation, hats;
+    private Button logoutBtn, checkOrdersBtn;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -20,6 +22,26 @@ public class AdminCategoryActivity extends AppCompatActivity {
         decorations = findViewById(R.id.decoration);
         foundation = findViewById(R.id.foundation);
         hats = findViewById(R.id.hats);
+        logoutBtn = findViewById(R.id.admin_logout_btn);
+        checkOrdersBtn = findViewById(R.id.check_orders_btn);
+
+        logoutBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(AdminCategoryActivity.this, MainActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent. FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
+                finish();
+            }
+        });
+
+        checkOrdersBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(AdminCategoryActivity.this, AdminOrdersActivity.class);
+                startActivity(intent);
+            }
+        });
 
         glasses.setOnClickListener(new View.OnClickListener() {
             @Override

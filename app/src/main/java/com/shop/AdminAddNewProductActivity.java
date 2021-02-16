@@ -107,7 +107,7 @@ public class AdminAddNewProductActivity extends AppCompatActivity {
             Toast.makeText(AdminAddNewProductActivity.this, "You must select a product image!", Toast.LENGTH_SHORT).show();
         }
         else if (TextUtils.isEmpty(Pname)){
-            Toast.makeText(AdminAddNewProductActivity.this, "Please write the produt name!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(AdminAddNewProductActivity.this, "Please write the product name!", Toast.LENGTH_SHORT).show();
         }
         else if (TextUtils.isEmpty(Description)){
             Toast.makeText(AdminAddNewProductActivity.this, "Please write a product description!", Toast.LENGTH_SHORT).show();
