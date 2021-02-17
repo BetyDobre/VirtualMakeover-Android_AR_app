@@ -1,13 +1,16 @@
 package com.shop;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,8 +19,11 @@ import android.widget.TextView;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.shop.models.AdminOrders;
 
 import org.w3c.dom.Text;
@@ -55,6 +61,7 @@ public class AdminOrdersActivity extends AppCompatActivity {
                         holder.userDateTime.setText("Ordered at: " + model.getDate() + " " + model.getTime());
                         holder.userAddress.setText("Address: " + model.getAddress()+ ", " + model.getCity());
                         holder.userEmail.setText("Email: " + model.getEmail());
+                        holder.userState.setText("State: " + model.getState());
 
                         holder.showOrdersBtn.setOnClickListener(new View.OnClickListener() {
                             @Override
@@ -64,6 +71,65 @@ public class AdminOrdersActivity extends AppCompatActivity {
                                 Intent intent = new Intent(AdminOrdersActivity.this, AdminOrderProductsActivity.class);
                                 intent.putExtra("uid", uid);
                                 startActivity(intent);
+                            }
+                        });
+
+                        holder.itemView.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                CharSequence options1[] = new CharSequence[]{
+                                        "Marked as delivered",
+                                        "Back"
+                                };
+                                CharSequence options2[] = new CharSequence[]{
+                                        "Marked as shipped",
+                                        "Back"
+                                };
+                                AlertDialog.Builder builder = new AlertDialog.Builder(AdminOrdersActivity.this);
+                                builder.setTitle("Order options");
+                                String uid = getRef(position).getKey();
+                                DatabaseReference specOrder = ordersRef.child(uid);
+
+                                specOrder.addValueEventListener(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                        if (snapshot.exists()) {
+                                            String shippingState = snapshot.child("state").getValue().toString();
+
+                                            if (shippingState.equals("shipped")) {
+                                                builder.setItems(options1, new DialogInterface.OnClickListener() {
+                                                    @Override
+                                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                                        if (i == 0) {
+                                                            ordersRef.child(uid).removeValue();
+                                                        } else {
+                                                            finish();
+                                                        }
+                                                    }
+                                                });
+                                                builder.show();
+                                            }
+                                            else {
+                                                builder.setItems(options2, new DialogInterface.OnClickListener() {
+                                                    @Override
+                                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                                        if (i == 0) {
+                                                            ordersRef.child(uid).child("state").setValue("shipped");
+                                                        } else {
+                                                            finish();
+                                                        }
+                                                    }
+                                                });
+                                                builder.show();
+                                            }
+
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError error) {
+                                    }
+                                });
                             }
                         });
                     }
@@ -81,7 +147,7 @@ public class AdminOrdersActivity extends AppCompatActivity {
 
     public static class AdminOrdersViewHolder extends RecyclerView.ViewHolder {
 
-        public TextView userName, userTotalPrice, userDateTime, userPhone, userAddress, userEmail;
+        public TextView userName, userTotalPrice, userDateTime, userPhone, userAddress, userEmail, userState;
         private Button showOrdersBtn;
 
         public AdminOrdersViewHolder(@NonNull View itemView) {
@@ -93,6 +159,7 @@ public class AdminOrdersActivity extends AppCompatActivity {
             userDateTime = itemView.findViewById(R.id.order_date_time);
             userAddress = itemView.findViewById(R.id.order_address);
             userEmail = itemView.findViewById(R.id.order_email);
+            userState = itemView.findViewById(R.id.order_state);
             showOrdersBtn = itemView.findViewById(R.id.admin_show_products_btn);
         }
     }
