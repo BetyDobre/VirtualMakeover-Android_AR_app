@@ -16,17 +16,24 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.shop.models.AdminOrders;
+import com.shop.prevalent.Prevalent;
 
 import org.w3c.dom.Text;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class AdminOrdersActivity extends AppCompatActivity {
 
@@ -102,6 +109,8 @@ public class AdminOrdersActivity extends AppCompatActivity {
                                                     public void onClick(DialogInterface dialogInterface, int i) {
                                                         if (i == 0) {
                                                             ordersRef.child(uid).removeValue();
+                                                            DatabaseReference productsRef = FirebaseDatabase.getInstance().getReference().child("Cart List").child("Admin View");
+                                                            productsRef.child(uid).removeValue();
                                                         } else {
                                                             finish();
                                                         }
@@ -163,4 +172,5 @@ public class AdminOrdersActivity extends AppCompatActivity {
             showOrdersBtn = itemView.findViewById(R.id.admin_show_products_btn);
         }
     }
+
 }

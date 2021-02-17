@@ -201,7 +201,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             startActivity(intent);
         }
         else if (id == R.id.nav_orders) {
-
+            Intent intent = new Intent(HomeActivity.this, UserOrdersActivity.class);
+            startActivity(intent);
         }
         else if (id == R.id.nav_categories) {
 
