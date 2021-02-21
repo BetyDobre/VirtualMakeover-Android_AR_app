@@ -20,6 +20,7 @@ import android.widget.Toast;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.google.android.gms.common.util.JsonUtils;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
@@ -28,10 +29,12 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.shop.models.AdminOrders;
+import com.shop.models.Products;
 import com.shop.prevalent.Prevalent;
 
 import org.w3c.dom.Text;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -109,9 +112,6 @@ public class AdminOrdersActivity extends AppCompatActivity {
                                                     public void onClick(DialogInterface dialogInterface, int i) {
                                                         if (i == 0) {
                                                             PlaceInHistory(uid);
-//                                                            ordersRef.child(uid).removeValue();
-                                                            DatabaseReference productsRef = FirebaseDatabase.getInstance().getReference().child("Cart List").child("Admin View");
-//                                                            productsRef.child(uid).removeValue();
                                                         } else {
                                                             finish();
                                                         }
@@ -158,6 +158,8 @@ public class AdminOrdersActivity extends AppCompatActivity {
     private void PlaceInHistory(String uid) {
         DatabaseReference historyRef = FirebaseDatabase.getInstance().getReference().child("Orders History");
         DatabaseReference ordersRef = FirebaseDatabase.getInstance().getReference().child("Orders").child(uid);
+        DatabaseReference productsRef = FirebaseDatabase.getInstance().getReference().child("Cart List").child("Admin View");
+
         historyRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -198,16 +200,39 @@ public class AdminOrdersActivity extends AppCompatActivity {
                                 ordersMap.put("state", "delivered");
                             }
 
-                            historyRef.child(uid).child(date+time).updateChildren(ordersMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+                            ArrayList<Products> products = new ArrayList<>();
+                            String finalDate = date;
+                            String finalTime = time;
+                            productsRef.child(uid).child("Products").addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
-                                public void onComplete(@NonNull Task<Void> task) {
-                                    if (task.isSuccessful()) {
-                                        Toast.makeText(AdminOrdersActivity.this, "Order placed in history", Toast.LENGTH_SHORT).show();
+                                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                    if(snapshot.exists()) {
+                                        for (DataSnapshot product : snapshot.getChildren()) {
+                                            Products p = product.getValue(Products.class);
+                                            products.add(p);
+                                        }
+                                        ordersMap.put("Products", products);
+
+                                        historyRef.child(uid).child(finalDate + finalTime).updateChildren(ordersMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<Void> task) {
+                                                if (task.isSuccessful()) {
+                                                    Toast.makeText(AdminOrdersActivity.this, "Order placed in history", Toast.LENGTH_SHORT).show();
+                                                    ordersRef.removeValue();
+                                                    productsRef.child(uid).removeValue();
+                                                } else {
+                                                    Toast.makeText(AdminOrdersActivity.this, "Error", Toast.LENGTH_SHORT).show();
+                                                }
+                                            }
+                                        });
                                     }
+                                }
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError error) {
+
                                 }
                             });
                         }
-
                     }
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {

@@ -80,4 +80,18 @@ public class Products {
     public void setTime(String time) {
         this.time = time;
     }
+
+    @Override
+    public String toString() {
+        return "Products{" +
+                "pname='" + pname + '\'' +
+                ", description='" + description + '\'' +
+                ", price='" + price + '\'' +
+                ", image='" + image + '\'' +
+                ", category='" + category + '\'' +
+                ", pid='" + pid + '\'' +
+                ", date='" + date + '\'' +
+                ", time='" + time + '\'' +
+                '}';
+    }
 }
