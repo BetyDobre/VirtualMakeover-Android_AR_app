@@ -13,8 +13,11 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.shop.prevalent.Prevalent;
 
 import java.text.SimpleDateFormat;
@@ -35,6 +38,17 @@ import java.util.HashMap;
         nameEdiText = findViewById(R.id.shippment_name);
         phoneEditText = findViewById(R.id.shippment_phone);
         addressEditText = findViewById(R.id.shippment_address);
+        DatabaseReference user = FirebaseDatabase.getInstance().getReference().child("Users").child(EncodeString(Prevalent.currentOnlineUser.getEmail()));
+        user.child("address").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                addressEditText.setText(snapshot.getValue().toString());
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+            }
+        });
         cityEditText = findViewById(R.id.shippment_city);
         totalPrice = getIntent().getStringExtra("Total price");
         email = Prevalent.currentOnlineUser.getEmail();

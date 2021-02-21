@@ -3,6 +3,7 @@ package com.shop;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -14,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -37,7 +39,8 @@ public class CartActivity extends AppCompatActivity {
     private RecyclerView.LayoutManager layoutManager;
     private Button nextBtn;
     private TextView totalPriceTxt, txtMsg1;
-    private ImageView loadingImg, deliveryImg;
+    private ImageView loadingImg, deliveryImg, emptyCartImg;
+    private RelativeLayout layout;
     private int totalPrice = 0;
 
     @Override
@@ -56,15 +59,67 @@ public class CartActivity extends AppCompatActivity {
         txtMsg1 = findViewById(R.id.msg1);
         loadingImg = findViewById(R.id.loading_image);
         deliveryImg = findViewById(R.id.delivery_image);
+        emptyCartImg = findViewById(R.id.empty_cart);
+        layout = findViewById(R.id.rll1);
+
+        DatabaseReference cartListRef = FirebaseDatabase.getInstance().getReference().child("Cart List");
+        cartListRef.child("User View").child(EncodeString(Prevalent.currentOnlineUser.getEmail())).child("Products").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (!snapshot.exists()){
+                    emptyCartImg.setVisibility(View.VISIBLE);
+                }
+                else {
+                    emptyCartImg.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+        cartListRef.child("User View").child(EncodeString(Prevalent.currentOnlineUser.getEmail())).child("Products").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (!snapshot.exists()){
+                    layout.setVisibility(View.GONE);
+                }
+                else {
+                    layout.setVisibility(View.VISIBLE);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
 
         nextBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                totalPriceTxt.setText("Total price: " + String.valueOf(totalPrice) + " lei");
-                Intent intent = new Intent(CartActivity.this, OrderActivity.class);
-                intent.putExtra("Total price", String.valueOf(totalPrice));
-                startActivity(intent);
-                finish();
+                cartListRef.child("User View").child(EncodeString(Prevalent.currentOnlineUser.getEmail())).child("Products").addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        if (snapshot.exists()){
+                            Intent intent = new Intent(CartActivity.this, OrderActivity.class);
+                            intent.putExtra("Total price", String.valueOf(totalPrice));
+                            startActivity(intent);
+                            finish();
+                        }
+                        else {
+                            Toast.makeText(CartActivity.this, "You must add something into cart first!", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+
             }
         });
     }

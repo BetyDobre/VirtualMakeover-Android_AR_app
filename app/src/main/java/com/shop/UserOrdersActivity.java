@@ -113,7 +113,7 @@ public class UserOrdersActivity extends AppCompatActivity {
         adapter.startListening();
 
 
-        historyRef.child(EncodeString(Prevalent.currentOnlineUser.getEmail())).addListenerForSingleValueEvent(new ValueEventListener() {
+        historyRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if(!snapshot.exists()){
@@ -132,7 +132,6 @@ public class UserOrdersActivity extends AppCompatActivity {
                 new FirebaseRecyclerOptions.Builder<UserHistoryOrders>()
                         .setQuery(historyRef.orderByChild("email"), UserHistoryOrders.class)
                         .build();
-
 
         FirebaseRecyclerAdapter<UserHistoryOrders, UserOrdersActivity.UserOrdersViewHolder> adapter2 =
                 new FirebaseRecyclerAdapter<UserHistoryOrders, UserOrdersActivity.UserOrdersViewHolder>(options2) {

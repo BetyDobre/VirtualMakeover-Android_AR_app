@@ -15,19 +15,12 @@ import android.widget.EditText;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
-import com.firebase.ui.database.ObservableSnapshotArray;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
-import com.google.firebase.database.ValueEventListener;
+
 import com.shop.models.Products;
 import com.shop.viewholders.ProductViewHolder;
 import com.squareup.picasso.Picasso;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class SearchProductsActivity extends AppCompatActivity {
 
@@ -95,7 +88,5 @@ public class SearchProductsActivity extends AppCompatActivity {
 
         searchList.setAdapter(adapter);
         adapter.startListening();
-
     }
-
 }
