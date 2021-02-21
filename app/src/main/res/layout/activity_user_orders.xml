@@ -23,14 +23,49 @@
             android:textAlignment="center"
             android:gravity="center"
             android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
             />
     </RelativeLayout>
+
+    <TextView
+        android:id="@+id/current_order"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Current order:"
+        android:layout_marginStart="10dp"
+        android:layout_marginBottom="5dp"
+        android:textStyle="bold"
+        android:textSize="24dp"
+        android:fontFamily="casual"
+        android:textColor="@color/black"
+        android:layout_below="@id/rll5"
+        android:visibility="visible"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/user_order_list"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/rll5">
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/current_order">
     </androidx.recyclerview.widget.RecyclerView>
 
+    <TextView
+        android:id="@+id/order_history"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginBottom="5dp"
+        android:text="Orders history:"
+        android:textStyle="bold"
+        android:textSize="24dp"
+        android:fontFamily="casual"
+        android:textColor="@color/black"
+        android:layout_below="@id/user_order_list"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/user_order_history_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/order_history">
+
+    </androidx.recyclerview.widget.RecyclerView>
 </RelativeLayout>

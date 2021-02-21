@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".UserHistoryProductsActivity">
+
+    <RelativeLayout
+        android:id="@+id/rll6"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        android:layout_alignParentTop="true">
+
+        <TextView
+            android:id="@+id/products_history"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Products "
+            android:textColor="@color/white"
+            android:textSize="25dp"
+            android:textAlignment="center"
+            android:gravity="center"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            />
+    </RelativeLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/user_history_products_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/rll6">
+    </androidx.recyclerview.widget.RecyclerView>
+
+</RelativeLayout>

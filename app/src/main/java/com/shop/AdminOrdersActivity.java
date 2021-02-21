@@ -30,6 +30,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.shop.models.AdminOrders;
 import com.shop.models.Products;
+import com.shop.models.PurchasedProducts;
 import com.shop.prevalent.Prevalent;
 
 import org.w3c.dom.Text;
@@ -200,7 +201,7 @@ public class AdminOrdersActivity extends AppCompatActivity {
                                 ordersMap.put("state", "delivered");
                             }
 
-                            ArrayList<Products> products = new ArrayList<>();
+                            ArrayList<PurchasedProducts> products = new ArrayList<>();
                             String finalDate = date;
                             String finalTime = time;
                             productsRef.child(uid).child("Products").addListenerForSingleValueEvent(new ValueEventListener() {
@@ -208,7 +209,7 @@ public class AdminOrdersActivity extends AppCompatActivity {
                                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                                     if(snapshot.exists()) {
                                         for (DataSnapshot product : snapshot.getChildren()) {
-                                            Products p = product.getValue(Products.class);
+                                            PurchasedProducts p = product.getValue(PurchasedProducts.class);
                                             products.add(p);
                                         }
                                         ordersMap.put("Products", products);
