@@ -73,18 +73,17 @@ import java.util.HashMap;
          Calendar calForDate = Calendar.getInstance();
          final String saveCurrentTime, saveCurrentDate;
 
-         SimpleDateFormat currentDate = new SimpleDateFormat("dd-MMM-yyyy");
+         SimpleDateFormat currentDate = new SimpleDateFormat("dd-mmm-yyyy");
          saveCurrentDate = currentDate.format(calForDate.getTime());
 
          SimpleDateFormat currentTime= new SimpleDateFormat("HH:mm:ss a");
-         saveCurrentTime = currentDate.format(calForDate.getTime());
+         saveCurrentTime = currentTime.format(calForDate.getTime());
 
          final DatabaseReference ordersRef = FirebaseDatabase.getInstance().getReference().child("Orders")
                  .child(EncodeString(Prevalent.currentOnlineUser.getEmail()));
 
          HashMap<String, Object> ordersMap = new HashMap<>();
          ordersMap.put("totalAmount", totalPrice);
-
          ordersMap.put("name", nameEdiText.getText().toString());
          ordersMap.put("phone", phoneEditText.getText().toString());
          ordersMap.put("address", addressEditText.getText().toString());

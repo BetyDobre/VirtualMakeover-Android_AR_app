@@ -118,7 +118,6 @@ public class LoginActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.child(parentDbName).child(EncodeString(email)).exists()){
                     Users userData = dataSnapshot.child(parentDbName).child(EncodeString(email)).getValue(Users.class);
-
                     if (userData.getEmail().equals(email)){
                         if (userData.getPassword().equals(password)){
                             if (parentDbName.equals("Admins")){

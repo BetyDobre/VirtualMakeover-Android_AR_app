@@ -108,9 +108,10 @@ public class AdminOrdersActivity extends AppCompatActivity {
                                                     @Override
                                                     public void onClick(DialogInterface dialogInterface, int i) {
                                                         if (i == 0) {
-                                                            ordersRef.child(uid).removeValue();
+                                                            PlaceInHistory(uid);
+//                                                            ordersRef.child(uid).removeValue();
                                                             DatabaseReference productsRef = FirebaseDatabase.getInstance().getReference().child("Cart List").child("Admin View");
-                                                            productsRef.child(uid).removeValue();
+//                                                            productsRef.child(uid).removeValue();
                                                         } else {
                                                             finish();
                                                         }
@@ -152,6 +153,74 @@ public class AdminOrdersActivity extends AppCompatActivity {
                 };
             ordersList.setAdapter(adapter);
             adapter.startListening();
+    }
+
+    private void PlaceInHistory(String uid) {
+        DatabaseReference historyRef = FirebaseDatabase.getInstance().getReference().child("Orders History");
+        DatabaseReference ordersRef = FirebaseDatabase.getInstance().getReference().child("Orders").child(uid);
+        historyRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                HashMap<String, Object> ordersMap = new HashMap<>();
+                ordersRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        if(snapshot.exists()){
+                            String date = "", time= "";
+                            for (DataSnapshot orderSnapshot : snapshot.getChildren()){
+                                String data = orderSnapshot.getValue().toString();
+                                if(orderSnapshot.getKey().equals("totalAmount")){
+                                    ordersMap.put("totalAmount", data);
+                                }
+                                else if(orderSnapshot.getKey().equals("name")){
+                                    ordersMap.put("name", data);
+                                }
+                                else if(orderSnapshot.getKey().equals("phone")){
+                                    ordersMap.put("phone", data);
+                                }
+                                else if(orderSnapshot.getKey().equals("address")){
+                                    ordersMap.put("address", data);
+                                }
+                                else if(orderSnapshot.getKey().equals("city")){
+                                    ordersMap.put("city", data);
+                                }
+                                else if(orderSnapshot.getKey().equals("date")){
+                                    ordersMap.put("date", data);
+                                    date = data;
+                                }
+                                else if(orderSnapshot.getKey().equals("time")){
+                                    ordersMap.put("time", data);
+                                    time = data;
+                                }
+                                else if(orderSnapshot.getKey().equals("email")){
+                                    ordersMap.put("email", data);
+                                }
+                                ordersMap.put("state", "delivered");
+                            }
+
+                            historyRef.child(uid).child(date+time).updateChildren(ordersMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    if (task.isSuccessful()) {
+                                        Toast.makeText(AdminOrdersActivity.this, "Order placed in history", Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+                            });
+                        }
+
+                    }
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                    }
+                });
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
     }
 
     public static class AdminOrdersViewHolder extends RecyclerView.ViewHolder {

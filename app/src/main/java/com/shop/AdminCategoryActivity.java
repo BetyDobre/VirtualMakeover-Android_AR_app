@@ -8,6 +8,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 
+import io.paperdb.Paper;
+
 public class AdminCategoryActivity extends AppCompatActivity {
 
     private ImageView glasses, lipsticks, decorations, foundation, hats;
@@ -28,8 +30,9 @@ public class AdminCategoryActivity extends AppCompatActivity {
         logoutBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Paper.book().destroy();
                 Intent intent = new Intent(AdminCategoryActivity.this, MainActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent. FLAG_ACTIVITY_CLEAR_TASK);
+//                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent. FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
                 finish();
             }

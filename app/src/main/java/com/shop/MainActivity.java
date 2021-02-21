@@ -222,6 +222,22 @@ public class MainActivity extends AppCompatActivity {
                     }
 
                 }
+                else if (dataSnapshot.child("Admins").child(EncodeString(email)).exists()){
+                        Users userData = dataSnapshot.child("Admins").child(EncodeString(email)).getValue(Users.class);
+                        if (userData.getEmail().equals(email)){
+                            if (userData.getPassword().equals(password)){
+                                Toast.makeText(MainActivity.this, "Success login, admin!", Toast.LENGTH_SHORT).show();
+                                loadingBar.dismiss();
+
+                                Intent intent = new Intent(MainActivity.this, AdminCategoryActivity.class);
+                                startActivity(intent);
+                            }
+                            else {
+                                Toast.makeText(MainActivity.this, "Password is incorrect!", Toast.LENGTH_SHORT).show();
+                                loadingBar.dismiss();
+                            }
+                        }
+                    }
                 else {
                     Toast.makeText(MainActivity.this, "Account with this email doesn't exist!", Toast.LENGTH_SHORT).show();
                     loadingBar.dismiss();
