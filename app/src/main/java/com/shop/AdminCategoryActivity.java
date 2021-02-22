@@ -13,7 +13,7 @@ import io.paperdb.Paper;
 public class AdminCategoryActivity extends AppCompatActivity {
 
     private ImageView glasses, lipsticks, decorations, foundation, hats;
-    private Button logoutBtn, checkOrdersBtn;
+    private Button logoutBtn, checkOrdersBtn, maintaintProductsBtn;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -23,9 +23,10 @@ public class AdminCategoryActivity extends AppCompatActivity {
         lipsticks = findViewById(R.id.lipstick);
         decorations = findViewById(R.id.decoration);
         foundation = findViewById(R.id.foundation);
-        hats = findViewById(R.id.hats);
+//        hats = findViewById(R.id.hats);
         logoutBtn = findViewById(R.id.admin_logout_btn);
         checkOrdersBtn = findViewById(R.id.check_orders_btn);
+        maintaintProductsBtn = findViewById(R.id.maintain_btn);
 
         logoutBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -42,6 +43,15 @@ public class AdminCategoryActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(AdminCategoryActivity.this, AdminOrdersActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        maintaintProductsBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(AdminCategoryActivity.this, HomeActivity.class);
+                intent.putExtra("Admin", "Admin");
                 startActivity(intent);
             }
         });
@@ -82,13 +92,13 @@ public class AdminCategoryActivity extends AppCompatActivity {
             }
         });
 
-        hats.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(AdminCategoryActivity.this, AdminAddNewProductActivity.class);
-                intent.putExtra("category", "hats");
-                startActivity(intent);
-            }
-        });
+//        hats.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Intent intent = new Intent(AdminCategoryActivity.this, AdminAddNewProductActivity.class);
+//                intent.putExtra("category", "hats");
+//                startActivity(intent);
+//            }
+//        });
     }
 }

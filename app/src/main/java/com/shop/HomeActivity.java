@@ -45,11 +45,18 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     private RecyclerView recyclerView;
     RecyclerView.LayoutManager layoutManager;
     private Button homeSearch;
+    private String type = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
+        Intent intent = getIntent();
+        Bundle bundle = intent.getExtras();
+        if(bundle != null){
+            type = bundle.get("Admin").toString();
+        }
 
         ProductsRef = FirebaseDatabase.getInstance().getReference().child("Products");
 
@@ -69,6 +76,9 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         });
 
         FloatingActionButton fab = findViewById(R.id.fab);
+        if(type.equals("Admin")){
+            fab.setVisibility(View.GONE);
+        }
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -85,22 +95,28 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         toggle.syncState();
 
         NavigationView navigationView = findViewById(R.id.nav_view);
+        if(type.equals("Admin")){
+            navigationView.setVisibility(View.GONE);
+        }
         navigationView.setNavigationItemSelectedListener(this);
 
         View headerView = navigationView.getHeaderView(0);
         TextView userNameTextView = headerView.findViewById(R.id.user_profile_name);
         CircleImageView profileImageView = headerView.findViewById(R.id.user_profile_image);
 
-        if (Prevalent.currentOnlineUser != null) {
-            userNameTextView.setText(Prevalent.currentOnlineUser.getName());
-            Picasso.get().load(Prevalent.currentOnlineUser.getImage()).placeholder(R.drawable.profile).into(profileImageView);
-        }
-        else {
-            GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(getApplicationContext());
-            String name = account.getDisplayName();
-            Uri picture = account.getPhotoUrl();
-            userNameTextView.setText(name);
-            Picasso.get().load(picture).placeholder(R.drawable.profile).into(profileImageView);
+
+        if(!type.equals("Admin")) {
+            if (Prevalent.currentOnlineUser != null) {
+                userNameTextView.setText(Prevalent.currentOnlineUser.getName());
+                Picasso.get().load(Prevalent.currentOnlineUser.getImage()).placeholder(R.drawable.profile).into(profileImageView);
+            }
+            else {
+                GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(getApplicationContext());
+                String name = account.getDisplayName();
+                Uri picture = account.getPhotoUrl();
+                userNameTextView.setText(name);
+                Picasso.get().load(picture).placeholder(R.drawable.profile).into(profileImageView);
+            }
         }
 
         recyclerView = findViewById(R.id.recycler_menu);
@@ -129,14 +145,23 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                         holder.txtProductPrice.setText("Price: " + model.getPrice()+"lei");
                         Picasso.get().load(model.getImage()).into(holder.imageView);
 
+
                         holder.itemView.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
-                                Intent intent = new Intent(HomeActivity.this, ProductDetailsActivity.class);
-                                intent.putExtra("pid", model.getPid());
-                                startActivity(intent);
+                                if (type.equals("Admin")) {
+                                    Intent intent = new Intent(HomeActivity.this, AdminEditProductsActivity.class);
+                                    intent.putExtra("pid", model.getPid());
+                                    startActivity(intent);
+                                }
+                                else {
+                                    Intent intent = new Intent(HomeActivity.this, ProductDetailsActivity.class);
+                                    intent.putExtra("pid", model.getPid());
+                                    startActivity(intent);
+                                }
                             }
                         });
+
                     }
 
                     @NonNull
