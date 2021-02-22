@@ -97,10 +97,6 @@ public class RegisterActivity extends AppCompatActivity {
         return string.replace(".", ",");
     }
 
-    public String DecodeString(String string) {
-        return string.replace(",", ".");
-    }
-
     private void ValidateEmail(String name, String email, String password) {
         final DatabaseReference RootRef;
         RootRef = FirebaseDatabase.getInstance().getReference();
@@ -143,7 +139,6 @@ public class RegisterActivity extends AppCompatActivity {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
             }
         });
 

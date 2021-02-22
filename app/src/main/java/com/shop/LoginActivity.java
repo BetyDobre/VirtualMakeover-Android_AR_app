@@ -6,7 +6,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.renderscript.ScriptGroup;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
@@ -20,17 +19,20 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.rey.material.widget.CheckBox;
+import com.shop.adminActivities.AdminCategoryActivity;
 import com.shop.models.Users;
 import com.shop.prevalent.Prevalent;
 
 import io.paperdb.Paper;
+
+
 
 public class LoginActivity extends AppCompatActivity {
 
     private EditText InputEmail, InputPassword;
     private Button LoginButton;
     private ProgressDialog loadingBar;
-    private TextView AdminLink, NotAdminLink;
+    private TextView AdminLink, NotAdminLink, ForgotPasswordLink;
 
     private String parentDbName = "Users";
     private CheckBox chkBoxRememberMe;
@@ -46,9 +48,17 @@ public class LoginActivity extends AppCompatActivity {
         chkBoxRememberMe = findViewById(R.id.remember_me_chkb);
         AdminLink = findViewById(R.id.admin_panel_link);
         NotAdminLink = findViewById(R.id.not_admin_panel_link);
+        ForgotPasswordLink = findViewById(R.id.forget_password_link);
         loadingBar = new ProgressDialog(this);
 
         Paper.init(this);
+
+        ForgotPasswordLink.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent intent = new Intent(LoginActivity.this, ResetPasswordActivity.class);
+                startActivity(intent);
+            }
+        });
 
         LoginButton.setOnClickListener(new View.OnClickListener() {
             @Override

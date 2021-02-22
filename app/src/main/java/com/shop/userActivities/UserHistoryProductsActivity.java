@@ -1,4 +1,4 @@
-package com.shop;
+package com.shop.userActivities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,16 +14,22 @@ import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.shop.R;
 import com.shop.models.Cart;
+import com.shop.prevalent.Prevalent;
 import com.shop.viewholders.CartViewHolder;
 import com.squareup.picasso.Picasso;
 
-public class AdminOrderProductsActivity extends AppCompatActivity {
+public class UserHistoryProductsActivity extends AppCompatActivity {
 
     private RecyclerView productsList;
     RecyclerView.LayoutManager layoutManager;
-    private DatabaseReference cartListRef;
-    private String userId = "";
+    private DatabaseReference productsRef;
+    private String orderId = "";
+
+    public String EncodeString(String string) {
+        return string.replace(".", ",");
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,8 +40,8 @@ public class AdminOrderProductsActivity extends AppCompatActivity {
         productsList.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(this);
         productsList.setLayoutManager(layoutManager);
-        userId = getIntent().getStringExtra("uid");
-        cartListRef = FirebaseDatabase.getInstance().getReference().child("Cart List").child("Admin View").child(userId).child("Products");
+        orderId = getIntent().getStringExtra("uid");
+        productsRef = FirebaseDatabase.getInstance().getReference().child("Orders History").child(EncodeString(Prevalent.currentOnlineUser.getEmail())).child(orderId).child("Products");
     }
 
     @Override
@@ -44,8 +50,8 @@ public class AdminOrderProductsActivity extends AppCompatActivity {
 
         FirebaseRecyclerOptions<Cart> options =
                 new FirebaseRecyclerOptions.Builder<Cart>()
-                .setQuery(cartListRef, Cart.class)
-                .build();
+                        .setQuery(productsRef, Cart.class)
+                        .build();
 
         FirebaseRecyclerAdapter<Cart, CartViewHolder> adapter = new FirebaseRecyclerAdapter<Cart, CartViewHolder>(options) {
             @Override
