@@ -85,9 +85,11 @@ public class CartActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (!snapshot.exists()){
                     layout.setVisibility(View.GONE);
+                    totalPriceTxt.setVisibility(View.GONE);
                 }
                 else {
                     layout.setVisibility(View.VISIBLE);
+                    totalPriceTxt.setVisibility(View.VISIBLE);
                 }
             }
 
@@ -120,6 +122,14 @@ public class CartActivity extends AppCompatActivity {
                     }
                 });
 
+            }
+        });
+
+        layout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(CartActivity.this, HomeActivity.class);
+                startActivity(intent);
             }
         });
     }

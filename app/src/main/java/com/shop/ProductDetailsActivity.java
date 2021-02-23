@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,6 +21,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.shop.adminActivities.AdminEditProductsActivity;
 import com.shop.models.Products;
 import com.shop.models.Users;
 import com.shop.prevalent.Prevalent;
@@ -37,6 +39,7 @@ public class ProductDetailsActivity extends AppCompatActivity {
     private TextView productPrice, productDescription, productName;
     private String productID = "", state = "normal";
     private String image;
+    RelativeLayout relativeLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +52,7 @@ public class ProductDetailsActivity extends AppCompatActivity {
         productPrice = findViewById(R.id.product_price_details);
         productDescription = findViewById(R.id.product_description_details);
         productName = findViewById(R.id.product_name_details);
+        relativeLayout = findViewById(R.id.rll9);
 
         productID = getIntent().getStringExtra("pid");
         getProductDetails(productID);
@@ -62,6 +66,14 @@ public class ProductDetailsActivity extends AppCompatActivity {
                 else {
                     addingToCart();
                 }
+            }
+        });
+
+        relativeLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(ProductDetailsActivity.this, HomeActivity.class);
+                startActivity(intent);
             }
         });
     }

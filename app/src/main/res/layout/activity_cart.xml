@@ -12,17 +12,26 @@
         android:background="@color/colorPrimary"
         android:layout_alignParentTop="true">
 
-        <TextView
-            android:id="@+id/total_price"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Total price: "
-            android:textColor="@color/white"
-            android:textSize="20sp"
-            android:textAlignment="center"
-            android:gravity="center"
+        <ImageView
+            android:id="@+id/back_to_cart_img"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp"
+            android:layout_marginStart="5dp"
+            android:src="@drawable/back"/>
+
+        <TextView
+            android:id="@+id/back_to_cart_txt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Back"
+            android:textColor="@color/white"
+            android:textSize="20dp"
+            android:layout_toRightOf="@id/back_to_cart_img"
+            android:layout_marginStart="8dp"
+            android:textStyle="bold"
+            android:layout_marginTop="10dp"
             />
     </RelativeLayout>
 
@@ -64,16 +73,29 @@
         android:id="@+id/cart_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:scrollbars="vertical"
         android:layout_below="@+id/rll1"
-        android:layout_above="@+id/next_btn">
+        android:layout_above="@+id/total_price">
     </androidx.recyclerview.widget.RecyclerView>
-
+    <TextView
+        android:id="@+id/total_price"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/next_btn"
+        android:text="Total price"
+        android:layout_alignParentRight="true"
+        android:textAlignment="textEnd"
+        android:textSize="20dp"
+        android:textColor="@color/colorPrimary"
+        android:textStyle="bold"
+        android:layout_marginBottom="3dp"
+        android:layout_marginEnd="5dp"/>
     <Button
         android:id="@+id/next_btn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:background="@color/colorPrimary"
+        android:background="@drawable/buttons"
         android:text="Next"
         android:textColor="@color/white"
         android:textSize="20sp"

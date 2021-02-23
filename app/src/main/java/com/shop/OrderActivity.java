@@ -9,6 +9,9 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -27,6 +30,7 @@ import java.util.HashMap;
  public class OrderActivity extends AppCompatActivity {
 
     private EditText nameEdiText, phoneEditText, addressEditText, cityEditText;
+    private RelativeLayout relativeLayout;
     private Button placeOrderBtn;
     private String totalPrice = "", email;
     @Override
@@ -38,6 +42,8 @@ import java.util.HashMap;
         nameEdiText = findViewById(R.id.shippment_name);
         phoneEditText = findViewById(R.id.shippment_phone);
         addressEditText = findViewById(R.id.shippment_address);
+        relativeLayout = findViewById(R.id.rll10);
+
         DatabaseReference user = FirebaseDatabase.getInstance().getReference().child("Users").child(EncodeString(Prevalent.currentOnlineUser.getEmail()));
         user.child("address").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -57,6 +63,14 @@ import java.util.HashMap;
             @Override
             public void onClick(View view) {
                 CheckDetails();
+            }
+        });
+
+        relativeLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(OrderActivity.this, CartActivity.class);
+                startActivity(intent);
             }
         });
     }
