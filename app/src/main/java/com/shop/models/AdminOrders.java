@@ -1,12 +1,12 @@
 package com.shop.models;
 
 public class AdminOrders {
-    private String email, address, city, date, name, phone, state, time, totalAmount;
+    private String email, address, city, date, name, phone, state, time, totalAmount, payment;
 
     public AdminOrders() {
     }
 
-    public AdminOrders(String email, String address, String city, String date, String name, String phone, String state, String time, String totalAmount) {
+    public AdminOrders(String email, String address, String city, String date, String name, String phone, String state, String time, String totalAmount, String payment) {
         this.email = email;
         this.address = address;
         this.city = city;
@@ -16,6 +16,7 @@ public class AdminOrders {
         this.state = state;
         this.time = time;
         this.totalAmount = totalAmount;
+        this.payment= payment;
     }
 
     public String getEmail() {
@@ -88,5 +89,13 @@ public class AdminOrders {
 
     public void setTotalAmount(String totalAmount) {
         this.totalAmount = totalAmount;
+    }
+
+    public String getPayment() {
+        return payment;
+    }
+
+    public void setPayment(String payment) {
+        this.payment = payment;
     }
 }

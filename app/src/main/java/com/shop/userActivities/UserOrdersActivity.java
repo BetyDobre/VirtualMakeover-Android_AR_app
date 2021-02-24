@@ -88,6 +88,7 @@ public class UserOrdersActivity extends AppCompatActivity {
                         holder.userAddress.setText("Address: " + model.getAddress() + ", " + model.getCity());
                         holder.userEmail.setText("Email: " + model.getEmail());
                         holder.userState.setText("State: " + model.getState());
+                        holder.userPayment.setText("Payment method: " + model.getPayment());
 
                         holder.showProductsBtn.setOnClickListener(new View.OnClickListener() {
                             @Override
@@ -144,6 +145,7 @@ public class UserOrdersActivity extends AppCompatActivity {
                         holder.userAddress.setText("Address: " + model.getAddress() + ", " + model.getCity());
                         holder.userEmail.setText("Email: " + model.getEmail());
                         holder.userState.setText("State: " + model.getState());
+                        holder.userPayment.setText("Payment method: " + model.getPayment());
 
                         holder.showProductsBtn.setOnClickListener(new View.OnClickListener() {
                             @Override
@@ -171,7 +173,7 @@ public class UserOrdersActivity extends AppCompatActivity {
 
     public static class UserOrdersViewHolder extends RecyclerView.ViewHolder {
 
-        public TextView userName, userTotalPrice, userDateTime, userPhone, userAddress, userEmail, userState;
+        public TextView userName, userTotalPrice, userDateTime, userPhone, userAddress, userEmail, userState, userPayment;
         private Button showProductsBtn;
 
         public UserOrdersViewHolder(@NonNull View itemView) {
@@ -184,6 +186,7 @@ public class UserOrdersActivity extends AppCompatActivity {
             userAddress = itemView.findViewById(R.id.order_address);
             userEmail = itemView.findViewById(R.id.order_email);
             userState = itemView.findViewById(R.id.order_state);
+            userPayment = itemView.findViewById(R.id.order_payment_method);
             showProductsBtn = itemView.findViewById(R.id.admin_show_products_btn);
         }
     }

@@ -248,6 +248,7 @@ public class CartActivity extends AppCompatActivity {
                         recyclerView.setVisibility(View.GONE);
 
                         deliveryImg.setVisibility(View.VISIBLE);
+                        emptyCartImg.setVisibility(View.GONE);
                         txtMsg1.setVisibility(View.VISIBLE);
                         nextBtn.setVisibility(View.GONE);
                     }
@@ -255,6 +256,7 @@ public class CartActivity extends AppCompatActivity {
                         totalPriceTxt.setText("Dear " + userName + ",\n Your order is not shipped yet.");
                         recyclerView.setVisibility(View.GONE);
 
+                        emptyCartImg.setVisibility(View.GONE);
                         loadingImg.setVisibility(View.VISIBLE);
                         txtMsg1.setText("Congratulations, your order has been placed successfully. It will be verified and shipped soon.");
                         txtMsg1.setVisibility(View.VISIBLE);

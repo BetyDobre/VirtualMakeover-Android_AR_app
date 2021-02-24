@@ -3,10 +3,19 @@ package com.shop.models;
 import java.util.ArrayList;
 
 public class UserHistoryOrders {
-    private String email, address, city, date, name, phone, state, time, totalAmount;
+    private String email;
+    private String address;
+    private String city;
+    private String date;
+    private String name;
+    private String phone;
+    private String state;
+    private String time;
+    private String totalAmount;
+    private String payment;
     private ArrayList<Products> products;
 
-    public UserHistoryOrders(String email, String address, String city, String date, String name, String phone, String state, String time, String totalAmount, ArrayList<Products> products) {
+    public UserHistoryOrders(String email, String address, String city, String date, String name, String phone, String state, String time, String totalAmount, String payment, ArrayList<Products> products) {
         this.email = email;
         this.address = address;
         this.city = city;
@@ -16,10 +25,19 @@ public class UserHistoryOrders {
         this.state = state;
         this.time = time;
         this.totalAmount = totalAmount;
+        this.payment = payment;
         this.products = products;
     }
 
+
     public UserHistoryOrders() {
+    }
+
+    public String getPayment() {
+        return payment;
+    }
+    public void setPayment(String payment) {
+        this.payment = payment;
     }
 
     public String getEmail() {

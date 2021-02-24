@@ -10,6 +10,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -33,6 +35,10 @@ import java.util.HashMap;
     private RelativeLayout relativeLayout;
     private Button placeOrderBtn;
     private String totalPrice = "", email;
+
+    private RadioButton radioButton;
+    private RadioGroup radioGroup;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,6 +49,8 @@ import java.util.HashMap;
         phoneEditText = findViewById(R.id.shippment_phone);
         addressEditText = findViewById(R.id.shippment_address);
         relativeLayout = findViewById(R.id.rll10);
+
+        radioGroup = findViewById(R.id.payment_method_radiogroup);
 
         DatabaseReference user = FirebaseDatabase.getInstance().getReference().child("Users").child(EncodeString(Prevalent.currentOnlineUser.getEmail()));
         user.child("address").addListenerForSingleValueEvent(new ValueEventListener() {
@@ -92,6 +100,9 @@ import java.util.HashMap;
         else if (TextUtils.isEmpty(cityEditText.getText().toString())){
             Toast.makeText(OrderActivity.this, "Please provide your city name!", Toast.LENGTH_SHORT).show();
         }
+        else if (radioGroup.getCheckedRadioButtonId() == -1){
+            Toast.makeText(OrderActivity.this, "Please choose a payment method!", Toast.LENGTH_SHORT).show();
+        }
         else {
             PlaceOrder();
         }
@@ -110,6 +121,9 @@ import java.util.HashMap;
          final DatabaseReference ordersRef = FirebaseDatabase.getInstance().getReference().child("Orders")
                  .child(EncodeString(Prevalent.currentOnlineUser.getEmail()));
 
+         int radioId = radioGroup.getCheckedRadioButtonId();
+         radioButton = findViewById(radioId);
+
          HashMap<String, Object> ordersMap = new HashMap<>();
          ordersMap.put("totalAmount", totalPrice);
          ordersMap.put("name", nameEdiText.getText().toString());
@@ -120,6 +134,7 @@ import java.util.HashMap;
          ordersMap.put("time", saveCurrentTime);
          ordersMap.put("state", "not shipped");
          ordersMap.put("email", email);
+         ordersMap.put("payment", radioButton.getText().toString());
 
          ordersRef.updateChildren(ordersMap).addOnCompleteListener(new OnCompleteListener<Void>() {
              @Override

@@ -66,6 +66,7 @@ public class AdminOrdersActivity extends AppCompatActivity {
                         holder.userAddress.setText("Address: " + model.getAddress()+ ", " + model.getCity());
                         holder.userEmail.setText("Email: " + model.getEmail());
                         holder.userState.setText("State: " + model.getState());
+                        holder.userPayment.setText("Payment method: " + model.getPayment());
 
                         holder.showOrdersBtn.setOnClickListener(new View.OnClickListener() {
                             @Override
@@ -191,6 +192,9 @@ public class AdminOrdersActivity extends AppCompatActivity {
                                 else if(orderSnapshot.getKey().equals("email")){
                                     ordersMap.put("email", data);
                                 }
+                                else if(orderSnapshot.getKey().equals("payment")){
+                                    ordersMap.put("payment", data);
+                                }
                                 ordersMap.put("state", "delivered");
                             }
 
@@ -244,7 +248,7 @@ public class AdminOrdersActivity extends AppCompatActivity {
 
     public static class AdminOrdersViewHolder extends RecyclerView.ViewHolder {
 
-        public TextView userName, userTotalPrice, userDateTime, userPhone, userAddress, userEmail, userState;
+        public TextView userName, userTotalPrice, userDateTime, userPhone, userAddress, userEmail, userState, userPayment;
         private Button showOrdersBtn;
 
         public AdminOrdersViewHolder(@NonNull View itemView) {
@@ -257,6 +261,7 @@ public class AdminOrdersActivity extends AppCompatActivity {
             userAddress = itemView.findViewById(R.id.order_address);
             userEmail = itemView.findViewById(R.id.order_email);
             userState = itemView.findViewById(R.id.order_state);
+            userPayment = itemView.findViewById(R.id.order_payment_method);
             showOrdersBtn = itemView.findViewById(R.id.admin_show_products_btn);
         }
     }
