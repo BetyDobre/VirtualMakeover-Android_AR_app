@@ -31,6 +31,7 @@ public class UserOrdersActivity extends AppCompatActivity {
     private RecyclerView ordersList, orderhistoryList;
     private TextView currentOrder, ordersHistory;
     private DatabaseReference ordersRef, historyRef;
+    private String uid = "";
 
     public String EncodeString(String string) {
         return string.replace(".", ",");
@@ -51,6 +52,7 @@ public class UserOrdersActivity extends AppCompatActivity {
 
         currentOrder = findViewById(R.id.current_order);
         ordersHistory = findViewById(R.id.order_history);
+        uid = EncodeString(Prevalent.currentOnlineUser.getEmail());
     }
 
     @Override
@@ -93,9 +95,10 @@ public class UserOrdersActivity extends AppCompatActivity {
                         holder.showProductsBtn.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
-                                String uid = getRef(position).getKey();
+                                String uorderid = getRef(position).getKey();
 
                                 Intent intent = new Intent(UserOrdersActivity.this, AdminOrderProductsActivity.class);
+                                intent.putExtra("uorderid", uorderid);
                                 intent.putExtra("uid", uid);
                                 startActivity(intent);
                             }
@@ -150,8 +153,9 @@ public class UserOrdersActivity extends AppCompatActivity {
                         holder.showProductsBtn.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
-                                String uid = getRef(position).getKey();
+                                String uorderid = getRef(position).getKey();
                                 Intent intent = new Intent(UserOrdersActivity.this, UserHistoryProductsActivity.class);
+                                intent.putExtra("uorderid", uorderid);
                                 intent.putExtra("uid", uid);
                                 intent.putExtra("products", model.getProducts());
                                 startActivity(intent);
@@ -168,7 +172,6 @@ public class UserOrdersActivity extends AppCompatActivity {
                 };
         orderhistoryList.setAdapter(adapter2);
         adapter2.startListening();
-
     }
 
     public static class UserOrdersViewHolder extends RecyclerView.ViewHolder {

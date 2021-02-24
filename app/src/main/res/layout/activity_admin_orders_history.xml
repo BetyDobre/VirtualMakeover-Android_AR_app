@@ -4,20 +4,20 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".adminActivities.AdminOrdersActivity">
+    tools:context=".userActivities.UserOrdersActivity">
 
     <RelativeLayout
-        android:id="@+id/rll2"
+        android:id="@+id/rll11"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/colorPrimary"
         android:layout_alignParentTop="true">
 
         <TextView
-            android:id="@+id/new_orders_txt"
+            android:id="@+id/orders_history_txt"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="New Orders: "
+            android:text="Orders History"
             android:textColor="@color/white"
             android:textSize="25dp"
             android:textAlignment="center"
@@ -28,20 +28,10 @@
     </RelativeLayout>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/admin_orders_list"
+        android:id="@+id/admin_orders_history_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/rll2">
+        android:layout_below="@+id/rll11">
     </androidx.recyclerview.widget.RecyclerView>
-
-    <Button
-        android:id="@+id/admin_orders_history_btn"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:background="@drawable/buttons"
-        android:text="See orders history"
-        android:textColor="@color/white"
-        />
 
 </RelativeLayout>

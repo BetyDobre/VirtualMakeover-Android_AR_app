@@ -17,7 +17,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ARShop"
         tools:replace="android:icon,android:theme">
-        <activity android:name=".CategoryProductsActivity"></activity>
+        <activity android:name=".adminActivities.AdminUsersActivity"></activity>
+        <activity android:name=".adminActivities.AdminOrdersHistoryActivity" />
+        <activity android:name=".CategoryProductsActivity" />
         <activity android:name=".CategoriesActivity" />
         <activity android:name=".ResetPasswordActivity" />
         <activity android:name=".adminActivities.AdminEditProductsActivity" />

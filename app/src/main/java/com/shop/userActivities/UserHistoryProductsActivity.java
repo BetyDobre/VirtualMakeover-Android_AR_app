@@ -25,7 +25,7 @@ public class UserHistoryProductsActivity extends AppCompatActivity {
     private RecyclerView productsList;
     RecyclerView.LayoutManager layoutManager;
     private DatabaseReference productsRef;
-    private String orderId = "";
+    private String orderId = "", uid = "";
 
     public String EncodeString(String string) {
         return string.replace(".", ",");
@@ -40,8 +40,9 @@ public class UserHistoryProductsActivity extends AppCompatActivity {
         productsList.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(this);
         productsList.setLayoutManager(layoutManager);
-        orderId = getIntent().getStringExtra("uid");
-        productsRef = FirebaseDatabase.getInstance().getReference().child("Orders History").child(EncodeString(Prevalent.currentOnlineUser.getEmail())).child(orderId).child("Products");
+        orderId = getIntent().getStringExtra("uorderid");
+        uid = getIntent().getStringExtra("uid");
+        productsRef = FirebaseDatabase.getInstance().getReference().child("Orders History").child(uid).child(orderId).child("Products");
     }
 
     @Override

@@ -37,6 +37,8 @@ public class AdminOrdersActivity extends AppCompatActivity {
     private RecyclerView ordersList;
     private DatabaseReference ordersRef;
 
+    private Button ordersHistory;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,6 +47,16 @@ public class AdminOrdersActivity extends AppCompatActivity {
         ordersRef = FirebaseDatabase.getInstance().getReference().child("Orders");
         ordersList = findViewById(R.id.admin_orders_list);
         ordersList.setLayoutManager(new LinearLayoutManager(this));
+
+        ordersHistory = findViewById(R.id.admin_orders_history_btn);
+
+        ordersHistory.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(AdminOrdersActivity.this, AdminUsersActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     @Override
