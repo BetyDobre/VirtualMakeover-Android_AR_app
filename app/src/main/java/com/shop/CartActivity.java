@@ -38,7 +38,7 @@ public class CartActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private RecyclerView.LayoutManager layoutManager;
     private Button nextBtn;
-    private TextView totalPriceTxt, txtMsg1;
+    private TextView totalPriceTxt, txtMsg1, backBtn;
     private ImageView loadingImg, deliveryImg, emptyCartImg;
     private RelativeLayout layout;
     private int totalPrice = 0;
@@ -60,6 +60,7 @@ public class CartActivity extends AppCompatActivity {
         loadingImg = findViewById(R.id.loading_image);
         deliveryImg = findViewById(R.id.delivery_image);
         emptyCartImg = findViewById(R.id.empty_cart);
+        backBtn = findViewById(R.id.back_to_home_from_cart_txt);
         layout = findViewById(R.id.rll1);
 
         DatabaseReference cartListRef = FirebaseDatabase.getInstance().getReference().child("Cart List");
@@ -125,13 +126,22 @@ public class CartActivity extends AppCompatActivity {
             }
         });
 
-        layout.setOnClickListener(new View.OnClickListener() {
+        backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(CartActivity.this, HomeActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
             }
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent intent = new Intent(CartActivity.this, HomeActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
     }
 
     public String EncodeString(String string) {
@@ -244,18 +254,14 @@ public class CartActivity extends AppCompatActivity {
                     String userName = snapshot.child("name").getValue().toString();
 
                     if (shippingState.equals("shipped")){
-                        totalPriceTxt.setText("Dear " + userName + ",\n Order has been shipped successfully");
                         recyclerView.setVisibility(View.GONE);
-
-                        deliveryImg.setVisibility(View.VISIBLE);
                         emptyCartImg.setVisibility(View.GONE);
+                        deliveryImg.setVisibility(View.VISIBLE);
                         txtMsg1.setVisibility(View.VISIBLE);
                         nextBtn.setVisibility(View.GONE);
                     }
                     else if (shippingState.equals("not shipped")) {
-                        totalPriceTxt.setText("Dear " + userName + ",\n Your order is not shipped yet.");
                         recyclerView.setVisibility(View.GONE);
-
                         emptyCartImg.setVisibility(View.GONE);
                         loadingImg.setVisibility(View.VISIBLE);
                         txtMsg1.setText("Congratulations, your order has been placed successfully. It will be verified and shipped soon.");

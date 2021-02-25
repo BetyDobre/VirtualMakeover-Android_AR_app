@@ -30,7 +30,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.shop.adminActivities.AdminCategoryActivity;
+import com.shop.adminActivities.AdminHomeActivity;
 import com.shop.models.Users;
 import com.shop.prevalent.Prevalent;
 
@@ -178,7 +178,7 @@ public class MainActivity extends AppCompatActivity {
                             else if (!dataSnapshot.child("Admins").child(EncodeString(email)).exists()){
                                     Toast.makeText(MainActivity.this, "Signed In successfully", Toast.LENGTH_SHORT).show();
                                     loadingBar.dismiss();
-                                    Intent intent = new Intent(MainActivity.this, AdminCategoryActivity.class);
+                                    Intent intent = new Intent(MainActivity.this, AdminHomeActivity.class);
                                     startActivity(intent);
                             }
                         }
@@ -230,7 +230,7 @@ public class MainActivity extends AppCompatActivity {
                                 Toast.makeText(MainActivity.this, "Success login, admin!", Toast.LENGTH_SHORT).show();
                                 loadingBar.dismiss();
 
-                                Intent intent = new Intent(MainActivity.this, AdminCategoryActivity.class);
+                                Intent intent = new Intent(MainActivity.this, AdminHomeActivity.class);
                                 startActivity(intent);
                             }
                             else {

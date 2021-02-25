@@ -112,6 +112,12 @@ public class SettingsActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
+    }
+
     private void updateOnlyUserInfo() {
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("Users");
         HashMap<String, Object> userMap = new HashMap<>();

@@ -24,6 +24,8 @@ import com.shop.R;
 import com.shop.models.UserHistoryOrders;
 import com.shop.userActivities.UserHistoryProductsActivity;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 
 
@@ -33,6 +35,7 @@ public class AdminOrdersHistoryActivity extends AppCompatActivity {
     private RecyclerView orderhistoryList;
     DatabaseReference historyRef;
     private String uid;
+    private TextView backBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +46,23 @@ public class AdminOrdersHistoryActivity extends AppCompatActivity {
         historyRef = FirebaseDatabase.getInstance().getReference().child("Orders History").child(uid);
         orderhistoryList = findViewById(R.id.admin_orders_history_list);
         orderhistoryList.setLayoutManager(new LinearLayoutManager(this));
+        backBtn = findViewById(R.id.back_to_users_txt);
+        backBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(AdminOrdersHistoryActivity.this, AdminUsersActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
+            }
+        });
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent intent = new Intent(AdminOrdersHistoryActivity.this, AdminUsersActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
     }
 
     @Override
@@ -74,6 +94,7 @@ public class AdminOrdersHistoryActivity extends AppCompatActivity {
                                 Intent intent = new Intent(AdminOrdersHistoryActivity.this, UserHistoryProductsActivity.class);
                                 intent.putExtra("uorderid", uorderid);
                                 intent.putExtra("uid", uid);
+                                intent.putExtra("type", "admin");
                                 startActivity(intent);
                             }
                         });

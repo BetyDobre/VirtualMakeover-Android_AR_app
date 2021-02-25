@@ -5,17 +5,23 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.shop.R;
 import com.shop.models.Cart;
+import com.shop.userActivities.UserOrdersActivity;
 import com.shop.viewholders.CartViewHolder;
 import com.squareup.picasso.Picasso;
 
@@ -24,7 +30,8 @@ public class AdminOrderProductsActivity extends AppCompatActivity {
     private RecyclerView productsList;
     RecyclerView.LayoutManager layoutManager;
     private DatabaseReference cartListRef;
-    private String userId = "";
+    private String userId = "", type = "";
+    private TextView backBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +43,38 @@ public class AdminOrderProductsActivity extends AppCompatActivity {
         layoutManager = new LinearLayoutManager(this);
         productsList.setLayoutManager(layoutManager);
         userId = getIntent().getStringExtra("uid");
+        type = getIntent().getStringExtra("type");
         cartListRef = FirebaseDatabase.getInstance().getReference().child("Cart List").child("Admin View").child(userId).child("Products");
+        backBtn = findViewById(R.id.back_to_order_txt);
+
+        backBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (type.equals("user")) {
+                    Intent intent = new Intent(AdminOrderProductsActivity.this, UserOrdersActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intent);
+                } else if (type.equals("admin")) {
+                    Intent intent = new Intent(AdminOrderProductsActivity.this, AdminOrdersActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intent);
+                }
+            }
+        });
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        if (type.equals("user")) {
+            Intent intent = new Intent(AdminOrderProductsActivity.this, UserOrdersActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+        } else if (type.equals("admin")) {
+            Intent intent = new Intent(AdminOrderProductsActivity.this, AdminOrdersActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+        }
     }
 
     @Override

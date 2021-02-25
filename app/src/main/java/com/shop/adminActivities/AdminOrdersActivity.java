@@ -38,6 +38,7 @@ public class AdminOrdersActivity extends AppCompatActivity {
     private DatabaseReference ordersRef;
 
     private Button ordersHistory;
+    private TextView backBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +49,7 @@ public class AdminOrdersActivity extends AppCompatActivity {
         ordersList = findViewById(R.id.admin_orders_list);
         ordersList.setLayoutManager(new LinearLayoutManager(this));
 
+        backBtn = findViewById(R.id.back_to_category_txt);
         ordersHistory = findViewById(R.id.admin_orders_history_btn);
 
         ordersHistory.setOnClickListener(new View.OnClickListener() {
@@ -57,6 +59,23 @@ public class AdminOrdersActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        backBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(AdminOrdersActivity.this, AdminHomeActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
+            }
+        });
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent intent = new Intent(AdminOrdersActivity.this, AdminHomeActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
     }
 
     @Override
@@ -77,8 +96,7 @@ public class AdminOrdersActivity extends AppCompatActivity {
                         holder.userDateTime.setText("Ordered at: " + model.getDate() + " " + model.getTime());
                         holder.userAddress.setText("Address: " + model.getAddress()+ ", " + model.getCity());
                         holder.userEmail.setText("Email: " + model.getEmail());
-                        holder.userState.setText("State: " + model.getState());
-                        holder.userPayment.setText("Payment method: " + model.getPayment());
+                        holder.userState.setText("State: " + model.getState().toUpperCase());
 
                         holder.showOrdersBtn.setOnClickListener(new View.OnClickListener() {
                             @Override
@@ -87,6 +105,7 @@ public class AdminOrdersActivity extends AppCompatActivity {
 
                                 Intent intent = new Intent(AdminOrdersActivity.this, AdminOrderProductsActivity.class);
                                 intent.putExtra("uid", uid);
+                                intent.putExtra("type", "admin");
                                 startActivity(intent);
                             }
                         });

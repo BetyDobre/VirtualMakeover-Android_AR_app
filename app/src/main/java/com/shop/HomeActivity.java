@@ -21,6 +21,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.shop.adminActivities.AdminHomeActivity;
 import com.shop.adminActivities.AdminEditProductsActivity;
 import com.shop.models.Products;
 import com.shop.prevalent.Prevalent;
@@ -76,9 +77,12 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         });
 
         FloatingActionButton fab = findViewById(R.id.fab);
+        FloatingActionButton fab_back = findViewById(R.id.fab_back);
         if(type.equals("Admin")){
             fab.setVisibility(View.GONE);
+            fab_back.setVisibility(View.VISIBLE);
         }
+
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -87,6 +91,13 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             }
         });
 
+        fab_back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(HomeActivity.this, AdminHomeActivity.class);
+                startActivity(intent);
+            }
+        });
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(

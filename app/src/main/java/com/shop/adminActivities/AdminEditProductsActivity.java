@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.Continuation;
@@ -26,6 +27,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.shop.HomeActivity;
 import com.shop.R;
 import com.squareup.picasso.Picasso;
 
@@ -36,6 +38,7 @@ public class AdminEditProductsActivity extends AppCompatActivity {
     private Button saveChangesBtn, deleteBtn;
     private EditText name, price, description;
     private ImageView image;
+    private TextView backBtn;
     private String productID = "";
     private DatabaseReference productsRef;
 
@@ -57,6 +60,7 @@ public class AdminEditProductsActivity extends AppCompatActivity {
         description = findViewById(R.id.product_description_edit);
         image = findViewById(R.id.product_image_edit);
         deleteBtn = findViewById(R.id.delete_product_btn);
+        backBtn = findViewById(R.id.back_to_maintain_products_txt);
 
         productID = getIntent().getStringExtra("pid");
         productsRef = FirebaseDatabase.getInstance().getReference().child("Products").child(productID);
@@ -83,6 +87,25 @@ public class AdminEditProductsActivity extends AppCompatActivity {
             }
         });
 
+        backBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(AdminEditProductsActivity.this, HomeActivity.class);
+                intent.putExtra("Admin", "Admin");
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
+            }
+        });
+
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent intent = new Intent(AdminEditProductsActivity.this, HomeActivity.class);
+        intent.putExtra("Admin", "Admin");
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
     }
 
     private void OpenGallery() {
@@ -155,7 +178,7 @@ public class AdminEditProductsActivity extends AppCompatActivity {
                                         @Override
                                         public void onComplete(@NonNull Task<Void> task) {
                                             if (task.isSuccessful()) {
-                                                Intent intent = new Intent(AdminEditProductsActivity.this, AdminCategoryActivity.class);
+                                                Intent intent = new Intent(AdminEditProductsActivity.this, AdminHomeActivity.class);
                                                 startActivity(intent);
                                                 finish();
 
@@ -180,7 +203,7 @@ public class AdminEditProductsActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {
-                            Intent intent = new Intent(AdminEditProductsActivity.this, AdminCategoryActivity.class);
+                            Intent intent = new Intent(AdminEditProductsActivity.this, AdminHomeActivity.class);
                             startActivity(intent);
                             finish();
 
@@ -196,7 +219,7 @@ public class AdminEditProductsActivity extends AppCompatActivity {
         productsRef.removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
-                Intent intent = new Intent(AdminEditProductsActivity.this, AdminCategoryActivity.class);
+                Intent intent = new Intent(AdminEditProductsActivity.this, AdminHomeActivity.class);
                 startActivity(intent);
                 finish();
 

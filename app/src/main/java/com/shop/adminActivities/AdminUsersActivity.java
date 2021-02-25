@@ -11,46 +11,70 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.shop.R;
-import com.shop.models.AdminOrders;
+import com.shop.models.Users;
+import com.squareup.picasso.Picasso;
 
 
 public class AdminUsersActivity extends AppCompatActivity {
 
     private RecyclerView usersList;
     private DatabaseReference usersRef;
+    private TextView backBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_users);
 
+        backBtn = findViewById(R.id.back_to_current_orders_txt);
+
         usersRef = FirebaseDatabase.getInstance().getReference().child("Users");
         usersList = findViewById(R.id.users_list);
         usersList.setLayoutManager(new LinearLayoutManager(this));
+
+        backBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(AdminUsersActivity.this, AdminHomeActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
+            }
+        });
+
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent intent = new Intent(AdminUsersActivity.this, AdminHomeActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
     }
 
     @Override
     protected void onStart() {
         super.onStart();
 
-        FirebaseRecyclerOptions<AdminOrders> options =
-                new FirebaseRecyclerOptions.Builder<AdminOrders>()
-                        .setQuery(usersRef, AdminOrders.class)
+        FirebaseRecyclerOptions<Users> options =
+                new FirebaseRecyclerOptions.Builder<Users>()
+                        .setQuery(usersRef, Users.class)
                         .build();
 
-        FirebaseRecyclerAdapter<AdminOrders, AdminUsersActivity.UserViewHolder> adapter =
-                new FirebaseRecyclerAdapter<AdminOrders, AdminUsersActivity.UserViewHolder>(options) {
+        FirebaseRecyclerAdapter<Users, AdminUsersActivity.UserViewHolder> adapter =
+                new FirebaseRecyclerAdapter<Users, AdminUsersActivity.UserViewHolder>(options) {
                     @Override
-                    protected void onBindViewHolder(@NonNull AdminUsersActivity.UserViewHolder holder, int position, @NonNull AdminOrders model) {
+                    protected void onBindViewHolder(@NonNull AdminUsersActivity.UserViewHolder holder, int position, @NonNull Users model) {
                         holder.userName.setText("Name: " + model.getName());
                         holder.userAddress.setText("Address: " + model.getAddress());
                         holder.userEmail.setText("Email: " + model.getEmail());
+                        Picasso.get().load(model.getImage()).into(holder.userImage);
 
                         holder.showOrdersHistory.setOnClickListener(new View.OnClickListener() {
                             @Override
@@ -77,6 +101,7 @@ public class AdminUsersActivity extends AppCompatActivity {
 
     public static class UserViewHolder extends RecyclerView.ViewHolder {
         public TextView userName, userAddress, userEmail;
+        public ImageView userImage;
         public Button showOrdersHistory;
 
         public UserViewHolder(@NonNull View itemView) {
@@ -84,6 +109,7 @@ public class AdminUsersActivity extends AppCompatActivity {
             userName = itemView.findViewById(R.id.username);
             userAddress = itemView.findViewById(R.id.user_address);
             userEmail = itemView.findViewById(R.id.user_email);
+            userImage = itemView.findViewById(R.id.user_image);
             showOrdersHistory = itemView.findViewById(R.id.show_orders_history__btn);
         }
     }

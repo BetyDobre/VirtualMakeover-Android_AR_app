@@ -18,13 +18,15 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.shop.adminActivities.AdminEditProductsActivity;
 import com.shop.models.Products;
+import com.shop.userActivities.UserHistoryProductsActivity;
+import com.shop.userActivities.UserOrdersActivity;
 import com.shop.viewholders.ProductViewHolder;
 import com.squareup.picasso.Picasso;
 
 public class CategoryProductsActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
-    private TextView categoryTxt;
+    private TextView categoryTxt, backBtn;
     RecyclerView.LayoutManager layoutManager;
     private DatabaseReference ProductsRef;
     String category;
@@ -44,6 +46,24 @@ public class CategoryProductsActivity extends AppCompatActivity {
 
         category = getIntent().getStringExtra("category");
         categoryTxt.setText(Character.toString(category.charAt(0)).toUpperCase()+category.substring(1));
+
+        backBtn = findViewById(R.id.back_to_categories_txt);
+        backBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(CategoryProductsActivity.this, CategoriesActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
+            }
+        });
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent intent = new Intent(CategoryProductsActivity.this, CategoriesActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
     }
 
     @Override

@@ -14,14 +14,14 @@ import com.shop.R;
 
 import io.paperdb.Paper;
 
-public class AdminCategoryActivity extends AppCompatActivity {
+public class AdminHomeActivity extends AppCompatActivity {
 
     private ImageView glasses, lipsticks, decorations, foundation, hats;
     private Button logoutBtn, checkOrdersBtn, maintaintProductsBtn;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_admin_category);
+        setContentView(R.layout.activity_admin_home);
 
         glasses = findViewById(R.id.glasses);
         lipsticks = findViewById(R.id.lipstick);
@@ -36,7 +36,7 @@ public class AdminCategoryActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Paper.book().destroy();
-                Intent intent = new Intent(AdminCategoryActivity.this, MainActivity.class);
+                Intent intent = new Intent(AdminHomeActivity.this, MainActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent. FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
                 finish();
@@ -46,7 +46,7 @@ public class AdminCategoryActivity extends AppCompatActivity {
         checkOrdersBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(AdminCategoryActivity.this, AdminOrdersActivity.class);
+                Intent intent = new Intent(AdminHomeActivity.this, AdminOrdersActivity.class);
                 startActivity(intent);
             }
         });
@@ -54,7 +54,7 @@ public class AdminCategoryActivity extends AppCompatActivity {
         maintaintProductsBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(AdminCategoryActivity.this, HomeActivity.class);
+                Intent intent = new Intent(AdminHomeActivity.this, HomeActivity.class);
                 intent.putExtra("Admin", "Admin");
                 startActivity(intent);
             }
@@ -63,7 +63,7 @@ public class AdminCategoryActivity extends AppCompatActivity {
         glasses.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(AdminCategoryActivity.this, AdminAddNewProductActivity.class);
+                Intent intent = new Intent(AdminHomeActivity.this, AdminAddNewProductActivity.class);
                 intent.putExtra("category", "glasses");
                 startActivity(intent);
             }
@@ -72,7 +72,7 @@ public class AdminCategoryActivity extends AppCompatActivity {
         decorations.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(AdminCategoryActivity.this, AdminAddNewProductActivity.class);
+                Intent intent = new Intent(AdminHomeActivity.this, AdminAddNewProductActivity.class);
                 intent.putExtra("category", "decorations");
                 startActivity(intent);
             }
@@ -81,7 +81,7 @@ public class AdminCategoryActivity extends AppCompatActivity {
         lipsticks.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(AdminCategoryActivity.this, AdminAddNewProductActivity.class);
+                Intent intent = new Intent(AdminHomeActivity.this, AdminAddNewProductActivity.class);
                 intent.putExtra("category", "lipsticks");
                 startActivity(intent);
             }
@@ -90,7 +90,7 @@ public class AdminCategoryActivity extends AppCompatActivity {
         foundation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(AdminCategoryActivity.this, AdminAddNewProductActivity.class);
+                Intent intent = new Intent(AdminHomeActivity.this, AdminAddNewProductActivity.class);
                 intent.putExtra("category", "foundation");
                 startActivity(intent);
             }

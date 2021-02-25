@@ -7,10 +7,12 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 public class CategoriesActivity extends AppCompatActivity {
 
     RelativeLayout layoutGlasses, layoutFoundation, layoutLipsticks, layoutDecorations;
+    private TextView backBtn;
     Button allProducts;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,6 +24,7 @@ public class CategoriesActivity extends AppCompatActivity {
         layoutLipsticks = findViewById(R.id.layout_category_lipstick);
         layoutDecorations = findViewById(R.id.layout_category_decoration);
         allProducts = findViewById(R.id.all_categories_products_btn);
+        backBtn = findViewById(R.id.back_to_home_from_categories_txt);
 
         layoutGlasses.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -66,5 +69,18 @@ public class CategoriesActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        backBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
     }
 }

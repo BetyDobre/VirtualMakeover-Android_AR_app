@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.Continuation;
@@ -37,6 +38,7 @@ public class AdminAddNewProductActivity extends AppCompatActivity {
     private Button AddNewProductButton;
     private ImageView InputProductImage;
     private EditText InputProductName, InputProductDescription, InputProductPrice;
+    private TextView backBtn;
 
     private String Description, Price, Pname, saveCurrentDate, saveCurrentTime;
     private static final int GalleryPick = 1;
@@ -44,7 +46,6 @@ public class AdminAddNewProductActivity extends AppCompatActivity {
     private String productRandomKey, downloadImageURL;
     private StorageReference ProductImagesRef;
     private DatabaseReference ProductsRef;
-
     private ProgressDialog loadingBar;
 
     @Override
@@ -61,6 +62,7 @@ public class AdminAddNewProductActivity extends AppCompatActivity {
         InputProductName = findViewById(R.id.product_name);
         InputProductDescription = findViewById(R.id.product_description);
         InputProductPrice = findViewById(R.id.product_price);
+        backBtn = findViewById(R.id.back_to_home_from_addnew_txt);
 
         loadingBar = new ProgressDialog(this);
 
@@ -78,6 +80,23 @@ public class AdminAddNewProductActivity extends AppCompatActivity {
             }
         });
 
+        backBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(AdminAddNewProductActivity.this, AdminHomeActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
+            }
+        });
+
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent intent = new Intent(AdminAddNewProductActivity.this, AdminHomeActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
     }
 
     private void OpenGallery() {
@@ -196,7 +215,7 @@ public class AdminAddNewProductActivity extends AppCompatActivity {
                             loadingBar.dismiss();
                             Toast.makeText(AdminAddNewProductActivity.this, "Product added successfully!", Toast.LENGTH_SHORT).show();
 
-                            Intent intent = new Intent(AdminAddNewProductActivity.this, AdminCategoryActivity.class);
+                            Intent intent = new Intent(AdminAddNewProductActivity.this, AdminHomeActivity.class);
                             startActivity(intent);
                         }
                         else {

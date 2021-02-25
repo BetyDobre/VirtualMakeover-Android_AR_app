@@ -37,7 +37,7 @@
             android:name=".HomeActivity"
             android:label="@string/title_activity_home"
             android:theme="@style/Theme.ARShop.NoActionBar" />
-        <activity android:name=".adminActivities.AdminCategoryActivity" />
+        <activity android:name=".adminActivities.AdminHomeActivity" />
         <activity android:name=".adminActivities.AdminAddNewProductActivity" />
         <activity android:name=".RegisterActivity" />
         <activity android:name=".LoginActivity" />

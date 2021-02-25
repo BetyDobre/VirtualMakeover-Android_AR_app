@@ -20,6 +20,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.shop.HomeActivity;
 import com.shop.R;
 import com.shop.adminActivities.AdminOrderProductsActivity;
 import com.shop.models.AdminOrders;
@@ -29,7 +30,7 @@ import com.shop.prevalent.Prevalent;
 public class UserOrdersActivity extends AppCompatActivity {
 
     private RecyclerView ordersList, orderhistoryList;
-    private TextView currentOrder, ordersHistory;
+    private TextView currentOrder, ordersHistory, backBtn;
     private DatabaseReference ordersRef, historyRef;
     private String uid = "";
 
@@ -53,6 +54,25 @@ public class UserOrdersActivity extends AppCompatActivity {
         currentOrder = findViewById(R.id.current_order);
         ordersHistory = findViewById(R.id.order_history);
         uid = EncodeString(Prevalent.currentOnlineUser.getEmail());
+
+        backBtn = findViewById(R.id.back_to_home_txt);
+        backBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(UserOrdersActivity.this, HomeActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
+
+            }
+        });
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent intent = new Intent(UserOrdersActivity.this, HomeActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
     }
 
     @Override
@@ -89,7 +109,7 @@ public class UserOrdersActivity extends AppCompatActivity {
                         holder.userDateTime.setText("Ordered at: " + model.getDate() + " " + model.getTime());
                         holder.userAddress.setText("Address: " + model.getAddress() + ", " + model.getCity());
                         holder.userEmail.setText("Email: " + model.getEmail());
-                        holder.userState.setText("State: " + model.getState());
+                        holder.userState.setText("State: " + model.getState().toUpperCase());
                         holder.userPayment.setText("Payment method: " + model.getPayment());
 
                         holder.showProductsBtn.setOnClickListener(new View.OnClickListener() {
@@ -100,6 +120,7 @@ public class UserOrdersActivity extends AppCompatActivity {
                                 Intent intent = new Intent(UserOrdersActivity.this, AdminOrderProductsActivity.class);
                                 intent.putExtra("uorderid", uorderid);
                                 intent.putExtra("uid", uid);
+                                intent.putExtra("type","user");
                                 startActivity(intent);
                             }
                         });
@@ -147,7 +168,7 @@ public class UserOrdersActivity extends AppCompatActivity {
                         holder.userDateTime.setText("Ordered at: " + model.getDate() + " " + model.getTime());
                         holder.userAddress.setText("Address: " + model.getAddress() + ", " + model.getCity());
                         holder.userEmail.setText("Email: " + model.getEmail());
-                        holder.userState.setText("State: " + model.getState());
+                        holder.userState.setText("State: " + model.getState().toUpperCase());
                         holder.userPayment.setText("Payment method: " + model.getPayment());
 
                         holder.showProductsBtn.setOnClickListener(new View.OnClickListener() {
@@ -158,6 +179,7 @@ public class UserOrdersActivity extends AppCompatActivity {
                                 intent.putExtra("uorderid", uorderid);
                                 intent.putExtra("uid", uid);
                                 intent.putExtra("products", model.getProducts());
+                                intent.putExtra("type","user");
                                 startActivity(intent);
                             }
                         });

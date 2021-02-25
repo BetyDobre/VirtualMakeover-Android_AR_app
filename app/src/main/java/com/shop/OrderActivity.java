@@ -32,9 +32,9 @@ import java.util.HashMap;
  public class OrderActivity extends AppCompatActivity {
 
     private EditText nameEdiText, phoneEditText, addressEditText, cityEditText;
-    private RelativeLayout relativeLayout;
     private Button placeOrderBtn;
     private String totalPrice = "", email;
+    private TextView backBtn;
 
     private RadioButton radioButton;
     private RadioGroup radioGroup;
@@ -48,7 +48,7 @@ import java.util.HashMap;
         nameEdiText = findViewById(R.id.shippment_name);
         phoneEditText = findViewById(R.id.shippment_phone);
         addressEditText = findViewById(R.id.shippment_address);
-        relativeLayout = findViewById(R.id.rll10);
+        backBtn = findViewById(R.id.back_to_cart_txt);
 
         radioGroup = findViewById(R.id.payment_method_radiogroup);
 
@@ -74,14 +74,23 @@ import java.util.HashMap;
             }
         });
 
-        relativeLayout.setOnClickListener(new View.OnClickListener() {
+        backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(OrderActivity.this, CartActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
             }
         });
     }
+
+     @Override
+     public void onBackPressed() {
+         super.onBackPressed();
+         Intent intent = new Intent(OrderActivity.this, CartActivity.class);
+         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+         startActivity(intent);
+     }
 
      public String EncodeString(String string) {
          return string.replace(".", ",");

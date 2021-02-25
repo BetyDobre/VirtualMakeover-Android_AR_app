@@ -36,10 +36,9 @@ public class ProductDetailsActivity extends AppCompatActivity {
     private Button addToCartBtn;
     private ImageView productImage;
     private ElegantNumberButton numberBtn;
-    private TextView productPrice, productDescription, productName;
+    private TextView productPrice, productDescription, productName, backBtn;
     private String productID = "", state = "normal";
     private String image;
-    RelativeLayout relativeLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,7 +51,7 @@ public class ProductDetailsActivity extends AppCompatActivity {
         productPrice = findViewById(R.id.product_price_details);
         productDescription = findViewById(R.id.product_description_details);
         productName = findViewById(R.id.product_name_details);
-        relativeLayout = findViewById(R.id.rll9);
+        backBtn = findViewById(R.id.back_home_txt);
 
         productID = getIntent().getStringExtra("pid");
         getProductDetails(productID);
@@ -69,13 +68,22 @@ public class ProductDetailsActivity extends AppCompatActivity {
             }
         });
 
-        relativeLayout.setOnClickListener(new View.OnClickListener() {
+        backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(ProductDetailsActivity.this, HomeActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
             }
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent intent = new Intent(ProductDetailsActivity.this, HomeActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
     }
 
     public String EncodeString(String string) {

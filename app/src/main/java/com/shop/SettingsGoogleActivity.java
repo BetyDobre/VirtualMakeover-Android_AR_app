@@ -60,4 +60,9 @@ public class SettingsGoogleActivity extends AppCompatActivity {
         });
 
     }
+
+    @Override
+    public void onBackPressed() {
+        finish();
+    }
 }
