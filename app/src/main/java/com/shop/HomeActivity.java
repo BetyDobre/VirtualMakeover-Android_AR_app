@@ -55,7 +55,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
-        if(bundle != null){
+        if (bundle != null) {
             type = bundle.get("Admin").toString();
         }
 
@@ -78,7 +78,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
         FloatingActionButton fab = findViewById(R.id.fab);
         FloatingActionButton fab_back = findViewById(R.id.fab_back);
-        if(type.equals("Admin")){
+        if (type.equals("Admin")) {
             fab.setVisibility(View.GONE);
             fab_back.setVisibility(View.VISIBLE);
         }
@@ -106,7 +106,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         toggle.syncState();
 
         NavigationView navigationView = findViewById(R.id.nav_view);
-        if(type.equals("Admin")){
+        if (type.equals("Admin")) {
             navigationView.setVisibility(View.GONE);
         }
         navigationView.setNavigationItemSelectedListener(this);
@@ -116,12 +116,11 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         CircleImageView profileImageView = headerView.findViewById(R.id.user_profile_image);
 
 
-        if(!type.equals("Admin")) {
+        if (!type.equals("Admin")) {
             if (Prevalent.currentOnlineUser != null) {
                 userNameTextView.setText(Prevalent.currentOnlineUser.getName());
                 Picasso.get().load(Prevalent.currentOnlineUser.getImage()).placeholder(R.drawable.profile).into(profileImageView);
-            }
-            else {
+            } else {
                 GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(getApplicationContext());
                 String name = account.getDisplayName();
                 Uri picture = account.getPhotoUrl();
@@ -135,7 +134,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
     }
-
 
     @Override
     protected void onStart()
@@ -194,6 +192,12 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             drawer.closeDrawer(GravityCompat.START);
         } else {
             super.onBackPressed();
+        }
+
+        if(type.equals("Admin")){
+            Intent intent = new Intent(HomeActivity.this, AdminHomeActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
         }
     }
 
