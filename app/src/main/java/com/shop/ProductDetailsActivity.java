@@ -2,17 +2,26 @@ package com.shop;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.cepheuen.elegantnumberbutton.view.ElegantNumberButton;
+import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -22,9 +31,12 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.shop.adminActivities.AdminEditProductsActivity;
+import com.shop.models.Comments;
 import com.shop.models.Products;
 import com.shop.models.Users;
 import com.shop.prevalent.Prevalent;
+import com.shop.viewholders.CommentsViewHolder;
+import com.shop.viewholders.ProductViewHolder;
 import com.squareup.picasso.Picasso;
 
 import java.text.SimpleDateFormat;
@@ -33,12 +45,16 @@ import java.util.HashMap;
 
 public class ProductDetailsActivity extends AppCompatActivity {
 
-    private Button addToCartBtn;
-    private ImageView productImage;
+    private Button addToCartBtn, addCommentBtn;
+    private ImageView productImage, userImage;
     private ElegantNumberButton numberBtn;
     private TextView productPrice, productDescription, productName, backBtn;
+    private EditText commentContentEditTxt;
     private String productID = "", state = "normal";
     private String image;
+
+    RecyclerView.LayoutManager layoutManager;
+    private RecyclerView recyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,9 +68,25 @@ public class ProductDetailsActivity extends AppCompatActivity {
         productDescription = findViewById(R.id.product_description_details);
         productName = findViewById(R.id.product_name_details);
         backBtn = findViewById(R.id.back_home_txt);
+        commentContentEditTxt = findViewById(R.id.post_detail_comment);
+        addCommentBtn = findViewById(R.id.post_detail_add_comment_btn);
+        userImage = findViewById(R.id.post_detail_currentuser_img);
+        Picasso.get().load(Prevalent.currentOnlineUser.getImage()).into(userImage);
+
+        recyclerView = findViewById(R.id.comment_list);
+        recyclerView.setHasFixedSize(false);
+        layoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(layoutManager);
 
         productID = getIntent().getStringExtra("pid");
         getProductDetails(productID);
+
+        addCommentBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AddComment();
+            }
+        });
 
         addToCartBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -76,6 +108,8 @@ public class ProductDetailsActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        getComments(productID);
     }
 
     @Override
@@ -86,20 +120,28 @@ public class ProductDetailsActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        CheckOrderState();
+        getComments(productID);
+    }
+
     public String EncodeString(String string) {
         return string.replace(".", ",");
     }
 
     private void addingToCart() {
 
-        Calendar calForDate = Calendar.getInstance();
+        Calendar calendar = Calendar.getInstance();
         String saveCurrentTime, saveCurrentDate;
 
-        SimpleDateFormat currentDate = new SimpleDateFormat("dd-MMM-yyyy");
-        saveCurrentDate = currentDate.format(calForDate.getTime());
+        SimpleDateFormat currentDate = new SimpleDateFormat("dd-mmm-yyyy");
+        saveCurrentDate = currentDate.format(calendar.getTime());
 
         SimpleDateFormat currentTime= new SimpleDateFormat("HH:mm:ss a");
-        saveCurrentTime = currentDate.format(calForDate.getTime());
+        saveCurrentTime = currentTime.format(calendar.getTime());
 
         final DatabaseReference cartListRef = FirebaseDatabase.getInstance().getReference().child("Cart List");
 
@@ -167,11 +209,70 @@ public class ProductDetailsActivity extends AppCompatActivity {
         });
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
+    private void getComments(String productID){
+        DatabaseReference commentsRef = FirebaseDatabase.getInstance().getReference().child("Comments").child(productID);
+        FirebaseRecyclerOptions<Comments> options =
+                new FirebaseRecyclerOptions.Builder<Comments>()
+                        .setQuery(commentsRef, Comments.class)
+                        .build();
 
-        CheckOrderState();
+        FirebaseRecyclerAdapter<Comments, CommentsViewHolder> adapter =
+                new FirebaseRecyclerAdapter<Comments, CommentsViewHolder>(options) {
+                    @Override
+                    protected void onBindViewHolder(@NonNull CommentsViewHolder holder, int position, @NonNull Comments model) {
+                        Picasso.get().load(model.getUserImg()).into(holder.userImage);
+                        holder.commentDate.setText(model.getTime() + " " + model.getDate());
+                        holder.commentContent.setText(model.getContent());
+                        holder.userName.setText(model.getUserName());
+
+                        holder.itemView.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                if(Prevalent.currentOnlineUser.getEmail().equals(model.getUserEmail())) {
+                                    CharSequence options[] = new CharSequence[]{
+                                            "Delete comment"
+                                    };
+                                    AlertDialog.Builder builder = new AlertDialog.Builder(ProductDetailsActivity.this);
+                                    builder.setTitle("Comment options:");
+
+                                    builder.setItems(options, new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialogInterface, int i) {
+                                            if (i == 0) {
+                                                commentsRef.child(model.getDate() + model.getTime())
+                                                        .removeValue()
+                                                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                            @Override
+                                                            public void onComplete(@NonNull Task<Void> task) {
+                                                                if (task.isSuccessful()) {
+                                                                    Toast.makeText(ProductDetailsActivity.this, "Comment deleted!", Toast.LENGTH_SHORT).show();
+                                                                    Intent intent = new Intent(ProductDetailsActivity.this, ProductDetailsActivity.class);
+                                                                    intent.putExtra("pid", productID);
+                                                                    startActivity(intent);
+                                                                }
+                                                            }
+                                                        });
+
+                                            }
+                                        }
+                                    });
+                                    builder.show();
+                                }
+                            }
+                        });
+                    }
+
+                    @NonNull
+                    @Override
+                    public CommentsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+                        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.comment_layout, parent, false);
+                        CommentsViewHolder holder = new CommentsViewHolder(view);
+                        return holder;
+                    }
+                };
+
+        recyclerView.setAdapter(adapter);
+        adapter.startListening();
     }
 
     private void CheckOrderState(){
@@ -195,6 +296,46 @@ public class ProductDetailsActivity extends AppCompatActivity {
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
 
+            }
+        });
+    }
+
+    private void AddComment() {
+        DatabaseReference commentRef = FirebaseDatabase.getInstance().getReference().child("Comments").child(productID);
+
+        addCommentBtn.setVisibility(View.GONE);
+        String commentContent = commentContentEditTxt.getText().toString();
+        String userName = Prevalent.currentOnlineUser.getName();
+        String userImg = Prevalent.currentOnlineUser.getImage();
+        String userEmail = Prevalent.currentOnlineUser.getEmail();
+
+        Calendar calendar = Calendar.getInstance();
+
+        SimpleDateFormat currentDate = new SimpleDateFormat("dd-mmm-yyyy");
+        String date = currentDate.format(calendar.getTime());
+
+        SimpleDateFormat currentTime= new SimpleDateFormat("HH:mm:ss a");
+        String time = currentTime.format(calendar.getTime());
+
+        HashMap<String, Object> commentMap = new HashMap<>();
+        commentMap.put("content", commentContent);
+        commentMap.put("userName", userName);
+        commentMap.put("userImg", userImg);
+        commentMap.put("userEmail", userEmail);
+        commentMap.put("date", date);
+        commentMap.put("time", time);
+
+        commentRef.child(date+time).updateChildren(commentMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()){
+                    addCommentBtn.setVisibility(View.VISIBLE);
+                    commentContentEditTxt.setText("");
+                    Toast.makeText(ProductDetailsActivity.this, "Comment added!", Toast.LENGTH_SHORT).show();
+                }
+                else{
+                    Toast.makeText(ProductDetailsActivity.this, "Fail to add comment!", Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }

@@ -19,7 +19,7 @@
             android:textColor="@color/white"
             android:textSize="14sp"
             android:textStyle="bold"
-            android:layout_toRightOf="@id/user_image"/>
+            android:layout_toRightOf="@id/user_image" />
 
         <ImageView
             android:id="@+id/user_image"
@@ -30,7 +30,8 @@
             android:textColor="@color/white"
             android:textSize="14sp"
             android:textStyle="bold"
-            android:layout_alignParentStart="true"/>
+            android:layout_alignParentStart="true"
+            android:src="@drawable/no_avatar"/>
 
         <TextView
             android:id="@+id/user_address"
