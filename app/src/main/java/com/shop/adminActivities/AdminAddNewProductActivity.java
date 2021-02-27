@@ -40,7 +40,8 @@ public class AdminAddNewProductActivity extends AppCompatActivity {
     private EditText InputProductName, InputProductDescription, InputProductPrice;
     private TextView backBtn;
 
-    private String Description, Price, Pname, saveCurrentDate, saveCurrentTime;
+    private String Description, Pname, saveCurrentDate, saveCurrentTime;
+    private int Price;
     private static final int GalleryPick = 1;
     private Uri ImageUri;
     private String productRandomKey, downloadImageURL;
@@ -62,6 +63,7 @@ public class AdminAddNewProductActivity extends AppCompatActivity {
         InputProductName = findViewById(R.id.product_name);
         InputProductDescription = findViewById(R.id.product_description);
         InputProductPrice = findViewById(R.id.product_price);
+        InputProductPrice.setText("0");
         backBtn = findViewById(R.id.back_to_home_from_addnew_txt);
 
         loadingBar = new ProgressDialog(this);
@@ -118,7 +120,7 @@ public class AdminAddNewProductActivity extends AppCompatActivity {
 
     private void ValidateProductData() {
         Description = InputProductDescription.getText().toString();
-        Price = InputProductPrice.getText().toString();
+        Price = Integer.parseInt(InputProductPrice.getText().toString());
         Pname = InputProductName.getText().toString();
 
         if (ImageUri == null){
@@ -130,7 +132,7 @@ public class AdminAddNewProductActivity extends AppCompatActivity {
         else if (TextUtils.isEmpty(Description)){
             Toast.makeText(AdminAddNewProductActivity.this, "Please write a product description!", Toast.LENGTH_SHORT).show();
         }
-        else if (TextUtils.isEmpty(Price)){
+        else if (Price == 0){
             Toast.makeText(AdminAddNewProductActivity.this, "Please give the product price!", Toast.LENGTH_SHORT).show();
         }
         else {

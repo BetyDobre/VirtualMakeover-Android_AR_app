@@ -74,7 +74,10 @@ public class AdminUsersActivity extends AppCompatActivity {
                         holder.userName.setText("Name: " + model.getName());
                         holder.userAddress.setText("Address: " + model.getAddress());
                         holder.userEmail.setText("Email: " + model.getEmail());
-                        Picasso.get().load(model.getImage()).into(holder.userImage);
+                        if (! (model.getImage() == null)) {
+                            Picasso.get().load(model.getImage()).into(holder.userImage);
+                        }
+
 
                         holder.showOrdersHistory.setOnClickListener(new View.OnClickListener() {
                             @Override

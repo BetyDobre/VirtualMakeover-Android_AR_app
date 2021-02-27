@@ -170,7 +170,7 @@ public class AdminEditProductsActivity extends AppCompatActivity {
                                     HashMap<String, Object> productMap = new HashMap<>();
                                     productMap.put("pid", productID);
                                     productMap.put("description", newDescription);
-                                    productMap.put("price", newPrice);
+                                    productMap.put("price", Integer.parseInt(newPrice));
                                     productMap.put("pname", newName);
                                     productMap.put("image", downloadImageURL);
 
@@ -196,7 +196,7 @@ public class AdminEditProductsActivity extends AppCompatActivity {
                 HashMap<String, Object> productMap = new HashMap<>();
                 productMap.put("pid", productID);
                 productMap.put("description", newDescription);
-                productMap.put("price", newPrice);
+                productMap.put("price", Integer.parseInt(newPrice));
                 productMap.put("pname", newName);
 
                 productsRef.updateChildren(productMap).addOnCompleteListener(new OnCompleteListener<Void>() {

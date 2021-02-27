@@ -1,20 +1,21 @@
 package com.shop.models;
 
 public class Products {
-    private String pname, description, price, image, category, pid, date, time;
+    private String pname, description, image, category, pid, date, time;
+    private int price;
 
     public Products() {
     }
 
-    public Products(String pname, String description, String price, String image, String category, String pid, String date, String time) {
+    public Products(String pname, String description, String image, String category, String pid, String date, String time, int price) {
         this.pname = pname;
         this.description = description;
-        this.price = price;
         this.image = image;
         this.category = category;
         this.pid = pid;
         this.date = date;
         this.time = time;
+        this.price = price;
     }
 
     public String getPname() {
@@ -33,11 +34,11 @@ public class Products {
         this.description = description;
     }
 
-    public String getPrice() {
+    public int getPrice() {
         return price;
     }
 
-    public void setPrice(String price) {
+    public void setPrice(int price) {
         this.price = price;
     }
 

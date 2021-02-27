@@ -38,6 +38,9 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.Collections;
+import java.util.Comparator;
+
 import de.hdodenhof.circleimageview.CircleImageView;
 import io.paperdb.Paper;
 
@@ -145,13 +148,14 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 .setQuery(ProductsRef, Products.class)
                 .build();
 
+
         FirebaseRecyclerAdapter<Products, ProductViewHolder> adapter =
                 new FirebaseRecyclerAdapter<Products, ProductViewHolder>(options) {
                     @Override
                     protected void onBindViewHolder(@NonNull ProductViewHolder holder, int position, @NonNull Products model) {
                         holder.txtProductName.setText(model.getPname());
                         holder.txtProductDescription.setText(model.getDescription());
-                        holder.txtProductPrice.setText("Price: " + model.getPrice()+"lei");
+                        holder.txtProductPrice.setText("Price: " + model.getPrice() + "lei");
                         Picasso.get().load(model.getImage()).into(holder.imageView);
 
 

@@ -9,6 +9,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,6 +31,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.shop.adminActivities.AdminAddNewProductActivity;
 import com.shop.adminActivities.AdminEditProductsActivity;
 import com.shop.models.Comments;
 import com.shop.models.Products;
@@ -53,7 +55,7 @@ public class ProductDetailsActivity extends AppCompatActivity {
     private String productID = "", state = "normal";
     private String image;
 
-    RecyclerView.LayoutManager layoutManager;
+    LinearLayoutManager layoutManager;
     private RecyclerView recyclerView;
 
     @Override
@@ -76,6 +78,7 @@ public class ProductDetailsActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.comment_list);
         recyclerView.setHasFixedSize(false);
         layoutManager = new LinearLayoutManager(this);
+        layoutManager.setReverseLayout(true);
         recyclerView.setLayoutManager(layoutManager);
 
         productID = getIntent().getStringExtra("pid");
@@ -309,35 +312,41 @@ public class ProductDetailsActivity extends AppCompatActivity {
         String userImg = Prevalent.currentOnlineUser.getImage();
         String userEmail = Prevalent.currentOnlineUser.getEmail();
 
-        Calendar calendar = Calendar.getInstance();
+        if(!TextUtils.isEmpty(commentContent)) {
 
-        SimpleDateFormat currentDate = new SimpleDateFormat("dd-mmm-yyyy");
-        String date = currentDate.format(calendar.getTime());
+            Calendar calendar = Calendar.getInstance();
 
-        SimpleDateFormat currentTime= new SimpleDateFormat("HH:mm:ss a");
-        String time = currentTime.format(calendar.getTime());
+            SimpleDateFormat currentDate = new SimpleDateFormat("dd-mmm-yyyy");
+            String date = currentDate.format(calendar.getTime());
 
-        HashMap<String, Object> commentMap = new HashMap<>();
-        commentMap.put("content", commentContent);
-        commentMap.put("userName", userName);
-        commentMap.put("userImg", userImg);
-        commentMap.put("userEmail", userEmail);
-        commentMap.put("date", date);
-        commentMap.put("time", time);
+            SimpleDateFormat currentTime = new SimpleDateFormat("HH:mm:ss a");
+            String time = currentTime.format(calendar.getTime());
 
-        commentRef.child(date+time).updateChildren(commentMap).addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                if (task.isSuccessful()){
-                    addCommentBtn.setVisibility(View.VISIBLE);
-                    commentContentEditTxt.setText("");
-                    Toast.makeText(ProductDetailsActivity.this, "Comment added!", Toast.LENGTH_SHORT).show();
+            HashMap<String, Object> commentMap = new HashMap<>();
+            commentMap.put("content", commentContent);
+            commentMap.put("userName", userName);
+            commentMap.put("userImg", userImg);
+            commentMap.put("userEmail", userEmail);
+            commentMap.put("date", date);
+            commentMap.put("time", time);
+
+            commentRef.child(date + time).updateChildren(commentMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+                    if (task.isSuccessful()) {
+                        addCommentBtn.setVisibility(View.VISIBLE);
+                        commentContentEditTxt.setText("");
+                        Toast.makeText(ProductDetailsActivity.this, "Comment added!", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(ProductDetailsActivity.this, "Fail to add comment!", Toast.LENGTH_SHORT).show();
+                    }
                 }
-                else{
-                    Toast.makeText(ProductDetailsActivity.this, "Fail to add comment!", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
+            });
+        }
+        else{
+            Toast.makeText(ProductDetailsActivity.this, "Comment can't be empty", Toast.LENGTH_SHORT).show();
+            addCommentBtn.setVisibility(View.VISIBLE);
+        }
     }
 
 }
