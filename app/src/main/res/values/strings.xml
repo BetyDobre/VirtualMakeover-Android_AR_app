@@ -11,4 +11,12 @@
     <string name="menu_home">Home</string>
     <string name="menu_gallery">Gallery</string>
     <string name="menu_slideshow">Slideshow</string>
+
+    <string-array name="filter_options">
+        <item>None</item>
+        <item>Ascending by price</item>
+        <item>Descending by price</item>
+        <item>Alphabetical ascending</item>
+        <item>Alphabetical descending</item>
+    </string-array>
 </resources>

@@ -8,7 +8,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.Menu;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
@@ -47,9 +50,10 @@ import io.paperdb.Paper;
 public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private DatabaseReference ProductsRef;
     private RecyclerView recyclerView;
-    RecyclerView.LayoutManager layoutManager;
+    LinearLayoutManager layoutManager;
     private Button homeSearch;
     private String type = "";
+    private Spinner filtersSpinner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -136,6 +140,13 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
+
+        filtersSpinner = findViewById(R.id.filter_options);
+        ArrayAdapter<String> filtersAdapter = new ArrayAdapter<String>(HomeActivity.this,
+                android.R.layout.simple_list_item_1, getResources().getStringArray(R.array.filter_options));
+        filtersAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        filtersSpinner.setAdapter(filtersAdapter);
+
     }
 
     @Override
@@ -143,11 +154,63 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     {
         super.onStart();
 
-        FirebaseRecyclerOptions<Products> options =
-                new FirebaseRecyclerOptions.Builder<Products>()
-                .setQuery(ProductsRef, Products.class)
-                .build();
+        filtersSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                layoutManager.setReverseLayout(false);
+                if(i == 0){
+                    FirebaseRecyclerOptions<Products> options =
+                            new FirebaseRecyclerOptions.Builder<Products>()
+                                    .setQuery(ProductsRef, Products.class)
+                                    .build();
+                    recyclerBuild(options);
 
+                }
+                else if (i == 1){
+                    FirebaseRecyclerOptions<Products> options =
+                            new FirebaseRecyclerOptions.Builder<Products>()
+                                    .setQuery(ProductsRef.orderByChild("price"), Products.class)
+                                    .build();
+                    recyclerBuild(options);
+                }
+                else if(i == 2){
+                    FirebaseRecyclerOptions<Products> options =
+                            new FirebaseRecyclerOptions.Builder<Products>()
+                                    .setQuery(ProductsRef.orderByChild("price"), Products.class)
+                                    .build();
+                    recyclerBuild(options);
+                    layoutManager.setReverseLayout(true);
+                }
+                else if(i == 3){
+                    FirebaseRecyclerOptions<Products> options =
+                            new FirebaseRecyclerOptions.Builder<Products>()
+                                    .setQuery(ProductsRef.orderByChild("pname"), Products.class)
+                                    .build();
+                    recyclerBuild(options);
+                }
+                else if(i == 4) {
+                    FirebaseRecyclerOptions<Products> options =
+                            new FirebaseRecyclerOptions.Builder<Products>()
+                                    .setQuery(ProductsRef.orderByChild("pname"), Products.class)
+                                    .build();
+                    recyclerBuild(options);
+                    layoutManager.setReverseLayout(true);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+                FirebaseRecyclerOptions<Products> options =
+                        new FirebaseRecyclerOptions.Builder<Products>()
+                                .setQuery(ProductsRef, Products.class)
+                                .build();
+                recyclerBuild(options);
+            }
+        });
+
+    }
+
+    public void recyclerBuild(FirebaseRecyclerOptions<Products> options) {
 
         FirebaseRecyclerAdapter<Products, ProductViewHolder> adapter =
                 new FirebaseRecyclerAdapter<Products, ProductViewHolder>(options) {
@@ -187,6 +250,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 };
         recyclerView.setAdapter(adapter);
         adapter.startListening();
+
     }
 
     @Override
