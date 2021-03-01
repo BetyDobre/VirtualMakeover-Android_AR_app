@@ -103,7 +103,7 @@ public class UserHistoryProductsActivity extends AppCompatActivity {
             protected void onBindViewHolder(@NonNull CartViewHolder holder, int position, @NonNull Cart model) {
                 holder.productQuantityTxt.setText("Quantity: " + model.getQuantity());
                 holder.productNameTxt.setText(model.getPname());
-                holder.productPriceTxt.setText("Price: " + model.getQuantity() + "x" +model.getPrice() + " lei");
+                holder.productPriceTxt.setText("Price: " + model.getQuantity() + "x" + model.getPrice() + " lei");
                 Picasso.get().load(model.getImage()).into(holder.productImage);
             }
 
