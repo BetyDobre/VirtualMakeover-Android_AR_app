@@ -94,12 +94,7 @@ public class ProductDetailsActivity extends AppCompatActivity {
         addToCartBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (state.equals("Order Placed") || state.equals("Order Shipped")){
-                    Toast.makeText(ProductDetailsActivity.this, "You can purchase more products once your current order will be delivered", Toast.LENGTH_LONG).show();
-                }
-                else {
-                    addingToCart();
-                }
+                addingToCart();
             }
         });
 

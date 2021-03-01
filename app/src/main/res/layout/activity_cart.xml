@@ -36,38 +36,12 @@
     </RelativeLayout>
 
     <ImageView
-        android:id="@+id/loading_image"
-        android:layout_width="match_parent"
-        android:layout_height="300dp"
-        android:visibility="invisible"
-        android:src="@drawable/loading"
-        android:layout_centerVertical="true"/>
-    <ImageView
-        android:id="@+id/delivery_image"
-        android:layout_width="match_parent"
-        android:layout_height="300dp"
-        android:visibility="invisible"
-        android:src="@drawable/delivery"
-        android:layout_centerVertical="true"/>
-    <ImageView
         android:id="@+id/empty_cart"
         android:layout_width="match_parent"
         android:layout_height="300dp"
         android:visibility="invisible"
         android:src="@drawable/emptycart"
         android:layout_centerVertical="true"/>
-
-    <TextView
-        android:id="@+id/msg1"
-        android:layout_below="@id/loading_image"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textColor="@color/colorPrimary"
-        android:layout_marginEnd="10dp"
-        android:textAlignment="center"
-        android:textSize="20dp"
-        android:visibility="invisible"
-        android:text="Congratulations, your order has been shipped successfully. You will receive your products soon and then you can place another order."/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/cart_list"

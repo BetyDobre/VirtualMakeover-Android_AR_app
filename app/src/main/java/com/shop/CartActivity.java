@@ -38,9 +38,10 @@ public class CartActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private RecyclerView.LayoutManager layoutManager;
     private Button nextBtn;
-    private TextView totalPriceTxt, txtMsg1, backBtn;
-    private ImageView loadingImg, deliveryImg, emptyCartImg;
+    private TextView totalPriceTxt, backBtn;
+    private ImageView  emptyCartImg;
     private RelativeLayout layout;
+    private String state = "normal";
     private int totalPrice = 0;
 
     @Override
@@ -56,9 +57,6 @@ public class CartActivity extends AppCompatActivity {
         nextBtn = findViewById(R.id.next_btn);
         totalPriceTxt = findViewById(R.id.total_price);
 
-        txtMsg1 = findViewById(R.id.msg1);
-        loadingImg = findViewById(R.id.loading_image);
-        deliveryImg = findViewById(R.id.delivery_image);
         emptyCartImg = findViewById(R.id.empty_cart);
         backBtn = findViewById(R.id.back_to_home_from_cart_txt);
         layout = findViewById(R.id.rll1);
@@ -96,7 +94,6 @@ public class CartActivity extends AppCompatActivity {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
             }
         });
 
@@ -107,10 +104,15 @@ public class CartActivity extends AppCompatActivity {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         if (snapshot.exists()){
-                            Intent intent = new Intent(CartActivity.this, OrderActivity.class);
-                            intent.putExtra("Total price", String.valueOf(totalPrice));
-                            startActivity(intent);
-                            finish();
+                            if(!state.equals("Order Placed") && !(state.equals("Order shipped"))) {
+                                Intent intent = new Intent(CartActivity.this, OrderActivity.class);
+                                intent.putExtra("Total price", String.valueOf(totalPrice));
+                                startActivity(intent);
+                                finish();
+                            }
+                            else {
+                                Toast.makeText(CartActivity.this, "You can't purchase any products until your order will be delivered!", Toast.LENGTH_LONG).show();
+                            }
                         }
                         else {
                             Toast.makeText(CartActivity.this, "You must add something into cart first!", Toast.LENGTH_SHORT).show();
@@ -251,22 +253,12 @@ public class CartActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()){
                     String shippingState = snapshot.child("state").getValue().toString();
-                    String userName = snapshot.child("name").getValue().toString();
 
                     if (shippingState.equals("shipped")){
-                        recyclerView.setVisibility(View.GONE);
-                        emptyCartImg.setVisibility(View.GONE);
-                        deliveryImg.setVisibility(View.VISIBLE);
-                        txtMsg1.setVisibility(View.VISIBLE);
-                        nextBtn.setVisibility(View.GONE);
+                        state = "Order Shipped";
                     }
                     else if (shippingState.equals("not shipped")) {
-                        recyclerView.setVisibility(View.GONE);
-                        emptyCartImg.setVisibility(View.GONE);
-                        loadingImg.setVisibility(View.VISIBLE);
-                        txtMsg1.setText("Congratulations, your order has been placed successfully. It will be verified and shipped soon.");
-                        txtMsg1.setVisibility(View.VISIBLE);
-                        nextBtn.setVisibility(View.GONE);
+                        state = "Order Placed";
                     }
                 }
             }

@@ -154,7 +154,6 @@ public class MainActivity extends AppCompatActivity {
                     loadingBar.setCanceledOnTouchOutside(false);
                     loadingBar.show();
 
-                    FirebaseUser user = mAuth.getCurrentUser();
                     GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(getApplicationContext());
                     String email = account.getEmail();
                     String name = account.getDisplayName();
@@ -171,8 +170,14 @@ public class MainActivity extends AppCompatActivity {
                                 mGoogleSignInClient.signOut();
                                 signInWithGoogle();
                             }
-                            else if (!dataSnapshot.child("Users").child(EncodeString(email)).exists()){
-                                Toast.makeText(MainActivity.this, "Signed In successfully", Toast.LENGTH_SHORT).show();
+                            else if (dataSnapshot.child("Admins").child(EncodeString(email)).exists()){
+                                Toast.makeText(MainActivity.this, "There is already an admin account with this email", Toast.LENGTH_SHORT).show();
+                                loadingBar.dismiss();
+                                mGoogleSignInClient.signOut();
+                                signInWithGoogle();
+                            }
+                            else {
+                                Toast.makeText(MainActivity.this, "Signed In successfully!", Toast.LENGTH_SHORT).show();
                                 loadingBar.dismiss();
 
                                 Users userData = new Users();
@@ -191,12 +196,6 @@ public class MainActivity extends AppCompatActivity {
 
                                 Intent intent = new Intent(MainActivity.this, HomeActivity.class);
                                 startActivity(intent);
-                            }
-                            else if (dataSnapshot.child("Admins").child(EncodeString(email)).exists()){
-                                Toast.makeText(MainActivity.this, "There is already an admin account with this email", Toast.LENGTH_SHORT).show();
-                                loadingBar.dismiss();
-                                mGoogleSignInClient.signOut();
-                                signInWithGoogle();
                             }
                         }
                         @Override

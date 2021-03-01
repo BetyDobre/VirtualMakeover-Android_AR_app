@@ -23,6 +23,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.shop.adminActivities.AdminHomeActivity;
@@ -123,10 +124,10 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         TextView userNameTextView = headerView.findViewById(R.id.user_profile_name);
         CircleImageView profileImageView = headerView.findViewById(R.id.user_profile_image);
 
-
-        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(getApplicationContext());
         if (!type.equals("Admin")) {
-            if (Prevalent.currentOnlineUser.getEmail() != account.getEmail()) {
+            FirebaseUser account = FirebaseAuth.getInstance().getCurrentUser();
+            String email = account.getEmail();
+            if (Prevalent.currentOnlineUser.getEmail() != email) {
                 userNameTextView.setText(Prevalent.currentOnlineUser.getName());
                 Picasso.get().load(Prevalent.currentOnlineUser.getImage()).placeholder(R.drawable.profile).into(profileImageView);
             } else {
@@ -318,8 +319,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             startActivity(intent);
         }
         else if (id == R.id.nav_settings) {
-            GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(getApplicationContext());
-            if (Prevalent.currentOnlineUser.getEmail() != account.getEmail()) {
+            String email = FirebaseAuth.getInstance().getCurrentUser().getEmail();
+            if (!Prevalent.currentOnlineUser.getEmail().equals(email)) {
                 Intent intent = new Intent(HomeActivity.this, SettingsActivity.class);
                 startActivity(intent);
             }
@@ -327,7 +328,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 Intent intent = new Intent(HomeActivity.this, SettingsGoogleActivity.class);
                 startActivity(intent);
             }
-
         }
         else if (id == R.id.nav_logout) {
             GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
