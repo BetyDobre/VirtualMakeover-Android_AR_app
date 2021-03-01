@@ -15,8 +15,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.shop.R;
 import com.shop.models.Users;
 import com.squareup.picasso.Picasso;
@@ -24,9 +29,9 @@ import com.squareup.picasso.Picasso;
 
 public class AdminUsersActivity extends AppCompatActivity {
 
-    private RecyclerView usersList;
-    private DatabaseReference usersRef;
-    private TextView backBtn;
+    private RecyclerView usersList, googleUsersList;
+    private DatabaseReference usersRef, googleUsersRef;
+    private TextView backBtn, googleUsersTxt;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,10 +39,30 @@ public class AdminUsersActivity extends AppCompatActivity {
         setContentView(R.layout.activity_admin_users);
 
         backBtn = findViewById(R.id.back_to_current_orders_txt);
+        googleUsersTxt = findViewById(R.id.google_users_txt);
 
         usersRef = FirebaseDatabase.getInstance().getReference().child("Users");
         usersList = findViewById(R.id.users_list);
         usersList.setLayoutManager(new LinearLayoutManager(this));
+
+        googleUsersRef = FirebaseDatabase.getInstance().getReference().child("Google Users");
+        googleUsersList = findViewById(R.id.google_users_list);
+        googleUsersList.setLayoutManager(new LinearLayoutManager(this));
+
+        googleUsersRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if(!snapshot.exists()){
+                    googleUsersTxt.setVisibility(View.GONE);
+                }
+                else {
+                    googleUsersTxt.setVisibility(View.VISIBLE);
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+            }
+        });
 
         backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -100,6 +125,51 @@ public class AdminUsersActivity extends AppCompatActivity {
                 };
         usersList.setAdapter(adapter);
         adapter.startListening();
+
+
+        FirebaseRecyclerOptions<Users> options2 =
+                new FirebaseRecyclerOptions.Builder<Users>()
+                        .setQuery(googleUsersRef, Users.class)
+                        .build();
+
+        FirebaseRecyclerAdapter<Users, AdminUsersActivity.UserViewHolder> adapter2 =
+                new FirebaseRecyclerAdapter<Users, AdminUsersActivity.UserViewHolder>(options2) {
+                    @Override
+                    protected void onBindViewHolder(@NonNull AdminUsersActivity.UserViewHolder holder, int position, @NonNull Users model) {
+                        holder.userName.setText("Name: " + model.getName());
+                        holder.userEmail.setText("Email: " + model.getEmail());
+                        if(!(model.getAddress() == null)) {
+                            holder.userAddress.setText("Address: " + model.getAddress());
+                        }
+                        else{
+                            holder.userAddress.setText("");
+                        }
+                        if (! (model.getImage() == null)) {
+                            Picasso.get().load(model.getImage()).into(holder.userImage);
+                        }
+
+                        holder.showOrdersHistory.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                String uid = getRef(position).getKey();
+                                Intent intent = new Intent(AdminUsersActivity.this, AdminOrdersHistoryActivity.class);
+                                intent.putExtra("uid", uid);
+                                startActivity(intent);
+                            }
+                        });
+                    }
+
+                    @NonNull
+                    @Override
+                    public AdminUsersActivity.UserViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+                        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.users_layout, parent, false);
+                        return new AdminUsersActivity.UserViewHolder(view);
+                    }
+
+                };
+        googleUsersList.setAdapter(adapter2);
+        adapter2.startListening();
+
     }
 
     public static class UserViewHolder extends RecyclerView.ViewHolder {

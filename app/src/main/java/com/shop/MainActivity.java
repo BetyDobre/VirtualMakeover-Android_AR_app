@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -32,9 +33,13 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.shop.adminActivities.AdminHomeActivity;
 import com.shop.models.Users;
 import com.shop.prevalent.Prevalent;
+
+import java.util.HashMap;
 
 import io.paperdb.Paper;
 
@@ -111,8 +116,6 @@ public class MainActivity extends AppCompatActivity {
         return string.replace(".", ",");
     }
 
-
-
     //implemented SIGN IN option with Google
     private void signInWithGoogle() {
         Intent signInClient = mGoogleSignInClient.getSignInIntent();
@@ -171,6 +174,21 @@ public class MainActivity extends AppCompatActivity {
                             else if (!dataSnapshot.child("Users").child(EncodeString(email)).exists()){
                                 Toast.makeText(MainActivity.this, "Signed In successfully", Toast.LENGTH_SHORT).show();
                                 loadingBar.dismiss();
+
+                                Users userData = new Users();
+                                userData.setEmail(email);
+                                userData.setName(name);
+                                userData.setImage(account.getPhotoUrl().toString());
+                                userData.setAddress(" ");
+                                userData.setPassword("-");
+                                Prevalent.currentOnlineUser = userData;
+
+                                HashMap<String, Object> userdataMap = new HashMap<>();
+                                userdataMap.put("email", email);
+                                userdataMap.put("name", name);
+                                userdataMap.put("image", account.getPhotoUrl().toString());
+                                FirebaseDatabase.getInstance().getReference().child("Google Users").child(EncodeString(userData.getEmail())).updateChildren(userdataMap);
+
                                 Intent intent = new Intent(MainActivity.this, HomeActivity.class);
                                 startActivity(intent);
                             }
@@ -179,12 +197,6 @@ public class MainActivity extends AppCompatActivity {
                                 loadingBar.dismiss();
                                 mGoogleSignInClient.signOut();
                                 signInWithGoogle();
-                            }
-                            else if (!dataSnapshot.child("Admins").child(EncodeString(email)).exists()){
-                                    Toast.makeText(MainActivity.this, "Signed In successfully", Toast.LENGTH_SHORT).show();
-                                    loadingBar.dismiss();
-                                    Intent intent = new Intent(MainActivity.this, AdminHomeActivity.class);
-                                    startActivity(intent);
                             }
                         }
                         @Override
@@ -254,5 +266,4 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-
 }

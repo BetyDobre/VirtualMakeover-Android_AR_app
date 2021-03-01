@@ -22,6 +22,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.shop.adminActivities.AdminHomeActivity;
@@ -123,12 +124,12 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         CircleImageView profileImageView = headerView.findViewById(R.id.user_profile_image);
 
 
+        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(getApplicationContext());
         if (!type.equals("Admin")) {
-            if (Prevalent.currentOnlineUser != null) {
+            if (Prevalent.currentOnlineUser.getEmail() != account.getEmail()) {
                 userNameTextView.setText(Prevalent.currentOnlineUser.getName());
                 Picasso.get().load(Prevalent.currentOnlineUser.getImage()).placeholder(R.drawable.profile).into(profileImageView);
             } else {
-                GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(getApplicationContext());
                 String name = account.getDisplayName();
                 Uri picture = account.getPhotoUrl();
                 userNameTextView.setText(name);
@@ -317,7 +318,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             startActivity(intent);
         }
         else if (id == R.id.nav_settings) {
-            if (Prevalent.currentOnlineUser != null) {
+            GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(getApplicationContext());
+            if (Prevalent.currentOnlineUser.getEmail() != account.getEmail()) {
                 Intent intent = new Intent(HomeActivity.this, SettingsActivity.class);
                 startActivity(intent);
             }

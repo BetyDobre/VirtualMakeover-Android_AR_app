@@ -56,13 +56,30 @@ import java.util.HashMap;
         user.child("address").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                addressEditText.setText(snapshot.getValue().toString());
+                if(snapshot.exists()) {
+                    addressEditText.setText(snapshot.getValue().toString());
+                }
+                else{
+                    DatabaseReference googleUser = FirebaseDatabase.getInstance().getReference().child("Google Users").child(EncodeString(Prevalent.currentOnlineUser.getEmail()));
+                    googleUser.child("address").addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            if(snapshot.exists()) {
+                                addressEditText.setText(snapshot.getValue().toString());
+                            }
+                        }
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+                        }
+                    });
+                }
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
             }
         });
+
+
         cityEditText = findViewById(R.id.shippment_city);
         totalPrice = getIntent().getStringExtra("Total price");
         email = Prevalent.currentOnlineUser.getEmail();
