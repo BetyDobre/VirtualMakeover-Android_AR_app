@@ -11,9 +11,9 @@ import android.widget.TextView;
 
 public class CategoriesActivity extends AppCompatActivity {
 
-    RelativeLayout layoutGlasses, layoutFoundation, layoutLipsticks, layoutDecorations;
+    private RelativeLayout layoutGlasses, layoutFoundation, layoutLipsticks, layoutDecorations;
     private TextView backBtn;
-    Button allProducts;
+    private Button allProducts;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
