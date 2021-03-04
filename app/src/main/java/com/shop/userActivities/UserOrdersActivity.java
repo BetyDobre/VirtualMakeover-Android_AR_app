@@ -30,7 +30,7 @@ import com.shop.prevalent.Prevalent;
 public class UserOrdersActivity extends AppCompatActivity {
 
     private RecyclerView ordersList, orderhistoryList;
-    private TextView currentOrder, ordersHistory, backBtn;
+    private TextView currentOrder, ordersHistory, backBtn, noOrdersTxt;
     private DatabaseReference ordersRef, historyRef;
     private String uid = "";
 
@@ -54,6 +54,39 @@ public class UserOrdersActivity extends AppCompatActivity {
         currentOrder = findViewById(R.id.current_order);
         ordersHistory = findViewById(R.id.order_history);
         uid = EncodeString(Prevalent.currentOnlineUser.getEmail());
+
+        noOrdersTxt = findViewById(R.id.no_user_orders_txt);
+
+        ordersRef.child(EncodeString(Prevalent.currentOnlineUser.getEmail())).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if(!snapshot.exists()){
+                    historyRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            if(!snapshot.exists()){
+                                noOrdersTxt.setVisibility(View.VISIBLE);
+                            }
+                            else{
+                                noOrdersTxt.setVisibility(View.GONE);
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+                        }
+                    });
+                }
+                else{
+                    noOrdersTxt.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
 
         backBtn = findViewById(R.id.back_to_home_txt);
         backBtn.setOnClickListener(new View.OnClickListener() {

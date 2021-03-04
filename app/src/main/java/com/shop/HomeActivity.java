@@ -81,6 +81,12 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(HomeActivity.this, SearchProductsActivity.class);
+                if(type.equals("Admin")){
+                    intent.putExtra("type", "admin");
+                }
+                else {
+                    intent.putExtra("type", "user");
+                }
                 startActivity(intent);
             }
         });

@@ -94,5 +94,18 @@
         android:layout_below="@+id/order_history">
 
     </androidx.recyclerview.widget.RecyclerView>
+
+    <TextView
+        android:id="@+id/no_user_orders_txt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="No orders to show."
+        android:textColor="#2e2e2e"
+        android:textSize="20dp"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:gravity="center"
+        android:visibility="invisible"
+        />
 </RelativeLayout>
 </androidx.core.widget.NestedScrollView>

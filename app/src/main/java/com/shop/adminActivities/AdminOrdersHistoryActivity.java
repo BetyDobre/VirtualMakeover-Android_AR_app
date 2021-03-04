@@ -33,9 +33,9 @@ import java.util.ArrayList;
 public class AdminOrdersHistoryActivity extends AppCompatActivity {
 
     private RecyclerView orderhistoryList;
-    DatabaseReference historyRef;
+    private DatabaseReference historyRef;
     private String uid;
-    private TextView backBtn;
+    private TextView backBtn, noOrdersHistoryTxt;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,12 +47,31 @@ public class AdminOrdersHistoryActivity extends AppCompatActivity {
         orderhistoryList = findViewById(R.id.admin_orders_history_list);
         orderhistoryList.setLayoutManager(new LinearLayoutManager(this));
         backBtn = findViewById(R.id.back_to_users_txt);
+        noOrdersHistoryTxt = findViewById(R.id.no_orders_history_txt);
+
         backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(AdminOrdersHistoryActivity.this, AdminUsersActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
+            }
+        });
+
+        historyRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if(!snapshot.exists()){
+                    noOrdersHistoryTxt.setVisibility(View.VISIBLE);
+                }
+                else{
+                    noOrdersHistoryTxt.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
             }
         });
     }

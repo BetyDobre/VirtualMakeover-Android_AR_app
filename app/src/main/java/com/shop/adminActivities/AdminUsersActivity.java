@@ -31,7 +31,7 @@ public class AdminUsersActivity extends AppCompatActivity {
 
     private RecyclerView usersList, googleUsersList;
     private DatabaseReference usersRef, googleUsersRef;
-    private TextView backBtn, googleUsersTxt;
+    private TextView backBtn, googleUsersTxt, noUsersTxt;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +40,7 @@ public class AdminUsersActivity extends AppCompatActivity {
 
         backBtn = findViewById(R.id.back_to_current_orders_txt);
         googleUsersTxt = findViewById(R.id.google_users_txt);
+        noUsersTxt = findViewById(R.id.no_users_txt);
 
         usersRef = FirebaseDatabase.getInstance().getReference().child("Users");
         usersList = findViewById(R.id.users_list);
@@ -59,6 +60,36 @@ public class AdminUsersActivity extends AppCompatActivity {
                     googleUsersTxt.setVisibility(View.VISIBLE);
                 }
             }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+            }
+        });
+
+        usersRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if(!snapshot.exists()){
+                    googleUsersRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            if(!snapshot.exists()){
+                                noUsersTxt.setVisibility(View.VISIBLE);
+                            }
+                            else{
+                                noUsersTxt.setVisibility(View.GONE);
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+                        }
+                    });
+                }
+                else{
+                    noUsersTxt.setVisibility(View.GONE);
+                }
+            }
+
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
             }

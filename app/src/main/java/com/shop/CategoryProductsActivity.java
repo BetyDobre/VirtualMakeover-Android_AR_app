@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,8 +15,11 @@ import android.widget.TextView;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.shop.adminActivities.AdminEditProductsActivity;
 import com.shop.models.Products;
 import com.shop.userActivities.UserHistoryProductsActivity;
@@ -26,10 +30,10 @@ import com.squareup.picasso.Picasso;
 public class CategoryProductsActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
-    private TextView categoryTxt, backBtn;
-    RecyclerView.LayoutManager layoutManager;
+    private TextView categoryTxt, backBtn, noCategoryProducts;
+    private RecyclerView.LayoutManager layoutManager;
     private DatabaseReference ProductsRef;
-    String category;
+    private String category;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +41,7 @@ public class CategoryProductsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_category_products);
 
         categoryTxt = findViewById(R.id.category_name_txt);
+        noCategoryProducts = findViewById(R.id.no_category_products_txt);
 
         ProductsRef = FirebaseDatabase.getInstance().getReference().child("Products");
         recyclerView = findViewById(R.id.recycler_category_products);
@@ -56,6 +61,29 @@ public class CategoryProductsActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        ProductsRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                boolean exists = false;
+                for (DataSnapshot prod : snapshot.getChildren()){
+                    if(prod.child("category").getValue().equals(category)){
+                        exists = true;
+                    }
+                }
+                if(exists == false){
+                    noCategoryProducts.setVisibility(View.VISIBLE);
+                }
+                else {
+                    noCategoryProducts.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 
     @Override
@@ -70,7 +98,6 @@ public class CategoryProductsActivity extends AppCompatActivity {
     protected void onStart()
     {
         super.onStart();
-
         FirebaseRecyclerOptions<Products> options =
                 new FirebaseRecyclerOptions.Builder<Products>()
                         .setQuery(ProductsRef.orderByChild("category").equalTo(category), Products.class)
@@ -93,7 +120,6 @@ public class CategoryProductsActivity extends AppCompatActivity {
                                     startActivity(intent);
                             }
                         });
-
                     }
 
                     @NonNull
@@ -103,7 +129,9 @@ public class CategoryProductsActivity extends AppCompatActivity {
                         ProductViewHolder holder = new ProductViewHolder(view);
                         return holder;
                     }
+
                 };
+
         recyclerView.setAdapter(adapter);
         adapter.startListening();
     }

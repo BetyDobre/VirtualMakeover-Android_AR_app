@@ -28,6 +28,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.shop.R;
 import com.shop.models.AdminOrders;
 import com.shop.models.PurchasedProducts;
+import com.shop.prevalent.Prevalent;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -38,7 +39,7 @@ public class AdminOrdersActivity extends AppCompatActivity {
     private DatabaseReference ordersRef;
 
     private Button ordersHistory;
-    private TextView backBtn;
+    private TextView backBtn, noNewOrdersTxt;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +52,7 @@ public class AdminOrdersActivity extends AppCompatActivity {
 
         backBtn = findViewById(R.id.back_to_category_txt);
         ordersHistory = findViewById(R.id.admin_orders_history_btn);
+        noNewOrdersTxt = findViewById(R.id.no_orders_txt);
 
         ordersHistory.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -68,6 +70,24 @@ public class AdminOrdersActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        ordersRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (!snapshot.exists()){
+                    noNewOrdersTxt.setVisibility(View.VISIBLE);
+                }
+                else {
+                    noNewOrdersTxt.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
     }
 
     @Override

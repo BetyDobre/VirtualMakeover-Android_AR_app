@@ -63,6 +63,19 @@
         android:layout_above="@id/admin_orders_history_btn">
     </androidx.recyclerview.widget.RecyclerView>
 
+    <TextView
+        android:id="@+id/no_orders_txt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="No new orders to show."
+        android:textColor="#2e2e2e"
+        android:textSize="25dp"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:gravity="center"
+        android:visibility="invisible"/>
+
+
     <Button
         android:id="@+id/admin_orders_history_btn"
         android:layout_width="match_parent"
