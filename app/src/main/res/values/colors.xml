@@ -10,4 +10,5 @@
     <color name="white">#FFFFFFFF</color>
     <color name ="yellow">#fff900</color>
     <color name = "red">#ff0100</color>
+    <color name = "background">#f2d3ff</color>
 </resources>
