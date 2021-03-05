@@ -9,10 +9,8 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -35,7 +33,6 @@ import java.util.HashMap;
     private Button placeOrderBtn;
     private String totalPrice = "", email;
     private TextView backBtn;
-
     private RadioButton radioButton;
     private RadioGroup radioGroup;
 
@@ -49,10 +46,15 @@ import java.util.HashMap;
         phoneEditText = findViewById(R.id.shippment_phone);
         addressEditText = findViewById(R.id.shippment_address);
         backBtn = findViewById(R.id.back_to_cart_txt);
-
         radioGroup = findViewById(R.id.payment_method_radiogroup);
+        cityEditText = findViewById(R.id.shippment_city);
+
+        totalPrice = getIntent().getStringExtra("Total price");
+        email = Prevalent.currentOnlineUser.getEmail();
 
         DatabaseReference user = FirebaseDatabase.getInstance().getReference().child("Users").child(EncodeString(Prevalent.currentOnlineUser.getEmail()));
+
+        // get the user address from the database if it is set
         user.child("address").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -79,11 +81,7 @@ import java.util.HashMap;
             }
         });
 
-
-        cityEditText = findViewById(R.id.shippment_city);
-        totalPrice = getIntent().getStringExtra("Total price");
-        email = Prevalent.currentOnlineUser.getEmail();
-
+        // place order button
         placeOrderBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -91,6 +89,7 @@ import java.util.HashMap;
             }
         });
 
+        // click listener to go to the previous activity
         backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -113,6 +112,7 @@ import java.util.HashMap;
          return string.replace(".", ",");
      }
 
+     // check if the fields are completed correctly
      private void CheckDetails() {
         if (TextUtils.isEmpty(nameEdiText.getText().toString())){
             Toast.makeText(OrderActivity.this, "Please provide your full name!", Toast.LENGTH_SHORT).show();
@@ -134,6 +134,7 @@ import java.util.HashMap;
         }
     }
 
+    // place the order in the database
      private void PlaceOrder() {
          Calendar calForDate = Calendar.getInstance();
          final String saveCurrentTime, saveCurrentDate;

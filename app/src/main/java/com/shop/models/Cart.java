@@ -1,5 +1,6 @@
 package com.shop.models;
 
+// products from the cart class model
 public class Cart {
     private String pid, pname, quantity, discount, image;
     int price;

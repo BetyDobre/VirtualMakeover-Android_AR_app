@@ -28,7 +28,6 @@ import com.google.firebase.database.ValueEventListener;
 import com.shop.R;
 import com.shop.models.AdminOrders;
 import com.shop.models.PurchasedProducts;
-import com.shop.prevalent.Prevalent;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -37,7 +36,6 @@ public class AdminOrdersActivity extends AppCompatActivity {
 
     private RecyclerView ordersList;
     private DatabaseReference ordersRef;
-
     private Button ordersHistory;
     private TextView backBtn, noNewOrdersTxt;
 
@@ -54,6 +52,7 @@ public class AdminOrdersActivity extends AppCompatActivity {
         ordersHistory = findViewById(R.id.admin_orders_history_btn);
         noNewOrdersTxt = findViewById(R.id.no_orders_txt);
 
+        // button to send admin to see the app users activity
         ordersHistory.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -62,6 +61,7 @@ public class AdminOrdersActivity extends AppCompatActivity {
             }
         });
 
+        // click listener to go to the previous activity
         backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -71,6 +71,7 @@ public class AdminOrdersActivity extends AppCompatActivity {
             }
         });
 
+        // display a message in case there aren't new orders yet
         ordersRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -84,7 +85,6 @@ public class AdminOrdersActivity extends AppCompatActivity {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
             }
         });
 
@@ -102,6 +102,7 @@ public class AdminOrdersActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
 
+        // RecyclerView created to store and display new orders
         FirebaseRecyclerOptions<AdminOrders> options =
                 new FirebaseRecyclerOptions.Builder<AdminOrders>()
                 .setQuery(ordersRef, AdminOrders.class)
@@ -122,7 +123,6 @@ public class AdminOrdersActivity extends AppCompatActivity {
                             @Override
                             public void onClick(View view) {
                                 String uid = getRef(position).getKey();
-
                                 Intent intent = new Intent(AdminOrdersActivity.this, AdminOrderProductsActivity.class);
                                 intent.putExtra("uid", uid);
                                 intent.putExtra("type", "admin");
@@ -133,6 +133,7 @@ public class AdminOrdersActivity extends AppCompatActivity {
                         holder.itemView.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
+                                // create options to change the order state
                                 CharSequence options1[] = new CharSequence[]{
                                         "Marked as delivered",
                                         "Back"
@@ -141,6 +142,7 @@ public class AdminOrdersActivity extends AppCompatActivity {
                                         "Marked as shipped",
                                         "Back"
                                 };
+
                                 AlertDialog.Builder builder = new AlertDialog.Builder(AdminOrdersActivity.this);
                                 builder.setTitle("Order options");
                                 String uid = getRef(position).getKey();
@@ -178,7 +180,6 @@ public class AdminOrdersActivity extends AppCompatActivity {
                                                 });
                                                 builder.show();
                                             }
-
                                         }
                                     }
 
@@ -201,6 +202,7 @@ public class AdminOrdersActivity extends AppCompatActivity {
             adapter.startListening();
     }
 
+    // place order in Orders History database when it has been delivered
     private void PlaceInHistory(String uid) {
         DatabaseReference historyRef = FirebaseDatabase.getInstance().getReference().child("Orders History");
         DatabaseReference ordersRef = FirebaseDatabase.getInstance().getReference().child("Orders").child(uid);
@@ -291,7 +293,6 @@ public class AdminOrdersActivity extends AppCompatActivity {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
             }
         });
 

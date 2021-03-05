@@ -17,19 +17,15 @@ import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.shop.R;
-import com.shop.adminActivities.AdminOrderProductsActivity;
-import com.shop.adminActivities.AdminOrdersActivity;
 import com.shop.adminActivities.AdminOrdersHistoryActivity;
 import com.shop.models.Cart;
-import com.shop.models.UserHistoryOrders;
-import com.shop.prevalent.Prevalent;
 import com.shop.viewholders.CartViewHolder;
 import com.squareup.picasso.Picasso;
 
 public class UserHistoryProductsActivity extends AppCompatActivity {
 
     private RecyclerView productsList;
-    RecyclerView.LayoutManager layoutManager;
+    private RecyclerView.LayoutManager layoutManager;
     private DatabaseReference productsRef;
     private String orderId = "", uid = "", type = "";
     private TextView backBtn;
@@ -47,12 +43,16 @@ public class UserHistoryProductsActivity extends AppCompatActivity {
         productsList.setHasFixedSize(false);
         layoutManager = new LinearLayoutManager(this);
         productsList.setLayoutManager(layoutManager);
+
         orderId = getIntent().getStringExtra("uorderid");
         uid = getIntent().getStringExtra("uid");
         type = getIntent().getStringExtra("type");
+
         productsRef = FirebaseDatabase.getInstance().getReference().child("Orders History").child(uid).child(orderId).child("Products");
+
         backBtn = findViewById(R.id.back_to_order_txt);
 
+        // click listener to go to the previous activity
         backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -93,6 +93,7 @@ public class UserHistoryProductsActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
 
+        // RecyclerView created to store and display order products
         FirebaseRecyclerOptions<Cart> options =
                 new FirebaseRecyclerOptions.Builder<Cart>()
                         .setQuery(productsRef, Cart.class)

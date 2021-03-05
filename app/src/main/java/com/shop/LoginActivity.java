@@ -2,17 +2,14 @@ package com.shop;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,18 +22,15 @@ import com.rey.material.widget.CheckBox;
 import com.shop.adminActivities.AdminHomeActivity;
 import com.shop.models.Users;
 import com.shop.prevalent.Prevalent;
-
 import io.paperdb.Paper;
 
 
 
 public class LoginActivity extends AppCompatActivity {
-
     private EditText InputEmail, InputPassword;
     private Button LoginButton;
     private ProgressDialog loadingBar;
     private TextView AdminLink, NotAdminLink, ForgotPasswordLink;
-
     private String parentDbName = "Users";
     private CheckBox chkBoxRememberMe;
 
@@ -56,6 +50,7 @@ public class LoginActivity extends AppCompatActivity {
 
         Paper.init(this);
 
+        // click listener for the forgot password button
         ForgotPasswordLink.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Intent intent = new Intent(LoginActivity.this, ResetPasswordActivity.class);
@@ -63,6 +58,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
+        // login button
         LoginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -70,6 +66,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
+        // switch to admin account button
         AdminLink.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -80,6 +77,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
+        // switch to user account button
         NotAdminLink.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -99,6 +97,7 @@ public class LoginActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    // login the user validation
     private void LoginUser() {
         String email = InputEmail.getText().toString();
         String password = InputPassword.getText().toString();
@@ -125,8 +124,8 @@ public class LoginActivity extends AppCompatActivity {
         return string.replace(".", ",");
     }
 
+    // check the credentials
     private void AllowAccesToAccount(String email, String password) {
-
         if (chkBoxRememberMe.isChecked()){
             Paper.book().write(Prevalent.UserEmailKey, email);
             Paper.book().write(Prevalent.UserPasswordKey, password);
@@ -152,8 +151,8 @@ public class LoginActivity extends AppCompatActivity {
                             else if (parentDbName.equals("Users")){
                                 Toast.makeText(LoginActivity.this, "Success login!", Toast.LENGTH_SHORT).show();
                                 loadingBar.dismiss();
-
                                 Prevalent.currentOnlineUser = userData;
+
                                 Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
                                 startActivity(intent);
                             }
@@ -163,7 +162,6 @@ public class LoginActivity extends AppCompatActivity {
                             loadingBar.dismiss();
                         }
                     }
-
                 }
                 else {
                     Toast.makeText(LoginActivity.this, "Account with this email doesn't exist!", Toast.LENGTH_SHORT).show();
@@ -173,9 +171,7 @@ public class LoginActivity extends AppCompatActivity {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
             }
         });
-
     }
 }

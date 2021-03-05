@@ -1,17 +1,14 @@
 package com.shop.adminActivities;
 
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
-
 import com.shop.HomeActivity;
 import com.shop.MainActivity;
 import com.shop.R;
-
 import io.paperdb.Paper;
 
 public class AdminHomeActivity extends AppCompatActivity {
@@ -32,6 +29,7 @@ public class AdminHomeActivity extends AppCompatActivity {
         checkOrdersBtn = findViewById(R.id.check_orders_btn);
         maintaintProductsBtn = findViewById(R.id.maintain_btn);
 
+        // click listener to logout the admin
         logoutBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -43,6 +41,7 @@ public class AdminHomeActivity extends AppCompatActivity {
             }
         });
 
+        // button to go to orders activity
         checkOrdersBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -51,6 +50,7 @@ public class AdminHomeActivity extends AppCompatActivity {
             }
         });
 
+        // button to go to edit product activity
         maintaintProductsBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -60,6 +60,7 @@ public class AdminHomeActivity extends AppCompatActivity {
             }
         });
 
+        // click listener to add a product in glasses category
         glasses.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -69,6 +70,7 @@ public class AdminHomeActivity extends AppCompatActivity {
             }
         });
 
+        // click listener to add a product in decorations category
         decorations.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -78,6 +80,7 @@ public class AdminHomeActivity extends AppCompatActivity {
             }
         });
 
+        // click listener to add a product in lipsticks category
         lipsticks.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -87,6 +90,7 @@ public class AdminHomeActivity extends AppCompatActivity {
             }
         });
 
+        // click listener to add a product in foundation category
         foundation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -96,6 +100,7 @@ public class AdminHomeActivity extends AppCompatActivity {
             }
         });
 
+        // click listener to add a product in hats category
 //        hats.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View view) {

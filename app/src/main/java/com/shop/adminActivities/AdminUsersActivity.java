@@ -10,13 +10,9 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -24,6 +20,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.shop.R;
 import com.shop.models.Users;
+import com.shop.viewholders.UserViewHolder;
 import com.squareup.picasso.Picasso;
 
 
@@ -50,6 +47,7 @@ public class AdminUsersActivity extends AppCompatActivity {
         googleUsersList = findViewById(R.id.google_users_list);
         googleUsersList.setLayoutManager(new LinearLayoutManager(this));
 
+        // title for Google logged in users
         googleUsersRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -65,6 +63,7 @@ public class AdminUsersActivity extends AppCompatActivity {
             }
         });
 
+        // display a message in case app doesn't have any user
         usersRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -95,6 +94,7 @@ public class AdminUsersActivity extends AppCompatActivity {
             }
         });
 
+        // click listener to go to the previous activity
         backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -118,15 +118,16 @@ public class AdminUsersActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
 
+        // RecyclerView created to store and display app users with an account
         FirebaseRecyclerOptions<Users> options =
                 new FirebaseRecyclerOptions.Builder<Users>()
                         .setQuery(usersRef, Users.class)
                         .build();
 
-        FirebaseRecyclerAdapter<Users, AdminUsersActivity.UserViewHolder> adapter =
-                new FirebaseRecyclerAdapter<Users, AdminUsersActivity.UserViewHolder>(options) {
+        FirebaseRecyclerAdapter<Users, UserViewHolder> adapter =
+                new FirebaseRecyclerAdapter<Users, UserViewHolder>(options) {
                     @Override
-                    protected void onBindViewHolder(@NonNull AdminUsersActivity.UserViewHolder holder, int position, @NonNull Users model) {
+                    protected void onBindViewHolder(@NonNull UserViewHolder holder, int position, @NonNull Users model) {
                         holder.userName.setText("Name: " + model.getName());
                         holder.userAddress.setText("Address: " + model.getAddress());
                         holder.userEmail.setText("Email: " + model.getEmail());
@@ -148,25 +149,25 @@ public class AdminUsersActivity extends AppCompatActivity {
 
                     @NonNull
                     @Override
-                    public AdminUsersActivity.UserViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+                    public UserViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
                         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.users_layout, parent, false);
-                        return new AdminUsersActivity.UserViewHolder(view);
+                        return new UserViewHolder(view);
                     }
 
                 };
         usersList.setAdapter(adapter);
         adapter.startListening();
 
-
+        // RecyclerView created to store and display Google logged in users
         FirebaseRecyclerOptions<Users> options2 =
                 new FirebaseRecyclerOptions.Builder<Users>()
                         .setQuery(googleUsersRef, Users.class)
                         .build();
 
-        FirebaseRecyclerAdapter<Users, AdminUsersActivity.UserViewHolder> adapter2 =
-                new FirebaseRecyclerAdapter<Users, AdminUsersActivity.UserViewHolder>(options2) {
+        FirebaseRecyclerAdapter<Users, UserViewHolder> adapter2 =
+                new FirebaseRecyclerAdapter<Users, UserViewHolder>(options2) {
                     @Override
-                    protected void onBindViewHolder(@NonNull AdminUsersActivity.UserViewHolder holder, int position, @NonNull Users model) {
+                    protected void onBindViewHolder(@NonNull UserViewHolder holder, int position, @NonNull Users model) {
                         holder.userName.setText("Name: " + model.getName());
                         holder.userEmail.setText("Email: " + model.getEmail());
                         if(!(model.getAddress() == null)) {
@@ -192,9 +193,9 @@ public class AdminUsersActivity extends AppCompatActivity {
 
                     @NonNull
                     @Override
-                    public AdminUsersActivity.UserViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+                    public UserViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
                         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.users_layout, parent, false);
-                        return new AdminUsersActivity.UserViewHolder(view);
+                        return new UserViewHolder(view);
                     }
 
                 };
@@ -203,18 +204,4 @@ public class AdminUsersActivity extends AppCompatActivity {
 
     }
 
-    public static class UserViewHolder extends RecyclerView.ViewHolder {
-        public TextView userName, userAddress, userEmail;
-        public ImageView userImage;
-        public Button showOrdersHistory;
-
-        public UserViewHolder(@NonNull View itemView) {
-            super(itemView);
-            userName = itemView.findViewById(R.id.username);
-            userAddress = itemView.findViewById(R.id.user_address);
-            userEmail = itemView.findViewById(R.id.user_email);
-            userImage = itemView.findViewById(R.id.user_image);
-            showOrdersHistory = itemView.findViewById(R.id.show_orders_history__btn);
-        }
-    }
 }

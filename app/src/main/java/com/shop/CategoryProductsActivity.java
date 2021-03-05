@@ -7,7 +7,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,10 +19,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.shop.adminActivities.AdminEditProductsActivity;
 import com.shop.models.Products;
-import com.shop.userActivities.UserHistoryProductsActivity;
-import com.shop.userActivities.UserOrdersActivity;
 import com.shop.viewholders.ProductViewHolder;
 import com.squareup.picasso.Picasso;
 
@@ -53,6 +49,8 @@ public class CategoryProductsActivity extends AppCompatActivity {
         categoryTxt.setText(Character.toString(category.charAt(0)).toUpperCase()+category.substring(1));
 
         backBtn = findViewById(R.id.back_to_categories_txt);
+
+        // click listener to go to the previous activity
         backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -62,6 +60,7 @@ public class CategoryProductsActivity extends AppCompatActivity {
             }
         });
 
+        // display a message in case there isn't any product in this category
         ProductsRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -81,7 +80,6 @@ public class CategoryProductsActivity extends AppCompatActivity {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
             }
         });
     }
@@ -98,6 +96,8 @@ public class CategoryProductsActivity extends AppCompatActivity {
     protected void onStart()
     {
         super.onStart();
+
+        // RecyclerView created to store and display category products
         FirebaseRecyclerOptions<Products> options =
                 new FirebaseRecyclerOptions.Builder<Products>()
                         .setQuery(ProductsRef.orderByChild("category").equalTo(category), Products.class)
@@ -129,7 +129,6 @@ public class CategoryProductsActivity extends AppCompatActivity {
                         ProductViewHolder holder = new ProductViewHolder(view);
                         return holder;
                     }
-
                 };
 
         recyclerView.setAdapter(adapter);

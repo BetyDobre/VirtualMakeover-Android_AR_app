@@ -10,10 +10,10 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 public class CategoriesActivity extends AppCompatActivity {
-
     private RelativeLayout layoutGlasses, layoutFoundation, layoutLipsticks, layoutDecorations;
     private TextView backBtn;
     private Button allProducts;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,6 +26,7 @@ public class CategoriesActivity extends AppCompatActivity {
         allProducts = findViewById(R.id.all_categories_products_btn);
         backBtn = findViewById(R.id.back_to_home_from_categories_txt);
 
+        // go to glasses category products activity
         layoutGlasses.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -35,6 +36,7 @@ public class CategoriesActivity extends AppCompatActivity {
             }
         });
 
+        // go to foundation category products activity
         layoutFoundation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -44,6 +46,7 @@ public class CategoriesActivity extends AppCompatActivity {
             }
         });
 
+        // go to lipsticks category products activity
         layoutLipsticks.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -53,6 +56,7 @@ public class CategoriesActivity extends AppCompatActivity {
             }
         });
 
+        // go to decorations category products activity
         layoutDecorations.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -62,6 +66,7 @@ public class CategoriesActivity extends AppCompatActivity {
             }
         });
 
+        // go to home activity
         allProducts.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -70,6 +75,7 @@ public class CategoriesActivity extends AppCompatActivity {
             }
         });
 
+        // click listener to go to the previous activity
         backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

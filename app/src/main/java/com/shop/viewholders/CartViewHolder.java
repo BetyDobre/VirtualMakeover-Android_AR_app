@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.shop.R;
 import com.shop.interfaces.ItemClickListener;
 
+// View Holder for cart items
 public class CartViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
     public TextView productNameTxt, productPriceTxt, productQuantityTxt;
     private ItemClickListener itemClickListener;
@@ -22,7 +23,6 @@ public class CartViewHolder extends RecyclerView.ViewHolder implements View.OnCl
         productPriceTxt = itemView.findViewById(R.id.cart_product_price);
         productQuantityTxt = itemView.findViewById(R.id.cart_product_quantity);
         productImage = itemView.findViewById(R.id.cart_product_image);
-
     }
 
     @Override

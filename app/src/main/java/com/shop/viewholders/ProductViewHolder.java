@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.shop.R;
 import com.shop.interfaces.ItemClickListener;
 
+// View Holder for products
 public class ProductViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
     public TextView txtProductName, txtProductDescription, txtProductPrice;

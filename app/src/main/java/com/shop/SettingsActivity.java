@@ -9,22 +9,10 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.google.android.gms.auth.api.Auth;
-import com.google.android.gms.auth.api.signin.GoogleSignIn;
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
-import com.google.android.gms.auth.api.signin.GoogleSignInClient;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.auth.api.signin.GoogleSignInResult;
-import com.google.android.gms.common.api.GoogleApi;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.OptionalPendingResult;
-import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -36,14 +24,10 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.StorageTask;
-import com.shop.models.Users;
 import com.shop.prevalent.Prevalent;
 import com.squareup.picasso.Picasso;
 import com.theartofdev.edmodo.cropper.CropImage;
-
 import java.util.HashMap;
-import java.util.Set;
-
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class SettingsActivity extends AppCompatActivity {
@@ -51,15 +35,11 @@ public class SettingsActivity extends AppCompatActivity {
     private CircleImageView profileImageView;
     private EditText fullnameEditText, userEmailEditText, addressEditText, passwordEditText, confirmNewPasswordEditText;
     private TextView profileChangeTextBtn, closeTextBtn, saveTextBtn, currentPasswordTxt;
-
     private Uri imageUri;
     private String myURL = "";
     private StorageTask uploadTask;
     private StorageReference storageProfilePictureReference;
     private String checker = "";
-
-    private GoogleSignInClient mGoogleSignInClient;
-    private GoogleApiClient mGoogleApiClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,6 +61,7 @@ public class SettingsActivity extends AppCompatActivity {
 
         userInfoDisplay(profileImageView, fullnameEditText, userEmailEditText, addressEditText, passwordEditText, confirmNewPasswordEditText);
 
+        // close the settings options button
         closeTextBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -88,6 +69,7 @@ public class SettingsActivity extends AppCompatActivity {
             }
         });
 
+        // save information button
         saveTextBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -100,6 +82,7 @@ public class SettingsActivity extends AppCompatActivity {
             }
         });
 
+        // change the profile picture button
         profileChangeTextBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -109,7 +92,6 @@ public class SettingsActivity extends AppCompatActivity {
                         .start(SettingsActivity.this);
             }
         });
-
     }
 
     @Override
@@ -118,8 +100,10 @@ public class SettingsActivity extends AppCompatActivity {
         finish();
     }
 
+    // update user info expect profile picture
     private void updateOnlyUserInfo() {
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("Users");
+
         HashMap<String, Object> userMap = new HashMap<>();
         userMap.put("name", fullnameEditText.getText().toString());
         userMap.put("address", addressEditText.getText().toString());
@@ -170,6 +154,7 @@ public class SettingsActivity extends AppCompatActivity {
         }
     }
 
+    // check if the fields are empty
     private void userInfoSaved() {
         if (TextUtils.isEmpty(fullnameEditText.getText().toString())){
             Toast.makeText(this, "Name is mandatory!", Toast.LENGTH_SHORT).show();
@@ -185,6 +170,7 @@ public class SettingsActivity extends AppCompatActivity {
         }
     }
 
+    // upload profile picture into the database
     private void uploadImage() {
         final ProgressDialog progressDialog = new ProgressDialog(this);
         progressDialog.setTitle("Update profile image");
@@ -265,6 +251,7 @@ public class SettingsActivity extends AppCompatActivity {
         return string.replace(".", ",");
     }
 
+    // display the already existing user info
     private void userInfoDisplay(CircleImageView profileImageView, EditText fullnameEditText, EditText userEmailEditText, EditText addressEditText, EditText passwordEditText, EditText confirmNewPasswordEditText) {
         DatabaseReference UsersRef = FirebaseDatabase.getInstance().getReference().child("Users").child(EncodeString(Prevalent.currentOnlineUser.getEmail()));
 
@@ -292,6 +279,5 @@ public class SettingsActivity extends AppCompatActivity {
             public void onCancelled(@NonNull DatabaseError error) {
             }
         });
-
     }
 }

@@ -3,7 +3,6 @@ package com.shop.adminActivities;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -13,7 +12,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -30,7 +28,6 @@ import com.google.firebase.storage.UploadTask;
 import com.shop.HomeActivity;
 import com.shop.R;
 import com.squareup.picasso.Picasso;
-
 import java.util.HashMap;
 
 public class AdminEditProductsActivity extends AppCompatActivity {
@@ -64,8 +61,10 @@ public class AdminEditProductsActivity extends AppCompatActivity {
 
         productID = getIntent().getStringExtra("pid");
         productsRef = FirebaseDatabase.getInstance().getReference().child("Products").child(productID);
+
         displaySpecificProductInfo();
 
+        // click listener to save product information changes
         saveChangesBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -73,6 +72,7 @@ public class AdminEditProductsActivity extends AppCompatActivity {
             }
         });
 
+        // click listener to delete the product
         deleteBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -80,6 +80,7 @@ public class AdminEditProductsActivity extends AppCompatActivity {
             }
         });
 
+        // click listener to change the product image
         image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -87,6 +88,7 @@ public class AdminEditProductsActivity extends AppCompatActivity {
             }
         });
 
+        // click listener to go to the previous activity
         backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -108,6 +110,7 @@ public class AdminEditProductsActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    // open the phone image gallery
     private void OpenGallery() {
         Intent galleryIntent = new Intent();
         galleryIntent.setAction(Intent.ACTION_GET_CONTENT);
@@ -115,6 +118,7 @@ public class AdminEditProductsActivity extends AppCompatActivity {
         startActivityForResult(galleryIntent, GalleryPick);
     }
 
+    // get the image from the gallery
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -125,6 +129,7 @@ public class AdminEditProductsActivity extends AppCompatActivity {
         }
     }
 
+    // save information changes for the product
     private void saveChanges() {
         String newName = name.getText().toString();
         String newPrice = price.getText().toString();
@@ -181,7 +186,6 @@ public class AdminEditProductsActivity extends AppCompatActivity {
                                                 Intent intent = new Intent(AdminEditProductsActivity.this, AdminHomeActivity.class);
                                                 startActivity(intent);
                                                 finish();
-
                                                 Toast.makeText(AdminEditProductsActivity.this, "Product info updated successfully!", Toast.LENGTH_SHORT).show();
                                             }
                                         }
@@ -206,7 +210,6 @@ public class AdminEditProductsActivity extends AppCompatActivity {
                             Intent intent = new Intent(AdminEditProductsActivity.this, AdminHomeActivity.class);
                             startActivity(intent);
                             finish();
-
                             Toast.makeText(AdminEditProductsActivity.this, "Product info updated successfully!", Toast.LENGTH_SHORT).show();
                         }
                     }
@@ -215,6 +218,7 @@ public class AdminEditProductsActivity extends AppCompatActivity {
         }
     }
 
+    // delete a product from the database
     private void deleteSpecificProduct() {
         productsRef.removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
@@ -222,12 +226,12 @@ public class AdminEditProductsActivity extends AppCompatActivity {
                 Intent intent = new Intent(AdminEditProductsActivity.this, AdminHomeActivity.class);
                 startActivity(intent);
                 finish();
-
                 Toast.makeText(AdminEditProductsActivity.this, "Product deleted successfully!", Toast.LENGTH_SHORT).show();
             }
         });
     }
 
+    // display in edit texts existing product information from the database
     private void displaySpecificProductInfo() {
         productsRef.addValueEventListener(new ValueEventListener() {
             @Override

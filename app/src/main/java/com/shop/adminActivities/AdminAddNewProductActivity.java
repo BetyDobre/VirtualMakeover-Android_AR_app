@@ -1,9 +1,7 @@
 package com.shop.adminActivities;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
@@ -15,7 +13,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -27,7 +24,6 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.shop.R;
-
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -68,6 +64,7 @@ public class AdminAddNewProductActivity extends AppCompatActivity {
 
         loadingBar = new ProgressDialog(this);
 
+        // click listener for new product image
         InputProductImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -75,6 +72,7 @@ public class AdminAddNewProductActivity extends AppCompatActivity {
             }
         });
 
+        // click listener to add the new product to database
         AddNewProductButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -82,6 +80,7 @@ public class AdminAddNewProductActivity extends AppCompatActivity {
             }
         });
 
+        // click listener to go to the previous activity
         backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -101,6 +100,7 @@ public class AdminAddNewProductActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    // open the phone image gallery
     private void OpenGallery() {
         Intent galleryIntent = new Intent();
         galleryIntent.setAction(Intent.ACTION_GET_CONTENT);
@@ -108,6 +108,7 @@ public class AdminAddNewProductActivity extends AppCompatActivity {
         startActivityForResult(galleryIntent, GalleryPick);
     }
 
+    // get the image from the gallery
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -118,6 +119,7 @@ public class AdminAddNewProductActivity extends AppCompatActivity {
         }
     }
 
+    // check if the product date is given correctly
     private void ValidateProductData() {
         Description = InputProductDescription.getText().toString();
         Price = Integer.parseInt(InputProductPrice.getText().toString());
@@ -138,10 +140,11 @@ public class AdminAddNewProductActivity extends AppCompatActivity {
         else {
             StoreProductInformation();
         }
+
     }
 
+    // store the products information
     private void StoreProductInformation() {
-
         loadingBar.setTitle("Add new product..");
         loadingBar.setMessage("Please wait, we are adding the new product.");
         loadingBar.setCanceledOnTouchOutside(false);
@@ -155,10 +158,10 @@ public class AdminAddNewProductActivity extends AppCompatActivity {
         SimpleDateFormat currentTime= new SimpleDateFormat("HH:mm:ss a");
         saveCurrentTime = currentTime.format(calendar.getTime());
 
-        //the key for the product in the database
+        // the key for the product in the database
         productRandomKey = saveCurrentDate + saveCurrentTime;
 
-        //store the image url to the firebase storage
+        // store the image url to the firebase storage
         StorageReference filePath = ProductImagesRef.child(ImageUri.getLastPathSegment() + productRandomKey + ".jpg");
         final UploadTask uploadTask = filePath.putFile(ImageUri);
         uploadTask.addOnFailureListener(new OnFailureListener() {
@@ -194,10 +197,9 @@ public class AdminAddNewProductActivity extends AppCompatActivity {
             }
         });
 
-
     }
 
-    //store the product into Firebase Database
+    // store the product into Firebase Database
     private void SaveProuctInfoToDatabase() {
         HashMap<String, Object> productMap = new HashMap<>();
         productMap.put("pid", productRandomKey);

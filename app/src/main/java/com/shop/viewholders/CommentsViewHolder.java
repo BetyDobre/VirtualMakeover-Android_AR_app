@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.shop.R;
 import com.shop.interfaces.ItemClickListener;
 
-
+// View Holder for comments
 public class CommentsViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
     public ItemClickListener listener;
     public ImageView userImage;

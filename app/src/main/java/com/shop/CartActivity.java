@@ -3,7 +3,6 @@ package com.shop;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -56,37 +55,23 @@ public class CartActivity extends AppCompatActivity {
 
         nextBtn = findViewById(R.id.next_btn);
         totalPriceTxt = findViewById(R.id.total_price);
-
         emptyCartImg = findViewById(R.id.empty_cart);
         backBtn = findViewById(R.id.back_to_home_from_cart_txt);
         layout = findViewById(R.id.rll1);
 
         DatabaseReference cartListRef = FirebaseDatabase.getInstance().getReference().child("Cart List");
+
+        // layout to display in case the cart is empty or not
         cartListRef.child("User View").child(EncodeString(Prevalent.currentOnlineUser.getEmail())).child("Products").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (!snapshot.exists()){
                     emptyCartImg.setVisibility(View.VISIBLE);
-                }
-                else {
-                    emptyCartImg.setVisibility(View.GONE);
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-
-        cartListRef.child("User View").child(EncodeString(Prevalent.currentOnlineUser.getEmail())).child("Products").addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (!snapshot.exists()){
                     layout.setVisibility(View.GONE);
                     totalPriceTxt.setVisibility(View.GONE);
                 }
                 else {
+                    emptyCartImg.setVisibility(View.GONE);
                     layout.setVisibility(View.VISIBLE);
                     totalPriceTxt.setVisibility(View.VISIBLE);
                 }
@@ -97,6 +82,7 @@ public class CartActivity extends AppCompatActivity {
             }
         });
 
+        // click listener to go to place order activity in case there isn't other order in progress
         nextBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -121,13 +107,12 @@ public class CartActivity extends AppCompatActivity {
 
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {
-
                     }
                 });
-
             }
         });
 
+        // click listener to go to the previous activity
         backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -157,6 +142,8 @@ public class CartActivity extends AppCompatActivity {
         CheckOrderState();
 
         final DatabaseReference cartListRef = FirebaseDatabase.getInstance().getReference().child("Cart List");
+
+        // RecyclerView created to store and display cart items
         FirebaseRecyclerOptions<Cart> options =
                 new FirebaseRecyclerOptions.Builder<Cart>()
                 .setQuery(cartListRef.child("User View").child(EncodeString(Prevalent.currentOnlineUser.getEmail())).child("Products"), Cart.class)
@@ -243,6 +230,7 @@ public class CartActivity extends AppCompatActivity {
         adapter.startListening();
     }
 
+    // check the order state
     private void CheckOrderState(){
         DatabaseReference ordersRef = FirebaseDatabase.getInstance().getReference().child("Orders").child(EncodeString(Prevalent.currentOnlineUser.getEmail()));
 
@@ -263,7 +251,6 @@ public class CartActivity extends AppCompatActivity {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
             }
         });
     }

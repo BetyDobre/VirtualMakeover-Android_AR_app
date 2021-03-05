@@ -1,5 +1,6 @@
 package com.shop.models;
 
+// class model for orders seen by the admin
 public class AdminOrders {
     private String email, address, city, date, name, phone, state, time, totalAmount, payment;
 

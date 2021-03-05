@@ -1,5 +1,6 @@
 package com.shop.models;
 
+// product comments class model
 public class Comments {
     private String content, userImg, userName, userEmail, date, time;
 

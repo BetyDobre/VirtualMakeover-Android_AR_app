@@ -6,7 +6,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -148,6 +147,7 @@ class GMailSender extends javax.mail.Authenticator {
     }
 }
 
+// send a mail to user and reset password
 public class ResetPasswordActivity extends AppCompatActivity {
 
     private EditText inputEmail;
@@ -165,7 +165,6 @@ public class ResetPasswordActivity extends AppCompatActivity {
 
         inputEmail = findViewById(R.id.email_account_reset);
         sendEmail = findViewById(R.id.reset_password_btn);
-
 
         sendEmail.setOnClickListener(new View.OnClickListener() {
             @Override

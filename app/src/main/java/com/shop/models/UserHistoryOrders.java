@@ -2,6 +2,7 @@ package com.shop.models;
 
 import java.util.ArrayList;
 
+// orders seen by the user class model
 public class UserHistoryOrders {
     private String email;
     private String address;

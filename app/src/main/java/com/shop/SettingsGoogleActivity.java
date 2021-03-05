@@ -61,6 +61,8 @@ public class SettingsGoogleActivity extends AppCompatActivity {
         currentEmailTxt.setText(email);
 
         DatabaseReference UsersRef = FirebaseDatabase.getInstance().getReference().child("Google Users").child(EncodeString(Prevalent.currentOnlineUser.getEmail()));
+
+        // display the user address if it isn't empty
         UsersRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -76,7 +78,7 @@ public class SettingsGoogleActivity extends AppCompatActivity {
             }
         });
 
-
+        // close settings options button
         closeTextBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -84,6 +86,7 @@ public class SettingsGoogleActivity extends AppCompatActivity {
             }
         });
 
+        // save modified information button
         saveTextBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -105,7 +108,6 @@ public class SettingsGoogleActivity extends AppCompatActivity {
                 });
             }
         });
-
     }
 
     @Override

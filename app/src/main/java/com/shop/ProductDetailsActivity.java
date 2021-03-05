@@ -16,7 +16,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,20 +24,15 @@ import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.shop.adminActivities.AdminAddNewProductActivity;
-import com.shop.adminActivities.AdminEditProductsActivity;
 import com.shop.models.Comments;
 import com.shop.models.Products;
-import com.shop.models.Users;
 import com.shop.prevalent.Prevalent;
 import com.shop.viewholders.CommentsViewHolder;
-import com.shop.viewholders.ProductViewHolder;
 import com.squareup.picasso.Picasso;
 
 import java.text.SimpleDateFormat;
@@ -54,8 +48,7 @@ public class ProductDetailsActivity extends AppCompatActivity {
     private EditText commentContentEditTxt;
     private String productID = "", state = "normal";
     private String image;
-
-    LinearLayoutManager layoutManager;
+    private LinearLayoutManager layoutManager;
     private RecyclerView recyclerView;
 
     @Override
@@ -84,6 +77,7 @@ public class ProductDetailsActivity extends AppCompatActivity {
         productID = getIntent().getStringExtra("pid");
         getProductDetails(productID);
 
+        // add a commment button
         addCommentBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -91,6 +85,7 @@ public class ProductDetailsActivity extends AppCompatActivity {
             }
         });
 
+        // add the product to cart button
         addToCartBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -98,6 +93,7 @@ public class ProductDetailsActivity extends AppCompatActivity {
             }
         });
 
+        // click listener to go to the previous activity
         backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -123,6 +119,7 @@ public class ProductDetailsActivity extends AppCompatActivity {
         super.onStart();
 
         CheckOrderState();
+
         getComments(productID);
     }
 
@@ -130,8 +127,8 @@ public class ProductDetailsActivity extends AppCompatActivity {
         return string.replace(".", ",");
     }
 
+    // add product to cart
     private void addingToCart() {
-
         Calendar calendar = Calendar.getInstance();
         String saveCurrentTime, saveCurrentDate;
 
@@ -183,8 +180,10 @@ public class ProductDetailsActivity extends AppCompatActivity {
 
     }
 
+    // display the product information from the database
     private void getProductDetails(String productID) {
         DatabaseReference ProductsRef = FirebaseDatabase.getInstance().getReference().child("Products");
+
         ProductsRef.child(productID).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -207,8 +206,11 @@ public class ProductDetailsActivity extends AppCompatActivity {
         });
     }
 
+    // display the comments at this product from the database
     private void getComments(String productID){
         DatabaseReference commentsRef = FirebaseDatabase.getInstance().getReference().child("Comments").child(productID);
+
+        // RecyclerView created to store and display product comments
         FirebaseRecyclerOptions<Comments> options =
                 new FirebaseRecyclerOptions.Builder<Comments>()
                         .setQuery(commentsRef, Comments.class)
@@ -250,7 +252,6 @@ public class ProductDetailsActivity extends AppCompatActivity {
                                                                 }
                                                             }
                                                         });
-
                                             }
                                         }
                                     });
@@ -273,6 +274,7 @@ public class ProductDetailsActivity extends AppCompatActivity {
         adapter.startListening();
     }
 
+    // verify the order state
     private void CheckOrderState(){
         DatabaseReference ordersRef = FirebaseDatabase.getInstance().getReference().child("Orders").child(EncodeString(Prevalent.currentOnlineUser.getEmail()));
 
@@ -293,11 +295,11 @@ public class ProductDetailsActivity extends AppCompatActivity {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
             }
         });
     }
 
+    // add a comment in the database for this specific product
     private void AddComment() {
         DatabaseReference commentRef = FirebaseDatabase.getInstance().getReference().child("Comments").child(productID);
 
@@ -343,5 +345,4 @@ public class ProductDetailsActivity extends AppCompatActivity {
             addCommentBtn.setVisibility(View.VISIBLE);
         }
     }
-
 }

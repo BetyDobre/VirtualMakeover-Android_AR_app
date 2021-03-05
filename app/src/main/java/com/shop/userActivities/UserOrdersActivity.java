@@ -10,7 +10,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
@@ -26,6 +25,7 @@ import com.shop.adminActivities.AdminOrderProductsActivity;
 import com.shop.models.AdminOrders;
 import com.shop.models.UserHistoryOrders;
 import com.shop.prevalent.Prevalent;
+import com.shop.viewholders.UserOrdersViewHolder;
 
 public class UserOrdersActivity extends AppCompatActivity {
 
@@ -48,15 +48,18 @@ public class UserOrdersActivity extends AppCompatActivity {
         ordersList.setLayoutManager(new LinearLayoutManager(this));
 
         historyRef= FirebaseDatabase.getInstance().getReference().child("Orders History").child(EncodeString(Prevalent.currentOnlineUser.getEmail()));
+
         orderhistoryList = findViewById(R.id.user_order_history_list);
         orderhistoryList.setLayoutManager(new LinearLayoutManager(this));
 
         currentOrder = findViewById(R.id.current_order);
         ordersHistory = findViewById(R.id.order_history);
+        noOrdersTxt = findViewById(R.id.no_user_orders_txt);
+        backBtn = findViewById(R.id.back_to_home_txt);
+
         uid = EncodeString(Prevalent.currentOnlineUser.getEmail());
 
-        noOrdersTxt = findViewById(R.id.no_user_orders_txt);
-
+        // display a message when there are no orders from the user
         ordersRef.child(EncodeString(Prevalent.currentOnlineUser.getEmail())).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -84,18 +87,16 @@ public class UserOrdersActivity extends AppCompatActivity {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
             }
         });
 
-        backBtn = findViewById(R.id.back_to_home_txt);
+        // click listener to go to the previous activity
         backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(UserOrdersActivity.this, HomeActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
-
             }
         });
     }
@@ -112,6 +113,7 @@ public class UserOrdersActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
 
+        // title to display when user has an order in progress
         ordersRef.child(EncodeString(Prevalent.currentOnlineUser.getEmail())).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -127,15 +129,16 @@ public class UserOrdersActivity extends AppCompatActivity {
             }
         });
 
+        // RecyclerView created to store and display current orders for the user
         FirebaseRecyclerOptions<AdminOrders> options =
                 new FirebaseRecyclerOptions.Builder<AdminOrders>()
                         .setQuery(ordersRef.orderByChild("email").equalTo(Prevalent.currentOnlineUser.getEmail()), AdminOrders.class)
                         .build();
 
-        FirebaseRecyclerAdapter<AdminOrders, UserOrdersActivity.UserOrdersViewHolder> adapter =
-                new FirebaseRecyclerAdapter<AdminOrders, UserOrdersActivity.UserOrdersViewHolder>(options) {
+        FirebaseRecyclerAdapter<AdminOrders, UserOrdersViewHolder> adapter =
+                new FirebaseRecyclerAdapter<AdminOrders, UserOrdersViewHolder>(options) {
                     @Override
-                    protected void onBindViewHolder(@NonNull UserOrdersActivity.UserOrdersViewHolder holder, int position, @NonNull AdminOrders model) {
+                    protected void onBindViewHolder(@NonNull UserOrdersViewHolder holder, int position, @NonNull AdminOrders model) {
                         holder.userName.setText("Name: " + model.getName());
                         holder.userPhone.setText("Phone Number: " + model.getPhone());
                         holder.userTotalPrice.setText("Total Price: " + model.getTotalAmount() + " lei");
@@ -149,7 +152,6 @@ public class UserOrdersActivity extends AppCompatActivity {
                             @Override
                             public void onClick(View view) {
                                 String uorderid = getRef(position).getKey();
-
                                 Intent intent = new Intent(UserOrdersActivity.this, AdminOrderProductsActivity.class);
                                 intent.putExtra("uorderid", uorderid);
                                 intent.putExtra("uid", uid);
@@ -161,16 +163,15 @@ public class UserOrdersActivity extends AppCompatActivity {
 
                     @NonNull
                     @Override
-                    public UserOrdersActivity.UserOrdersViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+                    public UserOrdersViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
                         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.admin_orders_layout, parent, false);
-                        return new UserOrdersActivity.UserOrdersViewHolder(view);
+                        return new UserOrdersViewHolder(view);
                     }
-
                 };
         ordersList.setAdapter(adapter);
         adapter.startListening();
 
-
+        // title to display when user has past orders
         historyRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -186,15 +187,16 @@ public class UserOrdersActivity extends AppCompatActivity {
             }
         });
 
+        // RecyclerView created to store and display orders history for a user
         FirebaseRecyclerOptions<UserHistoryOrders> options2 =
                 new FirebaseRecyclerOptions.Builder<UserHistoryOrders>()
                         .setQuery(historyRef.orderByChild("email"), UserHistoryOrders.class)
                         .build();
 
-        FirebaseRecyclerAdapter<UserHistoryOrders, UserOrdersActivity.UserOrdersViewHolder> adapter2 =
-                new FirebaseRecyclerAdapter<UserHistoryOrders, UserOrdersActivity.UserOrdersViewHolder>(options2) {
+        FirebaseRecyclerAdapter<UserHistoryOrders, UserOrdersViewHolder> adapter2 =
+                new FirebaseRecyclerAdapter<UserHistoryOrders, UserOrdersViewHolder>(options2) {
                     @Override
-                    protected void onBindViewHolder(@NonNull UserOrdersActivity.UserOrdersViewHolder holder, int position, @NonNull UserHistoryOrders model) {
+                    protected void onBindViewHolder(@NonNull UserOrdersViewHolder holder, int position, @NonNull UserHistoryOrders model) {
                         holder.userName.setText("Name: " + model.getName());
                         holder.userPhone.setText("Phone Number: " + model.getPhone());
                         holder.userTotalPrice.setText("Total Price: " + model.getTotalAmount() + " lei");
@@ -220,33 +222,13 @@ public class UserOrdersActivity extends AppCompatActivity {
 
                     @NonNull
                     @Override
-                    public UserOrdersActivity.UserOrdersViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+                    public UserOrdersViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
                         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.admin_orders_layout, parent, false);
-                        return new UserOrdersActivity.UserOrdersViewHolder(view);
+                        return new UserOrdersViewHolder(view);
                     }
                 };
         orderhistoryList.setAdapter(adapter2);
         adapter2.startListening();
-    }
-
-    public static class UserOrdersViewHolder extends RecyclerView.ViewHolder {
-
-        public TextView userName, userTotalPrice, userDateTime, userPhone, userAddress, userEmail, userState, userPayment;
-        private Button showProductsBtn;
-
-        public UserOrdersViewHolder(@NonNull View itemView) {
-            super(itemView);
-
-            userName = itemView.findViewById(R.id.order_username);
-            userPhone= itemView.findViewById(R.id.order_phone);
-            userTotalPrice = itemView.findViewById(R.id.order_total_price);
-            userDateTime = itemView.findViewById(R.id.order_date_time);
-            userAddress = itemView.findViewById(R.id.order_address);
-            userEmail = itemView.findViewById(R.id.order_email);
-            userState = itemView.findViewById(R.id.order_state);
-            userPayment = itemView.findViewById(R.id.order_payment_method);
-            showProductsBtn = itemView.findViewById(R.id.admin_show_products_btn);
-        }
     }
 
 }

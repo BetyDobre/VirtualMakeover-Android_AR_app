@@ -1,5 +1,6 @@
 package com.shop.models;
 
+// products class model
 public class Products {
     private String pname, description, image, category, pid, date, time;
     private int price;

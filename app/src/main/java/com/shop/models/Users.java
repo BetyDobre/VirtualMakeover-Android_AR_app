@@ -1,5 +1,6 @@
 package com.shop.models;
 
+// user class model
 public class Users {
     private String email;
     private String name;

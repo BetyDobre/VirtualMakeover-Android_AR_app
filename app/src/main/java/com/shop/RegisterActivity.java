@@ -3,7 +3,6 @@ package com.shop;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -29,7 +28,6 @@ public class RegisterActivity extends AppCompatActivity {
     private EditText InputName, InputEmail, InputPassword, InputConfirmPassword;
     private ProgressDialog loadingBar;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,6 +40,7 @@ public class RegisterActivity extends AppCompatActivity {
         InputConfirmPassword = findViewById(R.id.register_confirm_password_input);
         loadingBar = new ProgressDialog(this);
 
+        // create account button
         CreatAccountButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -50,6 +49,7 @@ public class RegisterActivity extends AppCompatActivity {
         });
     }
 
+    // verify if every field is completed
     private void CreateAccount() {
         String name = InputName.getText().toString();
         String email = InputEmail.getText().toString();
@@ -97,6 +97,7 @@ public class RegisterActivity extends AppCompatActivity {
         return string.replace(".", ",");
     }
 
+    // check if the email doesn't already exist and register the user
     private void ValidateEmail(String name, String email, String password) {
         final DatabaseReference RootRef;
         RootRef = FirebaseDatabase.getInstance().getReference();

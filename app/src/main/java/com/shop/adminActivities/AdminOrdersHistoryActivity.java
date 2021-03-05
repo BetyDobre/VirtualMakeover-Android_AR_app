@@ -24,12 +24,6 @@ import com.shop.R;
 import com.shop.models.UserHistoryOrders;
 import com.shop.userActivities.UserHistoryProductsActivity;
 
-import org.w3c.dom.Text;
-
-import java.util.ArrayList;
-
-
-
 public class AdminOrdersHistoryActivity extends AppCompatActivity {
 
     private RecyclerView orderhistoryList;
@@ -43,12 +37,16 @@ public class AdminOrdersHistoryActivity extends AppCompatActivity {
         setContentView(R.layout.activity_admin_orders_history);
 
         uid = getIntent().getStringExtra("uid");
+
         historyRef = FirebaseDatabase.getInstance().getReference().child("Orders History").child(uid);
+
         orderhistoryList = findViewById(R.id.admin_orders_history_list);
         orderhistoryList.setLayoutManager(new LinearLayoutManager(this));
+
         backBtn = findViewById(R.id.back_to_users_txt);
         noOrdersHistoryTxt = findViewById(R.id.no_orders_history_txt);
 
+        // click listener to go to the previous activity
         backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -58,6 +56,7 @@ public class AdminOrdersHistoryActivity extends AppCompatActivity {
             }
         });
 
+        // display a message there aren't any previous orders
         historyRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -88,6 +87,7 @@ public class AdminOrdersHistoryActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
 
+        // RecyclerView created to store and display orders history for a user
         FirebaseRecyclerOptions<UserHistoryOrders> options =
                 new FirebaseRecyclerOptions.Builder<UserHistoryOrders>()
                         .setQuery(historyRef, UserHistoryOrders.class)
@@ -131,6 +131,7 @@ public class AdminOrdersHistoryActivity extends AppCompatActivity {
         adapter.startListening();
     }
 
+    // ViewHolder for orders
     public static class AdminOrdersViewHolder extends RecyclerView.ViewHolder {
 
         public TextView userName, userTotalPrice, userDateTime, userPhone, userAddress, userEmail, userState, userPayment;

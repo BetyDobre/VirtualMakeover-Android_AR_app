@@ -17,7 +17,6 @@ import android.widget.TextView;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -42,10 +41,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import java.util.Collections;
-import java.util.Comparator;
-
 import de.hdodenhof.circleimageview.CircleImageView;
 import io.paperdb.Paper;
 
@@ -62,6 +57,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
+        // get the intent to see if the logged user is an admin
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
         if (bundle != null) {
@@ -98,6 +94,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             fab_back.setVisibility(View.VISIBLE);
         }
 
+        // click listener for the cart floating button for users
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -106,6 +103,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             }
         });
 
+        // click listener for the back floating button for admin
         fab_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -162,6 +160,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     {
         super.onStart();
 
+        // filters option
         filtersSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -218,8 +217,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
     }
 
+    // build the RecyclerView for filtered products
     public void recyclerBuild(FirebaseRecyclerOptions<Products> options) {
-
         FirebaseRecyclerAdapter<Products, ProductViewHolder> adapter =
                 new FirebaseRecyclerAdapter<Products, ProductViewHolder>(options) {
                     @Override
@@ -228,7 +227,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                         holder.txtProductDescription.setText(model.getDescription());
                         holder.txtProductPrice.setText("Price: " + model.getPrice() + "lei");
                         Picasso.get().load(model.getImage()).into(holder.imageView);
-
 
                         holder.itemView.setOnClickListener(new View.OnClickListener() {
                             @Override
@@ -245,7 +243,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                                 }
                             }
                         });
-
                     }
 
                     @NonNull
@@ -277,7 +274,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
-
+    // get the menu
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -285,27 +282,17 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         return true;
     }
 
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item)
     {
         int id = item.getItemId();
-
-//        if (id == R.id.action_settings)
-//        {
-//            return true;
-//        }
-
         return super.onOptionsItemSelected(item);
     }
 
-
-
-    @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item)
     {
-        // Handle navigation view item clicks here.
+        // Handled navigation view item clicks here
         int id = item.getItemId();
 
         if (id == R.id.nav_cart) {

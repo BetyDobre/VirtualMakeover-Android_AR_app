@@ -2,6 +2,7 @@ package com.shop.prevalent;
 
 import com.shop.models.Users;
 
+// store the current user information
 public class Prevalent {
     public static Users currentOnlineUser;
 

@@ -4,26 +4,19 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import com.firebase.ui.database.FirebaseRecyclerAdapter;
-import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-
 import com.google.firebase.database.ValueEventListener;
 import com.shop.adminActivities.AdminEditProductsActivity;
 import com.shop.models.Products;
@@ -50,12 +43,15 @@ public class SearchProductsActivity extends AppCompatActivity {
 
         inputText = findViewById(R.id.search_product);
         searchBtn = findViewById(R.id.search_btn);
-        searchList = findViewById(R.id.search_list);
         backBtn = findViewById(R.id.back_to_home_from_search_img);
         noProductsFoundTxt = findViewById(R.id.no_searched_products_txt);
+
+        searchList = findViewById(R.id.search_list);
         searchList.setLayoutManager(new LinearLayoutManager(SearchProductsActivity.this));
+
         type = getIntent().getStringExtra("type");
 
+        // search products button
         searchBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -63,6 +59,7 @@ public class SearchProductsActivity extends AppCompatActivity {
             }
         });
 
+        // click listener to go to the previous activity
         backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -74,7 +71,6 @@ public class SearchProductsActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
     }
 
     @Override
@@ -91,11 +87,15 @@ public class SearchProductsActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        searchInput = inputText.getText().toString();
+
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("Products");
+
+        searchInput = inputText.getText().toString();
 
         products.clear();
         searchList.removeAllViews();
+
+        // search the specific product by name
         ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {

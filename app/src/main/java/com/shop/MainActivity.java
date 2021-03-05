@@ -6,13 +6,10 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
-import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ScrollView;
 import android.widget.Toast;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -26,19 +23,15 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
 import com.shop.adminActivities.AdminHomeActivity;
 import com.shop.models.Users;
 import com.shop.prevalent.Prevalent;
-
 import java.util.HashMap;
 
 import io.paperdb.Paper;
@@ -47,7 +40,6 @@ public class MainActivity extends AppCompatActivity {
 
     private Button joinNowButton, loginButton;
     private ProgressDialog loadingBar;
-
     private SignInButton signInButton;
     private GoogleSignInClient mGoogleSignInClient;
     private FirebaseAuth mAuth;
@@ -61,8 +53,8 @@ public class MainActivity extends AppCompatActivity {
         joinNowButton = findViewById(R.id.main_join_now_btn);
         loginButton = findViewById(R.id.main_login_btn);
         loadingBar = new ProgressDialog(this);
-
         signInButton = findViewById(R.id.main_google_btn);
+
         mAuth = FirebaseAuth.getInstance();
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
@@ -78,6 +70,7 @@ public class MainActivity extends AppCompatActivity {
 
         Paper.init(this);
 
+        // click listener to go to the login activity
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -88,6 +81,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        // click listener to go to the register activity
         joinNowButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -99,6 +93,7 @@ public class MainActivity extends AppCompatActivity {
         String UserEmailKey = Paper.book().read(Prevalent.UserEmailKey);
         String UserPasswordKey = Paper.book().read(Prevalent.UserPasswordKey);
 
+        // check if the user is already logged in
         if (UserEmailKey != "" && UserPasswordKey != ""){
             if (!TextUtils.isEmpty(UserEmailKey) && !TextUtils.isEmpty(UserPasswordKey)){
                 AllowAccess(UserEmailKey, UserPasswordKey);
@@ -109,7 +104,6 @@ public class MainActivity extends AppCompatActivity {
                 loadingBar.show();
             }
         }
-
     }
 
     public String EncodeString(String string) {
@@ -142,6 +136,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    // sign in with Google account
     private void FirebaseGoogleAuth(GoogleSignInAccount acct) {
         AuthCredential authCredential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
         mAuth.signInWithCredential(authCredential).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -212,7 +207,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    //login from Remember me option
+    // login from Remember me option
     private void AllowAccess(final String email, final String password) {
         final DatabaseReference RootRef;
         RootRef = FirebaseDatabase.getInstance().getReference();
