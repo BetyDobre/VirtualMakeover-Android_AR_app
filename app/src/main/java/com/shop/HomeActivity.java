@@ -301,6 +301,12 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         }
         else if (id == R.id.nav_search){
             Intent intent = new Intent(HomeActivity.this, SearchProductsActivity.class);
+            if(type.equals("Admin")){
+                intent.putExtra("type", "admin");
+            }
+            else {
+                intent.putExtra("type", "user");
+            }
             startActivity(intent);
         }
         else if (id == R.id.nav_orders) {

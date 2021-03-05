@@ -23,6 +23,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.shop.R;
 import com.shop.models.UserHistoryOrders;
 import com.shop.userActivities.UserHistoryProductsActivity;
+import com.shop.viewholders.AdminOrdersViewHolder;
 
 public class AdminOrdersHistoryActivity extends AppCompatActivity {
 
@@ -93,10 +94,10 @@ public class AdminOrdersHistoryActivity extends AppCompatActivity {
                         .setQuery(historyRef, UserHistoryOrders.class)
                         .build();
 
-        FirebaseRecyclerAdapter<UserHistoryOrders, AdminOrdersHistoryActivity.AdminOrdersViewHolder> adapter =
-                new FirebaseRecyclerAdapter<UserHistoryOrders, AdminOrdersHistoryActivity.AdminOrdersViewHolder>(options) {
+        FirebaseRecyclerAdapter<UserHistoryOrders, AdminOrdersViewHolder> adapter =
+                new FirebaseRecyclerAdapter<UserHistoryOrders, AdminOrdersViewHolder>(options) {
                     @Override
-                    protected void onBindViewHolder(@NonNull AdminOrdersHistoryActivity.AdminOrdersViewHolder holder, int position, @NonNull UserHistoryOrders model) {
+                    protected void onBindViewHolder(@NonNull AdminOrdersViewHolder holder, int position, @NonNull UserHistoryOrders model) {
                         holder.userName.setText("Name: " + model.getName());
                         holder.userPhone.setText("Phone Number: " + model.getPhone());
                         holder.userTotalPrice.setText("Total Price: " + model.getTotalAmount() + " lei");
@@ -122,33 +123,12 @@ public class AdminOrdersHistoryActivity extends AppCompatActivity {
 
                     @NonNull
                     @Override
-                    public AdminOrdersHistoryActivity.AdminOrdersViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+                    public AdminOrdersViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
                         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.admin_orders_layout, parent, false);
-                        return new AdminOrdersHistoryActivity.AdminOrdersViewHolder(view);
+                        return new AdminOrdersViewHolder(view);
                     }
                 };
         orderhistoryList.setAdapter(adapter);
         adapter.startListening();
-    }
-
-    // ViewHolder for orders
-    public static class AdminOrdersViewHolder extends RecyclerView.ViewHolder {
-
-        public TextView userName, userTotalPrice, userDateTime, userPhone, userAddress, userEmail, userState, userPayment;
-        private Button showOrdersBtn;
-
-        public AdminOrdersViewHolder(@NonNull View itemView) {
-            super(itemView);
-
-            userName = itemView.findViewById(R.id.order_username);
-            userPhone= itemView.findViewById(R.id.order_phone);
-            userTotalPrice = itemView.findViewById(R.id.order_total_price);
-            userDateTime = itemView.findViewById(R.id.order_date_time);
-            userAddress = itemView.findViewById(R.id.order_address);
-            userEmail = itemView.findViewById(R.id.order_email);
-            userState = itemView.findViewById(R.id.order_state);
-            userPayment = itemView.findViewById(R.id.order_payment_method);
-            showOrdersBtn = itemView.findViewById(R.id.admin_show_products_btn);
-        }
     }
 }

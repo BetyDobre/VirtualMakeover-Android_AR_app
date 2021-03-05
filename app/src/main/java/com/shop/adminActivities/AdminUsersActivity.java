@@ -201,7 +201,5 @@ public class AdminUsersActivity extends AppCompatActivity {
                 };
         googleUsersList.setAdapter(adapter2);
         adapter2.startListening();
-
     }
-
 }

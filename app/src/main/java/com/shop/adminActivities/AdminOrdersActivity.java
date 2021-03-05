@@ -28,6 +28,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.shop.R;
 import com.shop.models.AdminOrders;
 import com.shop.models.PurchasedProducts;
+import com.shop.viewholders.AdminOrdersViewHolder;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -295,27 +296,5 @@ public class AdminOrdersActivity extends AppCompatActivity {
             public void onCancelled(@NonNull DatabaseError error) {
             }
         });
-
     }
-
-    public static class AdminOrdersViewHolder extends RecyclerView.ViewHolder {
-
-        public TextView userName, userTotalPrice, userDateTime, userPhone, userAddress, userEmail, userState, userPayment;
-        private Button showOrdersBtn;
-
-        public AdminOrdersViewHolder(@NonNull View itemView) {
-            super(itemView);
-
-            userName = itemView.findViewById(R.id.order_username);
-            userPhone= itemView.findViewById(R.id.order_phone);
-            userTotalPrice = itemView.findViewById(R.id.order_total_price);
-            userDateTime = itemView.findViewById(R.id.order_date_time);
-            userAddress = itemView.findViewById(R.id.order_address);
-            userEmail = itemView.findViewById(R.id.order_email);
-            userState = itemView.findViewById(R.id.order_state);
-            userPayment = itemView.findViewById(R.id.order_payment_method);
-            showOrdersBtn = itemView.findViewById(R.id.admin_show_products_btn);
-        }
-    }
-
 }
