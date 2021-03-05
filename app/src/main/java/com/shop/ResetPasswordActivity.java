@@ -170,7 +170,12 @@ public class ResetPasswordActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 resetEmail = inputEmail.getText().toString();
-                new SendEmail().execute();
+                if(!resetEmail.isEmpty()) {
+                    new SendEmail().execute();
+                }
+                else {
+                    Toast.makeText(ResetPasswordActivity.this, "Please provide your email address!", Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }

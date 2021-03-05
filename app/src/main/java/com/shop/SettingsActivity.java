@@ -135,7 +135,6 @@ public class SettingsActivity extends AppCompatActivity {
             startActivity(new Intent(SettingsActivity.this, SettingsActivity.class));
             finish();
         }
-
     }
 
     @Override
