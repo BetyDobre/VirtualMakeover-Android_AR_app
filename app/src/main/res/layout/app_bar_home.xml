@@ -43,7 +43,9 @@
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
         app:srcCompat="@drawable/nav_cart"
-        android:backgroundTint="@color/white"/>
+        android:backgroundTint="@color/white"
+        app:borderWidth="0.5dp"
+        app:backgroundTint="@color/colorPrimary"/>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab_back"
@@ -53,6 +55,7 @@
         android:layout_margin="@dimen/fab_margin"
         android:visibility="invisible"
         app:srcCompat="@drawable/back_black"
-        android:backgroundTint="@color/white"/>
+        android:backgroundTint="@color/white"
+        app:borderWidth="0dp"/>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

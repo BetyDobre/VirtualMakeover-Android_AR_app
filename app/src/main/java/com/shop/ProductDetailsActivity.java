@@ -24,6 +24,7 @@ import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -41,7 +42,8 @@ import java.util.HashMap;
 
 public class ProductDetailsActivity extends AppCompatActivity {
 
-    private Button addToCartBtn, addCommentBtn;
+    private  Button addCommentBtn;
+    private FloatingActionButton addToCartBtn;
     private ImageView productImage, userImage;
     private ElegantNumberButton numberBtn;
     private TextView productPrice, productDescription, productName, backBtn;
