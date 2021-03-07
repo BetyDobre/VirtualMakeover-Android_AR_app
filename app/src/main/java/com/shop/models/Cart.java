@@ -3,12 +3,12 @@ package com.shop.models;
 // products from the cart class model
 public class Cart {
     private String pid, pname, quantity, discount, image;
-    int price;
+    double price;
 
     public Cart() {
     }
 
-    public Cart(String pid, String pname, int price, String quantity, String discount, String image) {
+    public Cart(String pid, String pname, double price, String quantity, String discount, String image) {
         this.pid = pid;
         this.pname = pname;
         this.price = price;
@@ -41,11 +41,11 @@ public class Cart {
         this.pname = pname;
     }
 
-    public int getPrice() {
+    public double getPrice() {
         return price;
     }
 
-    public void setPrice(int price) {
+    public void setPrice(double price) {
         this.price = price;
     }
 

@@ -145,7 +145,7 @@ public class ProductDetailsActivity extends AppCompatActivity {
         final HashMap<String, Object> cartMap = new HashMap<>();
         cartMap.put("pid", productID);
         cartMap.put("pname", productName.getText().toString());
-        int sub = Integer.parseInt((productPrice.getText().toString()).substring(0, (productPrice.getText().toString()).length() - 4));
+        double sub = Double.parseDouble((productPrice.getText().toString()).substring(0, (productPrice.getText().toString()).length() - 4));
         cartMap.put("price", sub);
         cartMap.put("date", saveCurrentDate);
         cartMap.put("time", saveCurrentTime);

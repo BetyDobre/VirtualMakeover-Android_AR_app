@@ -108,7 +108,7 @@
             android:padding="12dp"
             android:layout_margin="5dp"
             android:textColor="@color/colorPrimary"
-            android:inputType="number"
+            android:inputType="numberDecimal"
             />
 
         <Button

@@ -55,11 +55,36 @@
 
     </RelativeLayout>
 
+    <TextView
+        android:id="@+id/filter_text_search"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/colorPrimary"
+        android:textSize="24dp"
+        android:text="Filter by:"
+        android:gravity="center"
+        android:fontFamily="@font/alfaslabone_regular"
+        android:layout_below="@id/rll4"
+        />
+
+    <Spinner
+        android:id="@+id/filter_options_search"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/filter_text_search"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="5dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="20dp"
+        android:layout_below="@id/rll4"/>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/search_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/rll4"/>
+        android:layout_below="@id/filter_options_search" />
 
     <TextView
         android:id="@+id/no_searched_products_txt"

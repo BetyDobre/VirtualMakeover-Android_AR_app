@@ -41,7 +41,7 @@ public class CartActivity extends AppCompatActivity {
     private ImageView  emptyCartImg;
     private RelativeLayout layout;
     private String state = "normal";
-    private int totalPrice = 0;
+    private double totalPrice = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -158,7 +158,7 @@ public class CartActivity extends AppCompatActivity {
                             holder.productPriceTxt.setText("Price: " + model.getQuantity() + "x" + String.valueOf(model.getPrice()) + " lei");
                             Picasso.get().load(model.getImage()).into(holder.productImage);
 
-                            int oneProductTotalPrice = model.getPrice() * Integer.valueOf(model.getQuantity());
+                            double oneProductTotalPrice = model.getPrice() * Double.valueOf(model.getQuantity());
                             totalPrice = totalPrice + oneProductTotalPrice;
                             totalPriceTxt.setText("Total price: " + String.valueOf(totalPrice) + " lei");
 

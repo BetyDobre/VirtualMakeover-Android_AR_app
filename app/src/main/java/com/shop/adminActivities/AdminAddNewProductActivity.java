@@ -37,7 +37,7 @@ public class AdminAddNewProductActivity extends AppCompatActivity {
     private TextView backBtn;
 
     private String Description, Pname, saveCurrentDate, saveCurrentTime;
-    private int Price;
+    private double Price;
     private static final int GalleryPick = 1;
     private Uri ImageUri;
     private String productRandomKey, downloadImageURL;
@@ -122,7 +122,8 @@ public class AdminAddNewProductActivity extends AppCompatActivity {
     // check if the product date is given correctly
     private void ValidateProductData() {
         Description = InputProductDescription.getText().toString();
-        Price = Integer.parseInt(InputProductPrice.getText().toString());
+        double p = Double.parseDouble(InputProductPrice.getText().toString());
+        Price = Math.round(p * 100.0) / 100.0;
         Pname = InputProductName.getText().toString();
 
         if (ImageUri == null){

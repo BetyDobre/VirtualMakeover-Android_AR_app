@@ -47,7 +47,7 @@ import io.paperdb.Paper;
 public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private DatabaseReference ProductsRef;
     private RecyclerView recyclerView;
-    LinearLayoutManager layoutManager;
+    private LinearLayoutManager layoutManager;
     private Button homeSearch;
     private String type = "";
     private Spinner filtersSpinner;
@@ -225,7 +225,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                     protected void onBindViewHolder(@NonNull ProductViewHolder holder, int position, @NonNull Products model) {
                         holder.txtProductName.setText(model.getPname());
                         holder.txtProductDescription.setText(model.getDescription());
-                        holder.txtProductPrice.setText("Price: " + model.getPrice() + "lei");
+                        holder.txtProductPrice.setText("Price: " + model.getPrice() + " lei");
                         Picasso.get().load(model.getImage()).into(holder.imageView);
 
                         holder.itemView.setOnClickListener(new View.OnClickListener() {

@@ -9,10 +9,15 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
+
+import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -24,6 +29,11 @@ import com.shop.viewholders.ProductViewHolder;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
+
+import io.paperdb.Book;
 
 public class SearchProductsActivity extends AppCompatActivity {
 
@@ -34,7 +44,8 @@ public class SearchProductsActivity extends AppCompatActivity {
     private String searchInput, type = "";
     private ArrayList<Products> products = new ArrayList<>();
     private SearchAdapter searchAdapter;
-    private TextView noProductsFoundTxt;
+    private TextView noProductsFoundTxt, filterTxt;
+    private Spinner filtersSpinner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,6 +82,13 @@ public class SearchProductsActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        filterTxt = findViewById(R.id.filter_text_search);
+        filtersSpinner = findViewById(R.id.filter_options_search);
+        ArrayAdapter<String> filtersAdapter = new ArrayAdapter<String>(SearchProductsActivity.this,
+                android.R.layout.simple_list_item_1, getResources().getStringArray(R.array.filter_options));
+        filtersAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        filtersSpinner.setAdapter(filtersAdapter);
     }
 
     @Override
@@ -94,9 +112,25 @@ public class SearchProductsActivity extends AppCompatActivity {
 
         products.clear();
         searchList.removeAllViews();
+        filtersSpinner.setSelection(0);
 
         // search the specific product by name
         ref.addListenerForSingleValueEvent(new ValueEventListener() {
+
+            Comparator<Products> compareByNameAscending = new Comparator<Products>() {
+                @Override
+                public int compare(Products o1, Products o2) {
+                    return o1.getPname().compareTo(o2.getPname());
+                }
+            };
+
+            Comparator<Products> compareByPrice = new Comparator<Products>() {
+                @Override
+                public int compare(Products o1, Products o2) {
+                    return (int) (o1.getPrice() - o2.getPrice());
+                }
+            };
+
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot product : snapshot.getChildren()){
@@ -106,21 +140,74 @@ public class SearchProductsActivity extends AppCompatActivity {
                     String date = product.child("date").getValue(String.class);
                     String description = product.child("description").getValue(String.class);
                     String image = product.child("image").getValue(String.class);
-                    int price = product.child("price").getValue(Integer.class);
+                    double price = product.child("price").getValue(Double.class);
                     String time = product.child("time").getValue(String.class);
                     Products p = new Products(pname,description,image,cateogry,pid,date,time,price);
 
                     if(pname.toLowerCase().contains(searchInput.toLowerCase())){
                         products.add(p);
                     }
-
                 }
+
+                filtersSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                        if(i == 0){
+                            products.clear();
+                            for (DataSnapshot product : snapshot.getChildren()){
+                                String pid = product.getKey();
+                                String pname = product.child("pname").getValue(String.class);
+                                String cateogry = product.child("category").getValue(String.class);
+                                String date = product.child("date").getValue(String.class);
+                                String description = product.child("description").getValue(String.class);
+                                String image = product.child("image").getValue(String.class);
+                                double price = product.child("price").getValue(Double.class);
+                                String time = product.child("time").getValue(String.class);
+                                Products p = new Products(pname,description,image,cateogry,pid,date,time,price);
+
+                                if(pname.toLowerCase().contains(searchInput.toLowerCase())){
+                                    products.add(p);
+                                }
+                            }
+                            searchAdapter = new SearchAdapter(products);
+                            searchList.setAdapter(searchAdapter);
+                        }
+                        else if (i == 1){
+                            products.sort(compareByPrice);
+                            searchAdapter = new SearchAdapter(products);
+                            searchList.setAdapter(searchAdapter);
+                        }
+                        else if(i == 2){
+                            products.sort(compareByPrice.reversed());
+                            searchAdapter = new SearchAdapter(products);
+                            searchList.setAdapter(searchAdapter);
+                        }
+                        else if(i == 3){
+                            products.sort(compareByNameAscending);
+                            searchAdapter = new SearchAdapter(products);
+                            searchList.setAdapter(searchAdapter);
+                        }
+                        else if(i == 4) {
+                            products.sort(compareByNameAscending.reversed());
+                            searchAdapter = new SearchAdapter(products);
+                            searchList.setAdapter(searchAdapter);
+                        }
+                    }
+
+                    @Override
+                    public void onNothingSelected(AdapterView<?> adapterView) {
+                    }
+                });
 
                 if(products.size() == 0){
                     noProductsFoundTxt.setVisibility(View.VISIBLE);
+                    filtersSpinner.setVisibility(View.GONE);
+                    filterTxt.setVisibility(View.GONE);
                 }
                 else {
                     noProductsFoundTxt.setVisibility(View.GONE);
+                    filtersSpinner.setVisibility(View.VISIBLE);
+                    filterTxt.setVisibility(View.VISIBLE);
                 }
 
                 searchAdapter = new SearchAdapter(products);
@@ -129,7 +216,6 @@ public class SearchProductsActivity extends AppCompatActivity {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
             }
         });
     }
