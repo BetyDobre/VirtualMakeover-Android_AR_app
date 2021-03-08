@@ -30,6 +30,11 @@
             android:title="Settings"
             android:iconTint="@color/white"/>
         <item
+            android:id="@+id/nav_contact"
+            android:icon="@drawable/contact"
+            android:title="Contact us"
+            android:iconTint="@color/white"/>
+        <item
             android:id="@+id/nav_logout"
             android:icon="@drawable/logout"
             android:title="Logout"

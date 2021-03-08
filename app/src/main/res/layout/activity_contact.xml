@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:fillViewport="true">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ContactActivity">
+
+    <RelativeLayout
+        android:id="@+id/rll15"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        android:layout_alignParentTop="true">
+
+        <ImageView
+            android:id="@+id/back_to_home_from_contact_img"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginStart="5dp"
+            android:src="@drawable/back"/>
+
+        <TextView
+            android:id="@+id/back_to_home_from_contact_txt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Back"
+            android:textColor="@color/white"
+            android:textSize="20dp"
+            android:layout_toRightOf="@id/back_to_home_from_contact_img"
+            android:layout_marginStart="8dp"
+            android:textStyle="bold"
+            android:layout_marginTop="10dp"
+            />
+    </RelativeLayout>
+
+    <ImageView
+        android:id="@+id/contact_us_img"
+        android:layout_width="match_parent"
+        android:layout_height="180dp"
+        android:src="@drawable/contactusbanner"
+        android:layout_marginTop="0dp"
+        android:layout_below="@id/rll15"
+        />
+    <TextView
+        android:id="@+id/general_txt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/contact_us_img"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:textSize="20dp"
+        android:textAlignment="center"
+        android:textColor="@color/colorPrimary"
+        android:text="General Customer Care and Technical Support"
+        android:fontFamily="sans-serif"
+        android:textStyle="bold"
+        />
+
+    <ImageView
+        android:id="@+id/contact_phone_img"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_below="@id/general_txt"
+        android:background="@drawable/phone"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="30dp"
+        />
+
+    <TextView
+        android:id="@+id/contact_phone_txt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/general_txt"
+        android:layout_toRightOf="@id/contact_phone_img"
+        android:layout_marginTop="30dp"
+        android:layout_marginStart="5dp"
+        android:textSize="18dp"
+        android:textColor="@color/black"
+        android:text="Phone number:  +40728396714"
+        android:fontFamily="sans-serif-condensed-light"
+        android:textStyle="bold"
+        />
+
+    <ImageView
+        android:id="@+id/contact_mail_img"
+        android:layout_width="35dp"
+        android:layout_height="25dp"
+        android:layout_below="@id/contact_phone_img"
+        android:background="@drawable/email"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        />
+
+    <TextView
+        android:id="@+id/contact_email_txt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/contact_phone_txt"
+        android:layout_toRightOf="@id/contact_mail_img"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="5dp"
+        android:textSize="18dp"
+        android:textColor="@color/black"
+        android:text="Email: "
+        android:contextClickable="true"
+        android:fontFamily="sans-serif-condensed-light"
+        android:textStyle="bold"
+        />
+    <TextView
+        android:id="@+id/contact_mail_txt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/contact_phone_txt"
+        android:layout_toRightOf="@id/contact_email_txt"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="5dp"
+        android:layout_alignParentEnd="true"
+        android:textSize="18dp"
+        android:textColor="@color/black"
+        android:text="licentafmi2021@gmail.com"
+        android:contextClickable="true"
+        android:fontFamily="sans-serif-condensed-light"
+        android:textStyle="bold|italic"
+        />
+
+    <ImageView
+        android:id="@+id/contact_address_img"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_below="@id/contact_mail_img"
+        android:background="@drawable/address"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        />
+
+    <TextView
+        android:id="@+id/contact_address_txt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/contact_mail_txt"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="20dp"
+        android:textSize="18dp"
+        android:textColor="@color/black"
+        android:text="Address:  Str. Academiei nr.14, 010014 Bucuresti"
+        android:fontFamily="sans-serif-condensed-light"
+        android:textStyle="bold"
+        android:layout_toRightOf="@id/contact_address_img"
+        />
+
+    <fragment
+        android:id="@+id/maps_fragment"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:layout_below="@id/contact_address_txt"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:name="com.shop.MapsFragment"/>
+    <TextView
+        android:id="@+id/contact_hours_txt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/maps_fragment"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:textSize="18dp"
+        android:textColor="@color/black"
+        android:text="You can find us daily between 8am and 5pm EET"
+        android:fontFamily="sans-serif-condensed-light"
+        android:textStyle="bold"
+        />
+</RelativeLayout>
+</ScrollView>
