@@ -111,12 +111,28 @@
             android:inputType="numberDecimal"
             />
 
+        <EditText
+            android:id="@+id/product_discount_edit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/product_price_edit"
+            android:hint="Product discount (percent)"
+            android:textAlignment="center"
+            android:textSize="18sp"
+            android:background="@drawable/input_design"
+            android:padding="12dp"
+            android:layout_margin="5dp"
+            android:textColor="@color/colorPrimary"
+            android:inputType="number"
+            />
+
         <Button
             android:id="@+id/apply_changes_btn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/product_price_edit"
+            android:layout_below="@id/product_discount_edit"
             android:text="Save changes"
+
             android:textAlignment="center"
             android:textSize="18sp"
             android:background="@drawable/buttons"

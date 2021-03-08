@@ -5,7 +5,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.text.Spannable;
+import android.text.Spanned;
+import android.text.style.ForegroundColorSpan;
+import android.text.style.StrikethroughSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -127,7 +132,7 @@ public class SearchProductsActivity extends AppCompatActivity {
             Comparator<Products> compareByPrice = new Comparator<Products>() {
                 @Override
                 public int compare(Products o1, Products o2) {
-                    return (int) (o1.getPrice() - o2.getPrice());
+                    return (int) (o1.getDiscountPrice() - o2.getDiscountPrice());
                 }
             };
 
@@ -142,7 +147,9 @@ public class SearchProductsActivity extends AppCompatActivity {
                     String image = product.child("image").getValue(String.class);
                     double price = product.child("price").getValue(Double.class);
                     String time = product.child("time").getValue(String.class);
-                    Products p = new Products(pname,description,image,cateogry,pid,date,time,price);
+                    int discount = product.child("discount").getValue(Integer.class);
+                    double discountPrice = product.child("discountPrice").getValue(Double.class);
+                    Products p = new Products(pname,description,image,cateogry,pid,date,time,price,discount,discountPrice);
 
                     if(pname.toLowerCase().contains(searchInput.toLowerCase())){
                         products.add(p);
@@ -163,7 +170,9 @@ public class SearchProductsActivity extends AppCompatActivity {
                                 String image = product.child("image").getValue(String.class);
                                 double price = product.child("price").getValue(Double.class);
                                 String time = product.child("time").getValue(String.class);
-                                Products p = new Products(pname,description,image,cateogry,pid,date,time,price);
+                                int discount = product.child("discount").getValue(Integer.class);
+                                double discountPrice = product.child("discountPrice").getValue(Double.class);
+                                Products p = new Products(pname,description,image,cateogry,pid,date,time,price,discount,discountPrice);
 
                                 if(pname.toLowerCase().contains(searchInput.toLowerCase())){
                                     products.add(p);
@@ -239,7 +248,16 @@ public class SearchProductsActivity extends AppCompatActivity {
         public void onBindViewHolder(@NonNull ProductViewHolder holder, int position) {
             holder.txtProductName.setText(products.get(position).getPname());
             holder.txtProductDescription.setText(products.get(position).getDescription());
-            holder.txtProductPrice.setText("Price: " +products.get(position).getPrice()+"lei");
+            if(products.get(position).getDiscount() == 0){
+                holder.txtProductPrice.setText("Price: " + products.get(position).getPrice() + " lei");
+            }
+            else{
+                String txt = "Price: " + products.get(position).getPrice() + " lei " + products.get(position).getDiscountPrice() + " lei";
+                holder.txtProductPrice.setText(txt, TextView.BufferType.SPANNABLE);
+                Spannable spannable = (Spannable) holder.txtProductPrice.getText();
+                spannable.setSpan(new StrikethroughSpan(), 7, txt.length() - (products.get(position).getDiscountPrice() + " lei").length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                spannable.setSpan(new ForegroundColorSpan(Color.parseColor("#e71826")), 7, txt.length() - (products.get(position).getDiscountPrice() + " lei").length(), Spanned.SPAN_INCLUSIVE_INCLUSIVE);
+            }
             Picasso.get().load(products.get(position).getImage()).into(holder.imageView);
 
             holder.itemView.setOnClickListener(new View.OnClickListener() {

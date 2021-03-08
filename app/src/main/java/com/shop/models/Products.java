@@ -3,12 +3,13 @@ package com.shop.models;
 // products class model
 public class Products {
     private String pname, description, image, category, pid, date, time;
-    private double price;
+    private double price, discountPrice;
+    private int discount;
 
     public Products() {
     }
 
-    public Products(String pname, String description, String image, String category, String pid, String date, String time, double price) {
+    public Products(String pname, String description, String image, String category, String pid, String date, String time, double price, int discount, double discountPrice) {
         this.pname = pname;
         this.description = description;
         this.image = image;
@@ -17,6 +18,24 @@ public class Products {
         this.date = date;
         this.time = time;
         this.price = price;
+        this.discount = discount;
+        this.discountPrice = discountPrice;
+    }
+
+    public double getDiscountPrice() {
+        return discountPrice;
+    }
+
+    public void setDiscountPrice(double discountPrice) {
+        this.discountPrice = discountPrice;
+    }
+
+    public int getDiscount() {
+        return discount;
+    }
+
+    public void setDiscount(int discount) {
+        this.discount = discount;
     }
 
     public String getPname() {

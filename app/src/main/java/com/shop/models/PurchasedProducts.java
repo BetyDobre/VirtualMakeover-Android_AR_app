@@ -1,13 +1,14 @@
 package com.shop.models;
 
 public class PurchasedProducts {
-    String date, discount, image, pid, pname, quantity, time;
+    String date, image, pid, pname, quantity, time;
     double price;
+    int discount;
 
     public PurchasedProducts() {
     }
 
-    public PurchasedProducts(String date, String discount, String image, String pid, String pname, double price, String quantity, String time) {
+    public PurchasedProducts(String date, int discount, String image, String pid, String pname, double price, String quantity, String time) {
         this.date = date;
         this.discount = discount;
         this.image = image;
@@ -26,11 +27,11 @@ public class PurchasedProducts {
         this.date = date;
     }
 
-    public String getDiscount() {
+    public int getDiscount() {
         return discount;
     }
 
-    public void setDiscount(String discount) {
+    public void setDiscount(int discount) {
         this.discount = discount;
     }
 

@@ -8,8 +8,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.text.Spannable;
+import android.text.Spanned;
 import android.text.TextUtils;
+import android.text.style.ForegroundColorSpan;
+import android.text.style.StrikethroughSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -145,7 +150,14 @@ public class ProductDetailsActivity extends AppCompatActivity {
         final HashMap<String, Object> cartMap = new HashMap<>();
         cartMap.put("pid", productID);
         cartMap.put("pname", productName.getText().toString());
-        double sub = Double.parseDouble((productPrice.getText().toString()).substring(0, (productPrice.getText().toString()).length() - 4));
+        String pricetxt = productPrice.getText().toString();
+        double sub;
+        if(pricetxt.substring(pricetxt.indexOf("lei") + 3, pricetxt.length()).isEmpty()){
+            sub = Double.parseDouble((pricetxt).substring(0, (pricetxt).length() - 4));
+        }
+        else{
+            sub = Double.parseDouble(pricetxt.substring(pricetxt.indexOf("lei") + 3, pricetxt.length() - 4));
+        }
         cartMap.put("price", sub);
         cartMap.put("date", saveCurrentDate);
         cartMap.put("time", saveCurrentTime);
@@ -193,7 +205,16 @@ public class ProductDetailsActivity extends AppCompatActivity {
                     Products product = dataSnapshot.getValue(Products.class);
                     productName.setText(product.getPname());
                     productDescription.setText(product.getDescription());
-                    productPrice.setText(product.getPrice()+ " lei");
+                    if(product.getDiscount() == 0){
+                        productPrice.setText(product.getPrice()+ " lei");
+                    }
+                    else{
+                        String txt = product.getPrice() + " lei " + product.getDiscountPrice() + " lei";
+                        productPrice.setText(txt, TextView.BufferType.SPANNABLE);
+                        Spannable spannable = (Spannable) productPrice.getText();
+                        spannable.setSpan(new StrikethroughSpan(), 0, txt.length() - (product.getDiscountPrice() + " lei").length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                        spannable.setSpan(new ForegroundColorSpan(Color.parseColor("#e71826")), 0, txt.length() - (product.getDiscountPrice() + " lei").length(), Spanned.SPAN_INCLUSIVE_INCLUSIVE);
+                    }
                     Picasso.get().load(product.getImage()).into(productImage);
                     image = product.getImage();
                     if(getIntent().getStringExtra("quantity") != null){

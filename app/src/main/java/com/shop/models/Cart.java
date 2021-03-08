@@ -2,7 +2,7 @@ package com.shop.models;
 
 // products from the cart class model
 public class Cart {
-    private String pid, pname, quantity, discount, image;
+    private String pid, pname, quantity, image;
     double price;
 
     public Cart() {
@@ -13,7 +13,6 @@ public class Cart {
         this.pname = pname;
         this.price = price;
         this.quantity = quantity;
-        this.discount = discount;
         this.image = image;
     }
 
@@ -57,11 +56,4 @@ public class Cart {
         this.quantity = quantity;
     }
 
-    public String getDiscount() {
-        return discount;
-    }
-
-    public void setDiscount(String discount) {
-        this.discount = discount;
-    }
 }

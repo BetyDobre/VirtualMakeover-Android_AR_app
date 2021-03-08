@@ -6,7 +6,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.text.Spannable;
+import android.text.Spanned;
+import android.text.style.ForegroundColorSpan;
+import android.text.style.StrikethroughSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -109,7 +114,16 @@ public class CategoryProductsActivity extends AppCompatActivity {
                     protected void onBindViewHolder(@NonNull ProductViewHolder holder, int position, @NonNull Products model) {
                         holder.txtProductName.setText(model.getPname());
                         holder.txtProductDescription.setText(model.getDescription());
-                        holder.txtProductPrice.setText("Price: " + model.getPrice()+"lei");
+                        if(model.getDiscount() == 0){
+                            holder.txtProductPrice.setText("Price: " + model.getPrice() + " lei");
+                        }
+                        else{
+                            String txt = "Price: " + model.getPrice() + " lei " + model.getDiscountPrice() + " lei";
+                            holder.txtProductPrice.setText(txt, TextView.BufferType.SPANNABLE);
+                            Spannable spannable = (Spannable) holder.txtProductPrice.getText();
+                            spannable.setSpan(new StrikethroughSpan(), 7, txt.length() - (model.getDiscountPrice() + " lei").length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                            spannable.setSpan(new ForegroundColorSpan(Color.parseColor("#e71826")), 7, txt.length() - (model.getDiscountPrice() + " lei").length(), Spanned.SPAN_INCLUSIVE_INCLUSIVE);
+                        }
                         Picasso.get().load(model.getImage()).into(holder.imageView);
 
                         holder.itemView.setOnClickListener(new View.OnClickListener() {

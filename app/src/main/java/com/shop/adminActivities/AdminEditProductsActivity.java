@@ -33,7 +33,7 @@ import java.util.HashMap;
 public class AdminEditProductsActivity extends AppCompatActivity {
 
     private Button saveChangesBtn, deleteBtn;
-    private EditText name, price, description;
+    private EditText name, price, description, discount;
     private ImageView image;
     private TextView backBtn;
     private String productID = "";
@@ -55,6 +55,7 @@ public class AdminEditProductsActivity extends AppCompatActivity {
         name = findViewById(R.id.product_name_edit);
         price = findViewById(R.id.product_price_edit);
         description = findViewById(R.id.product_description_edit);
+        discount = findViewById(R.id.product_discount_edit);
         image = findViewById(R.id.product_image_edit);
         deleteBtn = findViewById(R.id.delete_product_btn);
         backBtn = findViewById(R.id.back_to_maintain_products_txt);
@@ -134,6 +135,7 @@ public class AdminEditProductsActivity extends AppCompatActivity {
         String newName = name.getText().toString();
         String newPrice = price.getText().toString();
         String newDescription = description.getText().toString();
+        String newDiscount = discount.getText().toString();
 
         if(newName.equals("")){
             Toast.makeText(this, "Please write the product name!", Toast.LENGTH_SHORT).show();
@@ -178,6 +180,9 @@ public class AdminEditProductsActivity extends AppCompatActivity {
                                     productMap.put("price",  Math.round(Double.parseDouble(newPrice)* 100.0) / 100.0);
                                     productMap.put("pname", newName);
                                     productMap.put("image", downloadImageURL);
+                                    productMap.put("discount", Integer.parseInt(newDiscount));
+                                    double newPriceDiscount = Double.parseDouble(newPrice) - Double.parseDouble(newDiscount)/100 * Double.parseDouble(newPrice);
+                                    productMap.put("discountPrice", Math.round(newPriceDiscount* 100.0) / 100.0);
 
                                     productsRef.updateChildren(productMap).addOnCompleteListener(new OnCompleteListener<Void>() {
                                         @Override
@@ -202,6 +207,9 @@ public class AdminEditProductsActivity extends AppCompatActivity {
                 productMap.put("description", newDescription);
                 productMap.put("price",  Math.round(Double.parseDouble(newPrice)* 100.0) / 100.0);
                 productMap.put("pname", newName);
+                productMap.put("discount", Integer.parseInt(newDiscount));
+                double newPriceDiscount = Double.parseDouble(newPrice) - Double.parseDouble(newDiscount)/100 * Double.parseDouble(newPrice);
+                productMap.put("discountPrice", Math.round(newPriceDiscount* 100.0) / 100.0);
 
                 productsRef.updateChildren(productMap).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
@@ -241,10 +249,12 @@ public class AdminEditProductsActivity extends AppCompatActivity {
                     String pprice = snapshot.child("price").getValue().toString();
                     String pdescription = snapshot.child("description").getValue().toString();
                     String pimage = snapshot.child("image").getValue().toString();
+                    String pdiscount = snapshot.child("discount").getValue().toString();
 
                     name.setText(pname);
                     price.setText(pprice);
                     description.setText(pdescription);
+                    discount.setText(pdiscount);
                     Picasso.get().load(pimage).into(image);
                 }
             }

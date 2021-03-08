@@ -1,8 +1,14 @@
 package com.shop;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.Spannable;
+import android.text.Spanned;
+import android.text.style.ForegroundColorSpan;
+import android.text.style.StrikethroughSpan;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -176,14 +182,14 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 else if (i == 1){
                     FirebaseRecyclerOptions<Products> options =
                             new FirebaseRecyclerOptions.Builder<Products>()
-                                    .setQuery(ProductsRef.orderByChild("price"), Products.class)
+                                    .setQuery(ProductsRef.orderByChild("discountPrice"), Products.class)
                                     .build();
                     recyclerBuild(options);
                 }
                 else if(i == 2){
                     FirebaseRecyclerOptions<Products> options =
                             new FirebaseRecyclerOptions.Builder<Products>()
-                                    .setQuery(ProductsRef.orderByChild("price"), Products.class)
+                                    .setQuery(ProductsRef.orderByChild("discountPrice"), Products.class)
                                     .build();
                     recyclerBuild(options);
                     layoutManager.setReverseLayout(true);
@@ -225,7 +231,16 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                     protected void onBindViewHolder(@NonNull ProductViewHolder holder, int position, @NonNull Products model) {
                         holder.txtProductName.setText(model.getPname());
                         holder.txtProductDescription.setText(model.getDescription());
-                        holder.txtProductPrice.setText("Price: " + model.getPrice() + " lei");
+                        if(model.getDiscount() == 0){
+                            holder.txtProductPrice.setText("Price: " + model.getPrice() + " lei");
+                        }
+                        else{
+                            String txt = "Price: " + model.getPrice() + " lei " + model.getDiscountPrice() + " lei";
+                            holder.txtProductPrice.setText(txt, TextView.BufferType.SPANNABLE);
+                            Spannable spannable = (Spannable) holder.txtProductPrice.getText();
+                            spannable.setSpan(new StrikethroughSpan(), 7, txt.length() - (model.getDiscountPrice() + " lei").length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                            spannable.setSpan(new ForegroundColorSpan(Color.parseColor("#e71826")), 7, txt.length() - (model.getDiscountPrice() + " lei").length(), Spanned.SPAN_INCLUSIVE_INCLUSIVE);
+                        }
                         Picasso.get().load(model.getImage()).into(holder.imageView);
 
                         holder.itemView.setOnClickListener(new View.OnClickListener() {
