@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:fillViewport="true">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".AboutUsActivity">
+
+    <RelativeLayout
+        android:id="@+id/rll16"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        android:layout_alignParentTop="true">
+
+        <ImageView
+            android:id="@+id/back_to_home_from_contact_img"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginStart="5dp"
+            android:src="@drawable/back"/>
+
+        <TextView
+            android:id="@+id/back_to_home_from_about_txt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Back"
+            android:textColor="@color/white"
+            android:textSize="20dp"
+            android:layout_toRightOf="@id/back_to_home_from_contact_img"
+            android:layout_marginStart="8dp"
+            android:textStyle="bold"
+            android:layout_marginTop="10dp"
+            />
+    </RelativeLayout>
+
+    <ViewFlipper
+        android:id="@+id/v_flipper"
+        android:layout_below="@id/rll16"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:inAnimation="@android:anim/slide_in_left"
+        android:outAnimation="@android:anim/slide_out_right"/>
+
+
+    <TextView
+        android:id="@+id/story_about"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="20dp"
+        android:textStyle="bold"
+        android:textColor="@color/colorPrimary"
+        android:text="The story"
+        android:fontFamily="@font/alfaslabone_regular"
+        android:layout_marginStart="20dp"
+        android:layout_below="@id/v_flipper"/>
+
+    <TextView
+        android:id="@+id/text1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/story_about"
+        android:layout_marginTop="5dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:textColor="@color/black"
+        android:fontFamily="sans-serif"
+        android:textSize="18dp"
+        android:text="    Building an online store seems like an impossible dream for most people, but for me was a challenge. Over the last decade, virtual and augmentative reality has revolutionized the shopping experience worldwide.
+
+While most consumers don’t realize it, considering the changes continue to cycle through an evolutionary process, nearly every aspect of shopping has gone through a growth period if it hasn’t gotten phased out completely. "/>
+
+    <TextView
+        android:id="@+id/story_technology"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:textSize="20dp"
+        android:textStyle="bold"
+        android:textColor="@color/colorPrimary"
+        android:text="Technology"
+        android:fontFamily="@font/alfaslabone_regular"
+        android:layout_marginStart="20dp"
+        android:layout_below="@id/text1"/>
+
+    <TextView
+        android:id="@+id/text2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/story_technology"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginTop="5dp"
+        android:textColor="@color/black"
+        android:fontFamily="sans-serif"
+        android:textSize="18dp"
+        android:text="     The retail landscape is overcrowded and customers are becoming desensitized to traditional marketing methods. That’s where augmented reality comes in. As shoppers turn to a blend of online, mobile, and bricks-and-mortar shopping for their convenience, brands and retailers are having to think of new and innovative ways in which they can capture customer attention. \n  Augmented reality – or AR – has the power to bring an image, product label or even shop window to life. Customers can see brands and their stock in a new way and engage with them on a completely new level. \n  It’s creative, innovative, and it works. Customers are lapping up AR integration in store and brands are beginning to take note \n "/>
+    <TextView
+        android:id="@+id/story_brand"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:textSize="20dp"
+        android:textStyle="bold"
+        android:textColor="@color/colorPrimary"
+        android:text="In-Store Experience"
+        android:fontFamily="@font/alfaslabone_regular"
+        android:layout_marginStart="20dp"
+        android:layout_below="@id/text2"/>
+
+    <TextView
+        android:id="@+id/text3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/story_brand"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginTop="5dp"
+        android:textColor="@color/black"
+        android:fontFamily="sans-serif"
+        android:textSize="18dp"
+        android:text="    Augmented reality allows you to place products anywhere, breaking the boundaries that conventional shopping sets. You can now see whether that wall clock will match the rest of your room. You can even try on glasses, makeup, and other fashion items to see how they look before making the purchase. "/>
+
+</RelativeLayout>
+</ScrollView>
