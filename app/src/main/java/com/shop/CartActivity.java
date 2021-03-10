@@ -160,6 +160,7 @@ public class CartActivity extends AppCompatActivity {
 
                             double oneProductTotalPrice = model.getPrice() * Double.valueOf(model.getQuantity());
                             totalPrice = totalPrice + oneProductTotalPrice;
+                            totalPrice = Math.round(totalPrice * 100.0) / 100.0;
                             totalPriceTxt.setText("Total price: " + String.valueOf(totalPrice) + " lei");
 
                             holder.itemView.setOnClickListener(new View.OnClickListener() {

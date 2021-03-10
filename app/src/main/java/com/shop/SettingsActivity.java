@@ -33,8 +33,8 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class SettingsActivity extends AppCompatActivity {
 
     private CircleImageView profileImageView;
-    private EditText fullnameEditText, userEmailEditText, addressEditText, passwordEditText, confirmNewPasswordEditText;
-    private TextView profileChangeTextBtn, closeTextBtn, saveTextBtn, currentPasswordTxt;
+    private EditText fullnameEditText, addressEditText, passwordEditText, confirmNewPasswordEditText;
+    private TextView profileChangeTextBtn, closeTextBtn, saveTextBtn, currentPasswordTxt, userEmailEditText;
     private Uri imageUri;
     private String myURL = "";
     private StorageTask uploadTask;
@@ -161,9 +161,6 @@ public class SettingsActivity extends AppCompatActivity {
         else if (TextUtils.isEmpty(addressEditText.getText().toString())){
             Toast.makeText(this, "Address is mandatory!", Toast.LENGTH_SHORT).show();
         }
-        else if (TextUtils.isEmpty(userEmailEditText.getText().toString())){
-            Toast.makeText(this, "Email is mandatory!", Toast.LENGTH_SHORT).show();
-        }
         else if(checker.equals("clicked")){
             uploadImage();
         }
@@ -201,7 +198,6 @@ public class SettingsActivity extends AppCompatActivity {
                         HashMap<String, Object> userMap = new HashMap<>();
                         userMap.put("name", fullnameEditText.getText().toString());
                         userMap.put("address", addressEditText.getText().toString());
-                        userMap.put("email", userEmailEditText.getText().toString());
                         userMap.put("image", myURL);
                         Prevalent.currentOnlineUser.setName(fullnameEditText.getText().toString());
                         Prevalent.currentOnlineUser.setImage(myURL);
@@ -251,7 +247,7 @@ public class SettingsActivity extends AppCompatActivity {
     }
 
     // display the already existing user info
-    private void userInfoDisplay(CircleImageView profileImageView, EditText fullnameEditText, EditText userEmailEditText, EditText addressEditText, EditText passwordEditText, EditText confirmNewPasswordEditText) {
+    private void userInfoDisplay(CircleImageView profileImageView, EditText fullnameEditText, TextView userEmailEditText, EditText addressEditText, EditText passwordEditText, EditText confirmNewPasswordEditText) {
         DatabaseReference UsersRef = FirebaseDatabase.getInstance().getReference().child("Users").child(EncodeString(Prevalent.currentOnlineUser.getEmail()));
 
         UsersRef.addValueEventListener(new ValueEventListener() {
