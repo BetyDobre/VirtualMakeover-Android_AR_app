@@ -44,7 +44,7 @@
             android:layout_height="wrap_content"
             android:text="Update"
             android:textColor="@color/white"
-            android:textSize="20sp"
+            android:textSize="20dp"
             android:textStyle="bold"
             android:layout_alignParentEnd="true"
             android:layout_marginTop="10dp"
@@ -73,7 +73,7 @@
         android:text="Email"
         android:textStyle="bold"
         android:textColor="@color/colorPrimary"
-        android:textSize="16sp"
+        android:textSize="16dp"
         />
 
     <TextView
@@ -98,7 +98,7 @@
         android:text="Full name"
         android:textStyle="bold"
         android:textColor="@color/colorPrimary"
-        android:textSize="16sp"
+        android:textSize="16dp"
         />
 
     <TextView
@@ -123,7 +123,7 @@
         android:text="Address"
         android:textStyle="bold"
         android:textColor="@color/colorPrimary"
-        android:textSize="16sp"
+        android:textSize="16dp"
         />
 
     <EditText
@@ -136,6 +136,7 @@
         android:layout_marginLeft="15dp"
         android:layout_marginTop="3dp"
         android:padding="10dp"
+        android:backgroundTint="@color/colorPrimary"
         />
 
 

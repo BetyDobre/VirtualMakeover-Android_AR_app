@@ -17,7 +17,7 @@
             android:layout_marginLeft="5dp"
             android:text="Userame"
             android:textColor="@color/white"
-            android:textSize="14sp"
+            android:textSize="14dp"
             android:textStyle="bold"
             android:layout_toRightOf="@id/user_image" />
 
@@ -28,7 +28,7 @@
             android:layout_marginLeft="5dp"
             android:text="Userame"
             android:textColor="@color/white"
-            android:textSize="14sp"
+            android:textSize="14dp"
             android:textStyle="bold"
             android:layout_alignParentStart="true"
             android:src="@drawable/no_avatar"/>
@@ -40,7 +40,7 @@
             android:layout_alignParentEnd="true"
             android:layout_marginLeft="5dp"
             android:text="Address"
-            android:textSize="14sp"
+            android:textSize="14dp"
             android:textStyle="bold"
             android:layout_marginTop="5dp"
             android:layout_below="@id/username"
@@ -53,12 +53,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="15dp"
             android:text="Email"
-            android:textSize="14sp"
+            android:textSize="14dp"
             android:textStyle="bold"
             android:textColor="@color/white"
-            android:layout_below="@id/user_image"/>
+            android:layout_below="@id/user_address"/>
 
         <Button
             android:id="@+id/show_orders_history__btn"

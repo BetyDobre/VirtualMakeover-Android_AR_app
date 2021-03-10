@@ -139,7 +139,7 @@ import java.util.HashMap;
          Calendar calForDate = Calendar.getInstance();
          final String saveCurrentTime, saveCurrentDate;
 
-         SimpleDateFormat currentDate = new SimpleDateFormat("dd-mmm-yyyy");
+         SimpleDateFormat currentDate = new SimpleDateFormat("dd-MM-yyyy");
          saveCurrentDate = currentDate.format(calForDate.getTime());
 
          SimpleDateFormat currentTime= new SimpleDateFormat("HH:mm:ss a");

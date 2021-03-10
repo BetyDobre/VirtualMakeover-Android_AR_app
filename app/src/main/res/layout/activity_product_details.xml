@@ -73,7 +73,7 @@
         android:layout_below="@+id/product_name_details"
         android:text= "Product description"
         android:textColor="@color/black"
-        android:textSize="16sp"
+        android:textSize="16dp"
         android:textStyle="bold"
         android:gravity="center"
         android:layout_marginTop="10dp"/>
@@ -85,7 +85,7 @@
         android:layout_below="@+id/product_description_details"
         android:text= "Product price"
         android:textColor="@color/black"
-        android:textSize="25sp"
+        android:textSize="25dp"
         android:textStyle="bold"
         android:gravity="center"
         android:layout_marginTop="15dp"/>
@@ -100,9 +100,9 @@
         android:layout_marginBottom="10dp"
         android:elevation="5dp"
         android:gravity="center"
-        app:finalNumber="10"
         app:initialNumber="1"
-        app:textSize="16sp"
+        app:finalNumber="10"
+        app:textSize="12dp"
         android:background="@drawable/buttons"
         >
     </com.cepheuen.elegantnumberbutton.view.ElegantNumberButton>

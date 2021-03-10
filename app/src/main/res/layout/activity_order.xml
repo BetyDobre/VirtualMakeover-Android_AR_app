@@ -71,6 +71,7 @@
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:hint="Your name..."
+        android:backgroundTint="@color/colorPrimary"
         />
 
     <EditText
@@ -83,6 +84,7 @@
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:hint="Your phone number..."
+        android:backgroundTint="@color/colorPrimary"
         />
 
     <EditText
@@ -94,6 +96,7 @@
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:hint="Shippment address..."
+        android:backgroundTint="@color/colorPrimary"
         />
 
     <EditText
@@ -105,6 +108,7 @@
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:hint="Shippment city..."
+        android:backgroundTint="@color/colorPrimary"
         />
 
     <TextView
@@ -133,7 +137,8 @@
             android:text="Card at delivery"
             android:layout_marginLeft="20dp"
             android:textSize="16dp"
-            android:textColor="@color/colorPrimary"/>
+            android:textColor="@color/colorPrimary"
+            android:buttonTint="@color/colorPrimary"/>
         <RadioButton
             android:id="@+id/cash_at_delivery"
             android:layout_width="match_parent"
@@ -141,7 +146,8 @@
             android:text="Cash at delivery"
             android:layout_marginLeft="20dp"
             android:textSize="16dp"
-            android:textColor="@color/colorPrimary"/>
+            android:textColor="@color/colorPrimary"
+            android:buttonTint="@color/colorPrimary"/>
     </RadioGroup>
 
     <Button

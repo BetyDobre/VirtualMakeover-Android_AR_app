@@ -18,7 +18,7 @@
             android:layout_marginLeft="5dp"
             android:text="Userame"
             android:textColor="@color/white"
-            android:textSize="14sp"
+            android:textSize="14dp"
             android:textStyle="bold" />
 
         <TextView
@@ -29,7 +29,7 @@
             android:layout_marginLeft="5dp"
             android:text="Phone number"
             android:textAlignment="textEnd"
-            android:textSize="14sp"
+            android:textSize="14dp"
             android:textStyle="bold"
             android:textColor="@color/white"
             android:layout_marginRight="5dp"/>
@@ -40,7 +40,7 @@
             android:layout_marginTop="5dp"
             android:layout_marginLeft="5dp"
             android:text="Total price"
-            android:textSize="14sp"
+            android:textSize="14dp"
             android:textStyle="bold"
             android:textColor="@color/white"
             android:layout_below="@id/order_username"/>
@@ -51,7 +51,7 @@
             android:layout_alignParentEnd="true"
             android:layout_marginLeft="5dp"
             android:text="Address"
-            android:textSize="14sp"
+            android:textSize="14dp"
             android:textStyle="bold"
             android:layout_marginTop="5dp"
             android:layout_below="@id/order_total_price"
@@ -64,7 +64,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
             android:text="Email"
-            android:textSize="14sp"
+            android:textSize="14dp"
             android:textStyle="bold"
             android:textColor="@color/white"
             android:layout_below="@id/order_address"/>
@@ -76,7 +76,7 @@
             android:layout_alignParentEnd="true"
             android:layout_marginLeft="5dp"
             android:text="Date and time"
-            android:textSize="14sp"
+            android:textSize="14dp"
             android:textStyle="bold"
             android:layout_marginTop="5dp"
             android:layout_below="@id/order_email"
@@ -89,7 +89,7 @@
             android:layout_alignParentEnd="true"
             android:layout_marginLeft="5dp"
             android:text="State"
-            android:textSize="14sp"
+            android:textSize="14dp"
             android:textStyle="bold"
             android:layout_marginTop="5dp"
             android:layout_below="@id/order_date_time"
@@ -103,7 +103,7 @@
             android:layout_alignParentEnd="true"
             android:layout_marginLeft="5dp"
             android:text="Payment method:"
-            android:textSize="14sp"
+            android:textSize="14dp"
             android:textStyle="bold"
             android:layout_marginTop="5dp"
             android:layout_below="@id/order_state"

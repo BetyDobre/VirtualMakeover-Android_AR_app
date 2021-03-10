@@ -28,6 +28,8 @@ import com.google.firebase.storage.UploadTask;
 import com.shop.HomeActivity;
 import com.shop.R;
 import com.squareup.picasso.Picasso;
+import com.theartofdev.edmodo.cropper.CropImage;
+
 import java.util.HashMap;
 
 public class AdminEditProductsActivity extends AppCompatActivity {
@@ -116,7 +118,9 @@ public class AdminEditProductsActivity extends AppCompatActivity {
         Intent galleryIntent = new Intent();
         galleryIntent.setAction(Intent.ACTION_GET_CONTENT);
         galleryIntent.setType("image/*");
-        startActivityForResult(galleryIntent, GalleryPick);
+        CropImage.activity(ImageUri)
+                .setAspectRatio(3, 2)
+                .start(AdminEditProductsActivity.this);
     }
 
     // get the image from the gallery
@@ -124,9 +128,13 @@ public class AdminEditProductsActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == GalleryPick && resultCode == RESULT_OK && data != null){
-            ImageUri = data.getData();
+        if (requestCode==CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK && data != null){
+            CropImage.ActivityResult result = CropImage.getActivityResult(data);
+            ImageUri = result.getUri();
             image.setImageURI(ImageUri);
+        }
+        else {
+            Toast.makeText(this, "Error, try again", Toast.LENGTH_SHORT).show();
         }
     }
 

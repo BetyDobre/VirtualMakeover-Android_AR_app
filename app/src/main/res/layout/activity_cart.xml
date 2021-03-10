@@ -76,7 +76,7 @@
         android:background="@drawable/buttons"
         android:text="Next"
         android:textColor="@color/white"
-        android:textSize="20sp"
+        android:textSize="20dp"
         android:layout_margin="1dp"
         />
 

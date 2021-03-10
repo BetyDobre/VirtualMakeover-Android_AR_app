@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
     android:fillViewport="true">
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -59,7 +59,6 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
         android:gravity = "center"
         android:layout_marginTop="45dp"
         android:layout_below="@id/rll7"
@@ -94,7 +93,6 @@
         android:layout_below="@+id/layout_category_glasses"
         android:orientation="horizontal"
         android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
         android:gravity = "center"
         android:layout_marginTop="30dp"
         >
@@ -127,7 +125,6 @@
         android:layout_below="@+id/layout_category_foundation"
         android:orientation="horizontal"
         android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
         android:gravity = "center"
         android:layout_marginTop="30dp"
         >
@@ -160,7 +157,6 @@
         android:layout_below="@+id/layout_category_lipstick"
         android:orientation="horizontal"
         android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
         android:gravity = "center"
         android:layout_marginTop="30dp"
         >
@@ -191,12 +187,15 @@
         android:id="@+id/all_categories_products_btn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
+        android:layout_below="@id/layout_category_decoration"
         android:background="@drawable/buttons"
         android:textColor="@color/white"
         android:text="See all products"
         android:textStyle="bold"
         android:textSize="16dp"
+        android:layout_marginTop="50dp"
+       android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
         />
 
 </RelativeLayout>

@@ -15,8 +15,7 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
-            app:popupTheme="@style/Theme.ARShop.PopupOverlay">
+            android:background="?attr/colorPrimary">
 
 
             <Button
@@ -56,6 +55,7 @@
         android:visibility="invisible"
         app:srcCompat="@drawable/back_black"
         android:backgroundTint="@color/white"
-        app:borderWidth="0dp"/>
+        app:borderWidth="0.5dp"
+        app:backgroundTint="@color/colorPrimary"/>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

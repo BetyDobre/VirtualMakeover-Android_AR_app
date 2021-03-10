@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
     android:fillViewport="true">
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     tools:context=".adminActivities.AdminHomeActivity">
 
     <TextView
@@ -19,7 +19,7 @@
         android:layout_marginTop="50dp"
         android:text="Add New Product"
         android:textAlignment="center"
-        android:textSize="26sp"
+        android:textSize="26dp"
         android:textStyle="bold"
         android:textColor="@color/colorPrimary"
         />
@@ -109,17 +109,17 @@
 
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/linear5_category_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/linear4_category_layout"
-        android:orientation="horizontal"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:gravity = "center"
-        android:layout_marginTop="30dp"
-        >
+<!--    <LinearLayout-->
+<!--        android:id="@+id/linear5_category_layout"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_below="@+id/linear4_category_layout"-->
+<!--        android:orientation="horizontal"-->
+<!--        android:layout_centerHorizontal="true"-->
+<!--        android:layout_centerVertical="true"-->
+<!--        android:gravity = "center"-->
+<!--        android:layout_marginTop="30dp"-->
+<!--        >-->
 
 <!--        <ImageView-->
 <!--            android:id="@+id/hats"-->
@@ -128,21 +128,22 @@
 <!--            android:src="@drawable/hats"-->
 <!--            />-->
 
-    </LinearLayout>
+<!--    </LinearLayout>-->
 
     <Button
         android:id="@+id/maintain_btn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@id/check_orders_btn"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:layout_marginBottom="10dp"
+        android:layout_marginTop="60dp"
         android:background="@color/colorPrimary"
         android:text="Maintain Products"
         android:textColor="@color/white"
         android:textSize="20dp"
         android:textAllCaps="false"
+        android:layout_below="@id/linear4_category_layout"
         />
 
 
@@ -150,7 +151,7 @@
         android:id="@+id/check_orders_btn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@id/admin_logout_btn"
+        android:layout_below="@id/maintain_btn"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:layout_marginBottom="10dp"
@@ -165,7 +166,6 @@
         android:id="@+id/admin_logout_btn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:layout_marginBottom="15dp"
@@ -174,6 +174,7 @@
         android:textColor="@color/white"
         android:textSize="20dp"
         android:textAllCaps="false"
+        android:layout_below="@id/check_orders_btn"
         />
 </RelativeLayout>
-</androidx.core.widget.NestedScrollView>
+</ScrollView>

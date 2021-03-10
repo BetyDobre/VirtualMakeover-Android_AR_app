@@ -138,74 +138,77 @@ public class MainActivity extends AppCompatActivity {
 
     // sign in with Google account
     private void FirebaseGoogleAuth(GoogleSignInAccount acct) {
-        AuthCredential authCredential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
-        mAuth.signInWithCredential(authCredential).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                if(task.isSuccessful()){
+        if(acct != null) {
+            AuthCredential authCredential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
 
-                    loadingBar.setTitle("Login with Google");
-                    loadingBar.setMessage("Please wait, we are checking the credentials.");
-                    loadingBar.setCanceledOnTouchOutside(false);
-                    loadingBar.show();
+            mAuth.signInWithCredential(authCredential).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                @Override
+                public void onComplete(@NonNull Task<AuthResult> task) {
+                    if (task.isSuccessful()) {
 
-                    GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(getApplicationContext());
-                    String email = account.getEmail();
-                    String name = account.getDisplayName();
+                        loadingBar.setTitle("Login with Google");
+                        loadingBar.setMessage("Please wait, we are checking the credentials.");
+                        loadingBar.setCanceledOnTouchOutside(false);
+                        loadingBar.show();
 
-                    final DatabaseReference RootRef;
-                    RootRef = FirebaseDatabase.getInstance().getReference();
+                        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(getApplicationContext());
+                        String email = account.getEmail();
+                        String name = account.getDisplayName();
 
-                    RootRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            if (dataSnapshot.child("Users").child(EncodeString(email)).exists()) {
-                                Toast.makeText(MainActivity.this, "There is already an account with this email", Toast.LENGTH_SHORT).show();
-                                loadingBar.dismiss();
-                                mGoogleSignInClient.signOut();
-                                signInWithGoogle();
+                        final DatabaseReference RootRef;
+                        RootRef = FirebaseDatabase.getInstance().getReference();
+
+                        RootRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                if (dataSnapshot.child("Users").child(EncodeString(email)).exists()) {
+                                    Toast.makeText(MainActivity.this, "There is already an account with this email", Toast.LENGTH_SHORT).show();
+                                    loadingBar.dismiss();
+                                    mGoogleSignInClient.signOut();
+                                    signInWithGoogle();
+                                } else if (dataSnapshot.child("Admins").child(EncodeString(email)).exists()) {
+                                    Toast.makeText(MainActivity.this, "There is already an admin account with this email", Toast.LENGTH_SHORT).show();
+                                    loadingBar.dismiss();
+                                    mGoogleSignInClient.signOut();
+                                    signInWithGoogle();
+                                } else {
+                                    Toast.makeText(MainActivity.this, "Signed In successfully!", Toast.LENGTH_SHORT).show();
+                                    loadingBar.dismiss();
+
+                                    Users userData = new Users();
+                                    userData.setEmail(email);
+                                    userData.setName(name);
+                                    userData.setImage(account.getPhotoUrl().toString());
+                                    userData.setAddress(" ");
+                                    userData.setPassword("-");
+                                    Prevalent.currentOnlineUser = userData;
+
+                                    HashMap<String, Object> userdataMap = new HashMap<>();
+                                    userdataMap.put("email", email);
+                                    userdataMap.put("name", name);
+                                    userdataMap.put("image", account.getPhotoUrl().toString());
+                                    FirebaseDatabase.getInstance().getReference().child("Google Users").child(EncodeString(userData.getEmail())).updateChildren(userdataMap);
+
+                                    Paper.book().write(Prevalent.UserEmailKey, email);
+                                    Paper.book().write(Prevalent.UserPasswordKey, "not needed");
+
+                                    Intent intent = new Intent(MainActivity.this, HomeActivity.class);
+                                    startActivity(intent);
+                                }
                             }
-                            else if (dataSnapshot.child("Admins").child(EncodeString(email)).exists()){
-                                Toast.makeText(MainActivity.this, "There is already an admin account with this email", Toast.LENGTH_SHORT).show();
-                                loadingBar.dismiss();
-                                mGoogleSignInClient.signOut();
-                                signInWithGoogle();
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
                             }
-                            else {
-                                Toast.makeText(MainActivity.this, "Signed In successfully!", Toast.LENGTH_SHORT).show();
-                                loadingBar.dismiss();
+                        });
 
-                                Users userData = new Users();
-                                userData.setEmail(email);
-                                userData.setName(name);
-                                userData.setImage(account.getPhotoUrl().toString());
-                                userData.setAddress(" ");
-                                userData.setPassword("-");
-                                Prevalent.currentOnlineUser = userData;
-
-                                HashMap<String, Object> userdataMap = new HashMap<>();
-                                userdataMap.put("email", email);
-                                userdataMap.put("name", name);
-                                userdataMap.put("image", account.getPhotoUrl().toString());
-                                FirebaseDatabase.getInstance().getReference().child("Google Users").child(EncodeString(userData.getEmail())).updateChildren(userdataMap);
-
-                                Intent intent = new Intent(MainActivity.this, HomeActivity.class);
-                                startActivity(intent);
-                            }
-                        }
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError error) {
-                        }
-                    });
-
+                    } else {
+                        Toast.makeText(MainActivity.this, "Failed", Toast.LENGTH_SHORT).show();
+                    }
                 }
-                else {
-                    Toast.makeText(MainActivity.this, "Failed", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
+            });
+        }
     }
-
 
     // login from Remember me option
     private void AllowAccess(final String email, final String password) {
@@ -250,6 +253,21 @@ public class MainActivity extends AppCompatActivity {
                             }
                         }
                     }
+                else if (dataSnapshot.child("Google Users").child(EncodeString(email)).exists()){
+                    Users userData = dataSnapshot.child("Google Users").child(EncodeString(email)).getValue(Users.class);
+                    if (userData.getEmail().equals(email)) {
+                        Toast.makeText(MainActivity.this, "Success login!", Toast.LENGTH_SHORT).show();
+                        loadingBar.dismiss();
+                        Prevalent.currentOnlineUser = userData;
+                        Intent intent = new Intent(MainActivity.this, HomeActivity.class);
+                        startActivity(intent);
+                    }
+                    else {
+                        Toast.makeText(MainActivity.this, "Google session expired!", Toast.LENGTH_SHORT).show();
+                        loadingBar.dismiss();
+                    }
+
+                }
                 else {
                     Toast.makeText(MainActivity.this, "Account with this email doesn't exist!", Toast.LENGTH_SHORT).show();
                     loadingBar.dismiss();

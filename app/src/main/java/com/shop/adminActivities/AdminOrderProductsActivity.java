@@ -89,7 +89,7 @@ public class AdminOrderProductsActivity extends AppCompatActivity {
         FirebaseRecyclerAdapter<Cart, CartViewHolder> adapter = new FirebaseRecyclerAdapter<Cart, CartViewHolder>(options) {
             @Override
             protected void onBindViewHolder(@NonNull CartViewHolder holder, int position, @NonNull Cart model) {
-                holder.productQuantityTxt.setText("Quantity: " + model.getQuantity());
+                holder.productQuantityTxt.setText("Qty: " + model.getQuantity());
                 holder.productNameTxt.setText(model.getPname());
                 holder.productPriceTxt.setText("Price: " + model.getQuantity() + "x" + model.getPrice() + " lei");
                 Picasso.get().load(model.getImage()).into(holder.productImage);

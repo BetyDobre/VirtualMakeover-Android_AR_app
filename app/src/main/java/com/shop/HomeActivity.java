@@ -239,7 +239,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                             holder.txtProductPrice.setText(txt, TextView.BufferType.SPANNABLE);
                             Spannable spannable = (Spannable) holder.txtProductPrice.getText();
                             spannable.setSpan(new StrikethroughSpan(), 7, txt.length() - (model.getDiscountPrice() + " lei").length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-                            spannable.setSpan(new ForegroundColorSpan(Color.parseColor("#e71826")), 7, txt.length() - (model.getDiscountPrice() + " lei").length(), Spanned.SPAN_INCLUSIVE_INCLUSIVE);
+                            spannable.setSpan(new ForegroundColorSpan(Color.parseColor("#e71826")), 7, txt.length() - (model.getDiscountPrice() + " lei").length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                         }
                         Picasso.get().load(model.getImage()).into(holder.imageView);
 

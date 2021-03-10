@@ -3,14 +3,12 @@ package com.shop.models;
 public class PurchasedProducts {
     String date, image, pid, pname, quantity, time;
     double price;
-    int discount;
 
     public PurchasedProducts() {
     }
 
     public PurchasedProducts(String date, int discount, String image, String pid, String pname, double price, String quantity, String time) {
         this.date = date;
-        this.discount = discount;
         this.image = image;
         this.pid = pid;
         this.pname = pname;
@@ -25,14 +23,6 @@ public class PurchasedProducts {
 
     public void setDate(String date) {
         this.date = date;
-    }
-
-    public int getDiscount() {
-        return discount;
-    }
-
-    public void setDiscount(int discount) {
-        this.discount = discount;
     }
 
     public String getImage() {
@@ -87,7 +77,6 @@ public class PurchasedProducts {
     public String toString() {
         return "PurchasedProducts{" +
                 "date='" + date + '\'' +
-                ", discount='" + discount + '\'' +
                 ", image='" + image + '\'' +
                 ", pid='" + pid + '\'' +
                 ", pname='" + pname + '\'' +

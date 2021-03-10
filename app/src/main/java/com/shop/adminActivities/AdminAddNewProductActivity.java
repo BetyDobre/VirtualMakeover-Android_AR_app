@@ -24,6 +24,9 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.shop.R;
+import com.shop.SettingsActivity;
+import com.theartofdev.edmodo.cropper.CropImage;
+
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -38,7 +41,6 @@ public class AdminAddNewProductActivity extends AppCompatActivity {
 
     private String Description, Pname, saveCurrentDate, saveCurrentTime;
     private double Price;
-    private static final int GalleryPick = 1;
     private Uri ImageUri;
     private String productRandomKey, downloadImageURL;
     private StorageReference ProductImagesRef;
@@ -105,7 +107,9 @@ public class AdminAddNewProductActivity extends AppCompatActivity {
         Intent galleryIntent = new Intent();
         galleryIntent.setAction(Intent.ACTION_GET_CONTENT);
         galleryIntent.setType("image/*");
-        startActivityForResult(galleryIntent, GalleryPick);
+        CropImage.activity(ImageUri)
+                .setAspectRatio(3, 2)
+                .start(AdminAddNewProductActivity.this);
     }
 
     // get the image from the gallery
@@ -113,9 +117,13 @@ public class AdminAddNewProductActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == GalleryPick && resultCode == RESULT_OK && data != null){
-            ImageUri = data.getData();
+        if (requestCode==CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK && data != null){
+            CropImage.ActivityResult result = CropImage.getActivityResult(data);
+            ImageUri = result.getUri();
             InputProductImage.setImageURI(ImageUri);
+        }
+        else {
+            Toast.makeText(this, "Error, try again", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -153,7 +161,7 @@ public class AdminAddNewProductActivity extends AppCompatActivity {
 
         Calendar calendar = Calendar.getInstance();
 
-        SimpleDateFormat currentDate = new SimpleDateFormat("dd-mmm-yyyy");
+        SimpleDateFormat currentDate = new SimpleDateFormat("dd-MM-yyyy");
         saveCurrentDate = currentDate.format(calendar.getTime());
 
         SimpleDateFormat currentTime= new SimpleDateFormat("HH:mm:ss a");

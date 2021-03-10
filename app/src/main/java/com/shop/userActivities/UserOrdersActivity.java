@@ -27,6 +27,10 @@ import com.shop.models.UserHistoryOrders;
 import com.shop.prevalent.Prevalent;
 import com.shop.viewholders.UserOrdersViewHolder;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class UserOrdersActivity extends AppCompatActivity {
 
     private RecyclerView ordersList, orderhistoryList;
@@ -142,7 +146,19 @@ public class UserOrdersActivity extends AppCompatActivity {
                         holder.userName.setText("Name: " + model.getName());
                         holder.userPhone.setText("Phone Number: " + model.getPhone());
                         holder.userTotalPrice.setText("Total Price: " + model.getTotalAmount() + " lei");
-                        holder.userDateTime.setText("Ordered at: " + model.getDate() + " " + model.getTime());
+                        try {
+                            Date date = new SimpleDateFormat("dd-MM-yyyy").parse(model.getDate());
+                            SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+                            String DateToStr = format.format(date);
+
+                            Date time= new SimpleDateFormat("HH:mm:ss a").parse(model.getTime());
+                            SimpleDateFormat format2 = new SimpleDateFormat("HH:mm");
+                            String TimeToStr = format2.format(time);
+
+                            holder.userDateTime.setText("Ordered at: " + TimeToStr + ", " + DateToStr);
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
                         holder.userAddress.setText("Address: " + model.getAddress() + ", " + model.getCity());
                         holder.userEmail.setText("Email: " + model.getEmail());
                         holder.userState.setText("State: " + model.getState().toUpperCase());
@@ -200,7 +216,19 @@ public class UserOrdersActivity extends AppCompatActivity {
                         holder.userName.setText("Name: " + model.getName());
                         holder.userPhone.setText("Phone Number: " + model.getPhone());
                         holder.userTotalPrice.setText("Total Price: " + model.getTotalAmount() + " lei");
-                        holder.userDateTime.setText("Ordered at: " + model.getDate() + " " + model.getTime());
+                        try {
+                            Date date = new SimpleDateFormat("dd-MM-yyyy").parse(model.getDate());
+                            SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+                            String DateToStr = format.format(date);
+
+                            Date time= new SimpleDateFormat("HH:mm:ss a").parse(model.getTime());
+                            SimpleDateFormat format2 = new SimpleDateFormat("HH:mm");
+                            String TimeToStr = format2.format(time);
+
+                            holder.userDateTime.setText("Ordered at: "  + TimeToStr + ", " + DateToStr);
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
                         holder.userAddress.setText("Address: " + model.getAddress() + ", " + model.getCity());
                         holder.userEmail.setText("Email: " + model.getEmail());
                         holder.userState.setText("State: " + model.getState().toUpperCase());

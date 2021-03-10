@@ -41,8 +41,10 @@ import com.shop.prevalent.Prevalent;
 import com.shop.viewholders.CommentsViewHolder;
 import com.squareup.picasso.Picasso;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 
 public class ProductDetailsActivity extends AppCompatActivity {
@@ -162,7 +164,6 @@ public class ProductDetailsActivity extends AppCompatActivity {
         cartMap.put("date", saveCurrentDate);
         cartMap.put("time", saveCurrentTime);
         cartMap.put("quantity", numberBtn.getNumber());
-        cartMap.put("discount", "");
         cartMap.put("image", image);
 
         cartListRef.child("User View").child(EncodeString(Prevalent.currentOnlineUser.getEmail()))
@@ -244,7 +245,19 @@ public class ProductDetailsActivity extends AppCompatActivity {
                     @Override
                     protected void onBindViewHolder(@NonNull CommentsViewHolder holder, int position, @NonNull Comments model) {
                         Picasso.get().load(model.getUserImg()).into(holder.userImage);
-                        holder.commentDate.setText(model.getTime() + " " + model.getDate());
+                        try {
+                            Date date = new SimpleDateFormat("dd-MM-yyyy").parse(model.getDate());
+                            SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+                            String DateToStr = format.format(date);
+
+                            Date time= new SimpleDateFormat("HH:mm:ss a").parse(model.getTime());
+                            SimpleDateFormat format2 = new SimpleDateFormat("HH:mm");
+                            String TimeToStr = format2.format(time);
+
+                            holder.commentDate.setText(TimeToStr + ", " + DateToStr);
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
                         holder.commentContent.setText(model.getContent());
                         holder.userName.setText(model.getUserName());
 
@@ -336,7 +349,7 @@ public class ProductDetailsActivity extends AppCompatActivity {
 
             Calendar calendar = Calendar.getInstance();
 
-            SimpleDateFormat currentDate = new SimpleDateFormat("dd-mmm-yyyy");
+            SimpleDateFormat currentDate = new SimpleDateFormat("dd-MM-yyyy");
             String date = currentDate.format(calendar.getTime());
 
             SimpleDateFormat currentTime = new SimpleDateFormat("HH:mm:ss a");
