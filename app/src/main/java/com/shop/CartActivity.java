@@ -37,7 +37,7 @@ public class CartActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private RecyclerView.LayoutManager layoutManager;
     private Button nextBtn;
-    private TextView totalPriceTxt, backBtn;
+    private TextView totalPriceTxt, backBtn, deliveryTxt;
     private ImageView  emptyCartImg;
     private RelativeLayout layout;
     private String state = "normal";
@@ -58,6 +58,7 @@ public class CartActivity extends AppCompatActivity {
         emptyCartImg = findViewById(R.id.empty_cart);
         backBtn = findViewById(R.id.back_to_home_from_cart_txt);
         layout = findViewById(R.id.rll1);
+        deliveryTxt = findViewById(R.id.delivery_price);
 
         DatabaseReference cartListRef = FirebaseDatabase.getInstance().getReference().child("Cart List");
 
@@ -161,6 +162,13 @@ public class CartActivity extends AppCompatActivity {
                             double oneProductTotalPrice = model.getPrice() * Double.valueOf(model.getQuantity());
                             totalPrice = totalPrice + oneProductTotalPrice;
                             totalPrice = Math.round(totalPrice * 100.0) / 100.0;
+                            if(totalPrice < 400){
+                                deliveryTxt.setText("Delivery: 15 lei");
+                                totalPrice += 15;
+                            }
+                            else{
+                                deliveryTxt.setText("Delivery: free");
+                            }
                             totalPriceTxt.setText("Total price: " + String.valueOf(totalPrice) + " lei");
 
                             holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -195,6 +203,9 @@ public class CartActivity extends AppCompatActivity {
                                                                     if (task.isSuccessful()){
                                                                         Toast.makeText(CartActivity.this, "Item removed from the cart!", Toast.LENGTH_SHORT).show();
                                                                     }
+                                                                    else{
+                                                                        Toast.makeText(CartActivity.this, "Error!", Toast.LENGTH_SHORT).show();
+                                                                    }
                                                                 }
                                                             });
                                                     cartListRef.child("Admin View").child(EncodeString(Prevalent.currentOnlineUser.getEmail()))
@@ -207,6 +218,9 @@ public class CartActivity extends AppCompatActivity {
                                                                     if (task.isSuccessful()){
                                                                         Intent intent = new Intent(CartActivity.this, CartActivity.class);
                                                                         startActivity(intent);
+                                                                    }
+                                                                    else{
+                                                                        Toast.makeText(CartActivity.this, "Error!", Toast.LENGTH_SHORT).show();
                                                                     }
                                                                 }
                                                             });

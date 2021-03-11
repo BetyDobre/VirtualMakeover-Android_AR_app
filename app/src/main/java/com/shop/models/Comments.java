@@ -2,11 +2,10 @@ package com.shop.models;
 
 // product comments class model
 public class Comments {
-    private String content, userImg, userEmail, date, time;
+    private String content, userEmail, date, time;
 
-    public Comments(String content, String userImg, String userName, String userEmail, String date, String time) {
+    public Comments(String content, String userEmail, String date, String time) {
         this.content = content;
-        this.userImg = userImg;
         this.userEmail = userEmail;
         this.date = date;
         this.time = time;
@@ -29,14 +28,6 @@ public class Comments {
 
     public void setContent(String content) {
         this.content = content;
-    }
-
-    public String getUserImg() {
-        return userImg;
-    }
-
-    public void setUserImg(String userImg) {
-        this.userImg = userImg;
     }
 
     public String getDate() {

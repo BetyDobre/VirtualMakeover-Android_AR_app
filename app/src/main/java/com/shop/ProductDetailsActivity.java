@@ -183,7 +183,7 @@ public class ProductDetailsActivity extends AppCompatActivity {
                                         public void onComplete(@NonNull Task<Void> task) {
                                             if (task.isSuccessful()){
                                                 Toast.makeText(ProductDetailsActivity.this, "Added to cart!", Toast.LENGTH_SHORT).show();
-                                                Intent intent = new Intent(ProductDetailsActivity.this, HomeActivity.class);
+                                                Intent intent = new Intent(ProductDetailsActivity.this, CartActivity.class);
                                                 startActivity(intent);
                                             }
                                         }
@@ -191,8 +191,6 @@ public class ProductDetailsActivity extends AppCompatActivity {
                         }
                     }
                 });
-
-
     }
 
     // display the product information from the database
@@ -244,7 +242,6 @@ public class ProductDetailsActivity extends AppCompatActivity {
                 new FirebaseRecyclerAdapter<Comments, CommentsViewHolder>(options) {
                     @Override
                     protected void onBindViewHolder(@NonNull CommentsViewHolder holder, int position, @NonNull Comments model) {
-                        Picasso.get().load(model.getUserImg()).into(holder.userImage);
                         try {
                             Date date = new SimpleDateFormat("dd-MM-yyyy").parse(model.getDate());
                             SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
@@ -265,6 +262,7 @@ public class ProductDetailsActivity extends AppCompatActivity {
                             public void onDataChange(@NonNull DataSnapshot snapshot) {
                                 if(snapshot.exists()){
                                     holder.userName.setText(snapshot.child("name").getValue().toString());
+                                    Picasso.get().load(snapshot.child("image").getValue().toString()).into(holder.userImage);
                                 }
                                 else {
                                     FirebaseDatabase.getInstance().getReference().child("Google Users").child(EncodeString(model.getUserEmail())).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -272,6 +270,7 @@ public class ProductDetailsActivity extends AppCompatActivity {
                                         public void onDataChange(@NonNull DataSnapshot snapshot) {
                                             if(snapshot.exists()){
                                                 holder.userName.setText(snapshot.child("name").getValue().toString());
+                                                Picasso.get().load(snapshot.child("image").getValue().toString()).into(holder.userImage);
                                             }
                                         }
                                         @Override
@@ -366,7 +365,6 @@ public class ProductDetailsActivity extends AppCompatActivity {
 
         addCommentBtn.setVisibility(View.GONE);
         String commentContent = commentContentEditTxt.getText().toString();
-        String userImg = Prevalent.currentOnlineUser.getImage();
         String userEmail = Prevalent.currentOnlineUser.getEmail();
 
         if(!TextUtils.isEmpty(commentContent)) {
@@ -381,7 +379,6 @@ public class ProductDetailsActivity extends AppCompatActivity {
 
             HashMap<String, Object> commentMap = new HashMap<>();
             commentMap.put("content", commentContent);
-            commentMap.put("userImg", userImg);
             commentMap.put("userEmail", userEmail);
             commentMap.put("date", date);
             commentMap.put("time", time);
