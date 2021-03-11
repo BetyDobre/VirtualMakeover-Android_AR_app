@@ -138,7 +138,21 @@
         android:padding="10dp"
         android:backgroundTint="@color/colorPrimary"
         />
-
+    <Button
+        android:id="@+id/settings_delete_account"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/settings_address"
+        android:layout_marginTop="30dp"
+        android:background="@drawable/buttons"
+        android:textColor="@color/white"
+        android:text="Delete account"
+        android:textAllCaps="false"
+        android:textSize="16dp"
+        android:padding="10dp"
+        android:gravity="center"
+        android:layout_centerHorizontal="true"
+        />
 
 </RelativeLayout>
 </ScrollView>

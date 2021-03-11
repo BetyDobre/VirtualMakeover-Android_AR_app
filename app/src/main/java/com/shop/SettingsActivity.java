@@ -10,6 +10,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -29,6 +30,7 @@ import com.squareup.picasso.Picasso;
 import com.theartofdev.edmodo.cropper.CropImage;
 import java.util.HashMap;
 import de.hdodenhof.circleimageview.CircleImageView;
+import io.paperdb.Paper;
 
 public class SettingsActivity extends AppCompatActivity {
 
@@ -40,6 +42,7 @@ public class SettingsActivity extends AppCompatActivity {
     private StorageTask uploadTask;
     private StorageReference storageProfilePictureReference;
     private String checker = "";
+    private Button deleteBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,8 +61,9 @@ public class SettingsActivity extends AppCompatActivity {
         closeTextBtn = findViewById(R.id.close_settings);
         saveTextBtn = findViewById(R.id.update_account_settings);
         currentPasswordTxt = findViewById(R.id.settings_current_password);
+        deleteBtn = findViewById(R.id.settings_delete_account);
 
-        userInfoDisplay(profileImageView, fullnameEditText, userEmailEditText, addressEditText, passwordEditText, confirmNewPasswordEditText);
+        userInfoDisplay(profileImageView, fullnameEditText, userEmailEditText, addressEditText);
 
         // close the settings options button
         closeTextBtn.setOnClickListener(new View.OnClickListener() {
@@ -90,6 +94,21 @@ public class SettingsActivity extends AppCompatActivity {
                 CropImage.activity(imageUri)
                         .setAspectRatio(1, 1)
                         .start(SettingsActivity.this);
+            }
+        });
+
+        deleteBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FirebaseDatabase.getInstance().getReference().child("Users").child(EncodeString(Prevalent.currentOnlineUser.getEmail())).removeValue();
+                FirebaseDatabase.getInstance().getReference().child("Cart List").child("User View").child(EncodeString(Prevalent.currentOnlineUser.getEmail())).removeValue();
+                FirebaseDatabase.getInstance().getReference().child("Cart List").child("Admin View").child(EncodeString(Prevalent.currentOnlineUser.getEmail())).removeValue();
+                FirebaseDatabase.getInstance().getReference().child("Orders").child(EncodeString(Prevalent.currentOnlineUser.getEmail())).removeValue();
+                FirebaseDatabase.getInstance().getReference().child("Orders History").child(EncodeString(Prevalent.currentOnlineUser.getEmail())).removeValue();
+
+                Paper.book().destroy();
+                startActivity(new Intent(SettingsActivity.this, MainActivity.class));
+                Toast.makeText(SettingsActivity.this, "Account deleted!", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -157,9 +176,6 @@ public class SettingsActivity extends AppCompatActivity {
     private void userInfoSaved() {
         if (TextUtils.isEmpty(fullnameEditText.getText().toString())){
             Toast.makeText(this, "Name is mandatory!", Toast.LENGTH_SHORT).show();
-        }
-        else if (TextUtils.isEmpty(addressEditText.getText().toString())){
-            Toast.makeText(this, "Address is mandatory!", Toast.LENGTH_SHORT).show();
         }
         else if(checker.equals("clicked")){
             uploadImage();
@@ -247,7 +263,7 @@ public class SettingsActivity extends AppCompatActivity {
     }
 
     // display the already existing user info
-    private void userInfoDisplay(CircleImageView profileImageView, EditText fullnameEditText, TextView userEmailEditText, EditText addressEditText, EditText passwordEditText, EditText confirmNewPasswordEditText) {
+    private void userInfoDisplay(CircleImageView profileImageView, EditText fullnameEditText, TextView userEmailEditText, EditText addressEditText) {
         DatabaseReference UsersRef = FirebaseDatabase.getInstance().getReference().child("Users").child(EncodeString(Prevalent.currentOnlineUser.getEmail()));
 
         UsersRef.addValueEventListener(new ValueEventListener() {
@@ -256,17 +272,19 @@ public class SettingsActivity extends AppCompatActivity {
                 if (dataSnapshot.exists()){
                     if (dataSnapshot.child("image").exists()){
                         String image = dataSnapshot.child("image").getValue().toString();
-                        String name = dataSnapshot.child("name").getValue().toString();
-                        String email = dataSnapshot.child("email").getValue().toString();
-                        String address = dataSnapshot.child("address").getValue().toString();
-                        String password = dataSnapshot.child("password").getValue().toString();
-
                         Picasso.get().load(image).into(profileImageView);
-                        fullnameEditText.setText(name);
-                        userEmailEditText.setText(email);
-                        addressEditText.setText(address);
-                        currentPasswordTxt.setText(password);
                     }
+                    if (dataSnapshot.child("address").exists()){
+                        String address = dataSnapshot.child("address").getValue().toString();
+                        addressEditText.setText(address);
+                    }
+                    String name = dataSnapshot.child("name").getValue().toString();
+                    String email = dataSnapshot.child("email").getValue().toString();
+                    String password = dataSnapshot.child("password").getValue().toString();
+
+                    fullnameEditText.setText(name);
+                    userEmailEditText.setText(email);
+                    currentPasswordTxt.setText(password);
                 }
             }
 

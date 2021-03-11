@@ -259,7 +259,32 @@ public class ProductDetailsActivity extends AppCompatActivity {
                             e.printStackTrace();
                         }
                         holder.commentContent.setText(model.getContent());
-                        holder.userName.setText(model.getUserName());
+
+                        FirebaseDatabase.getInstance().getReference().child("Users").child(EncodeString(model.getUserEmail())).addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                if(snapshot.exists()){
+                                    holder.userName.setText(snapshot.child("name").getValue().toString());
+                                }
+                                else {
+                                    FirebaseDatabase.getInstance().getReference().child("Google Users").child(EncodeString(model.getUserEmail())).addListenerForSingleValueEvent(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                            if(snapshot.exists()){
+                                                holder.userName.setText(snapshot.child("name").getValue().toString());
+                                            }
+                                        }
+                                        @Override
+                                        public void onCancelled(@NonNull DatabaseError error) {
+                                        }
+                                    });
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+                            }
+                        });
 
                         holder.itemView.setOnClickListener(new View.OnClickListener() {
                             @Override
@@ -341,7 +366,6 @@ public class ProductDetailsActivity extends AppCompatActivity {
 
         addCommentBtn.setVisibility(View.GONE);
         String commentContent = commentContentEditTxt.getText().toString();
-        String userName = Prevalent.currentOnlineUser.getName();
         String userImg = Prevalent.currentOnlineUser.getImage();
         String userEmail = Prevalent.currentOnlineUser.getEmail();
 
@@ -357,7 +381,6 @@ public class ProductDetailsActivity extends AppCompatActivity {
 
             HashMap<String, Object> commentMap = new HashMap<>();
             commentMap.put("content", commentContent);
-            commentMap.put("userName", userName);
             commentMap.put("userImg", userImg);
             commentMap.put("userEmail", userEmail);
             commentMap.put("date", date);

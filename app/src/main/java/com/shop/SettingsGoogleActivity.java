@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -27,12 +28,14 @@ import com.squareup.picasso.Picasso;
 import java.util.HashMap;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import io.paperdb.Paper;
 
 public class SettingsGoogleActivity extends AppCompatActivity {
 
     private EditText addressEditText;
     private CircleImageView profileImageView;
     private TextView closeTextBtn, saveTextBtn, currentPasswordTxt, currentEmailTxt, currentNameTxt;
+    private Button deleteBtn;
 
     public String EncodeString(String string) {
         return string.replace(".", ",");
@@ -50,6 +53,7 @@ public class SettingsGoogleActivity extends AppCompatActivity {
         currentPasswordTxt = findViewById(R.id.settings_current_password);
         currentEmailTxt = findViewById(R.id.settings_email);
         currentNameTxt = findViewById(R.id.settings_full_name);
+        deleteBtn = findViewById(R.id.settings_delete_account);
 
         GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(getApplicationContext());
         String name = account.getDisplayName();
@@ -106,6 +110,21 @@ public class SettingsGoogleActivity extends AppCompatActivity {
                         }
                     }
                 });
+            }
+        });
+
+        deleteBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FirebaseDatabase.getInstance().getReference().child("Google Users").child(EncodeString(Prevalent.currentOnlineUser.getEmail())).removeValue();
+                FirebaseDatabase.getInstance().getReference().child("Cart List").child("User View").child(EncodeString(Prevalent.currentOnlineUser.getEmail())).removeValue();
+                FirebaseDatabase.getInstance().getReference().child("Cart List").child("Admin View").child(EncodeString(Prevalent.currentOnlineUser.getEmail())).removeValue();
+                FirebaseDatabase.getInstance().getReference().child("Orders").child(EncodeString(Prevalent.currentOnlineUser.getEmail())).removeValue();
+                FirebaseDatabase.getInstance().getReference().child("Orders History").child(EncodeString(Prevalent.currentOnlineUser.getEmail())).removeValue();
+
+                Paper.book().destroy();
+                startActivity(new Intent(SettingsGoogleActivity.this, MainActivity.class));
+                Toast.makeText(SettingsGoogleActivity.this, "Account deleted!", Toast.LENGTH_SHORT).show();
             }
         });
     }
