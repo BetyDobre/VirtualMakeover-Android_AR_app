@@ -50,7 +50,7 @@ import java.util.HashMap;
 public class ProductDetailsActivity extends AppCompatActivity {
 
     private  Button addCommentBtn;
-    private FloatingActionButton addToCartBtn;
+    private FloatingActionButton addToCartBtn, addToWhislistBtn, removeFromWhislistBtn;
     private ImageView productImage, userImage;
     private ElegantNumberButton numberBtn;
     private TextView productPrice, productDescription, productName, backBtn;
@@ -75,6 +75,8 @@ public class ProductDetailsActivity extends AppCompatActivity {
         commentContentEditTxt = findViewById(R.id.post_detail_comment);
         addCommentBtn = findViewById(R.id.post_detail_add_comment_btn);
         userImage = findViewById(R.id.post_detail_currentuser_img);
+        addToWhislistBtn = findViewById(R.id.details_add_product_to_wishlist);
+        removeFromWhislistBtn = findViewById(R.id.details_remove_from_whislist);
         Picasso.get().load(Prevalent.currentOnlineUser.getImage()).into(userImage);
 
         recyclerView = findViewById(R.id.comment_list);
@@ -102,6 +104,23 @@ public class ProductDetailsActivity extends AppCompatActivity {
             }
         });
 
+        addToWhislistBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                addingToWhislist();
+            }
+        });
+
+        removeFromWhislistBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FirebaseDatabase.getInstance().getReference().child("Whislist").child(EncodeString(Prevalent.currentOnlineUser.getEmail())).child(productID).removeValue();
+                Toast.makeText(ProductDetailsActivity.this, "Removed from whislist!", Toast.LENGTH_SHORT).show();
+                removeFromWhislistBtn.setVisibility(View.GONE);
+                addToWhislistBtn.setVisibility(View.VISIBLE);
+            }
+        });
+
         // click listener to go to the previous activity
         backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -112,8 +131,28 @@ public class ProductDetailsActivity extends AppCompatActivity {
             }
         });
 
+
+        FirebaseDatabase.getInstance().getReference().child("Whislist").child(EncodeString(Prevalent.currentOnlineUser.getEmail())).child(productID).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if(snapshot.exists()){
+                    removeFromWhislistBtn.setVisibility(View.VISIBLE);
+                    addToWhislistBtn.setVisibility(View.GONE);
+                }
+                else{
+                    removeFromWhislistBtn.setVisibility(View.GONE);
+                    addToWhislistBtn.setVisibility(View.VISIBLE);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+            }
+        });
+
         getComments(productID);
     }
+
 
     @Override
     public void onBackPressed() {
@@ -122,6 +161,37 @@ public class ProductDetailsActivity extends AppCompatActivity {
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
     }
+
+
+    private void addingToWhislist() {
+        FirebaseDatabase.getInstance().getReference().child("Products").child(productID).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if(snapshot.exists()){
+                    HashMap<String, Object> whislistMap = new HashMap<>();
+                    whislistMap.put("pid", snapshot.child("pid").getValue().toString());
+
+                    FirebaseDatabase.getInstance().getReference().child("Whislist").child(EncodeString(Prevalent.currentOnlineUser.getEmail())).child(productID)
+                            .updateChildren(whislistMap)
+                            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    if (task.isSuccessful()){
+                                        Toast.makeText(ProductDetailsActivity.this, "Added to whislist!", Toast.LENGTH_SHORT).show();
+                                        addToWhislistBtn.setVisibility(View.GONE);
+                                        removeFromWhislistBtn.setVisibility(View.VISIBLE);
+                                    }
+                                }
+                            });
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+            }
+        });
+    }
+
 
     @Override
     protected void onStart() {

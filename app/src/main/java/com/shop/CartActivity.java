@@ -70,11 +70,13 @@ public class CartActivity extends AppCompatActivity {
                     emptyCartImg.setVisibility(View.VISIBLE);
                     layout.setVisibility(View.GONE);
                     totalPriceTxt.setVisibility(View.GONE);
+                    deliveryTxt.setVisibility(View.GONE);
                 }
                 else {
                     emptyCartImg.setVisibility(View.GONE);
                     layout.setVisibility(View.VISIBLE);
                     totalPriceTxt.setVisibility(View.VISIBLE);
+                    deliveryTxt.setVisibility(View.VISIBLE);
                 }
             }
 

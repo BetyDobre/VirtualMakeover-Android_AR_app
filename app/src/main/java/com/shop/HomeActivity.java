@@ -41,6 +41,7 @@ import com.squareup.picasso.Picasso;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.widget.WithHint;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
@@ -364,6 +365,10 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         }
         else if (id == R.id.nav_about){
             Intent intent = new Intent(HomeActivity.this, AboutUsActivity.class);
+            startActivity(intent);
+        }
+        else if (id == R.id.nav_whislist){
+            Intent intent = new Intent(HomeActivity.this, WhislistActivity.class);
             startActivity(intent);
         }
 

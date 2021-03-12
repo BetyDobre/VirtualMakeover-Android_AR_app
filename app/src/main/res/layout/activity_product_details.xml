@@ -120,6 +120,34 @@
         app:elevation="12dp"
         />
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/details_add_product_to_wishlist"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/fab_margin"
+        android:layout_alignParentLeft = "true"
+        android:layout_below="@id/product_price_details"
+        app:srcCompat="@drawable/wishlist"
+        android:backgroundTint="@color/colorPrimary"
+        app:borderWidth="0dp"
+        app:elevation="12dp"
+        />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/details_remove_from_whislist"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/fab_margin"
+        android:layout_alignParentLeft = "true"
+        android:layout_below="@id/product_price_details"
+        app:srcCompat="@drawable/wishlistremoved"
+        android:backgroundTint="@color/colorPrimary"
+        app:borderWidth="0dp"
+        app:elevation="12dp"
+        android:visibility="invisible"
+        />
+
+
     <View
         android:background="#2e2e2e"
         android:id="@+id/view"
