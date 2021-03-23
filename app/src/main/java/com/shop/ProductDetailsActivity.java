@@ -49,8 +49,8 @@ import java.util.HashMap;
 
 public class ProductDetailsActivity extends AppCompatActivity {
 
-    private  Button addCommentBtn;
-    private FloatingActionButton addToCartBtn, addToWhislistBtn, removeFromWhislistBtn;
+    private Button addCommentBtn;
+    private FloatingActionButton addToCartBtn, addToWhislistBtn, removeFromWhislistBtn, tryItOnBtn;
     private ImageView productImage, userImage;
     private ElegantNumberButton numberBtn;
     private TextView productPrice, productDescription, productName, backBtn;
@@ -77,6 +77,7 @@ public class ProductDetailsActivity extends AppCompatActivity {
         userImage = findViewById(R.id.post_detail_currentuser_img);
         addToWhislistBtn = findViewById(R.id.details_add_product_to_wishlist);
         removeFromWhislistBtn = findViewById(R.id.details_remove_from_whislist);
+        tryItOnBtn = findViewById(R.id.ar_btn);
         Picasso.get().load(Prevalent.currentOnlineUser.getImage()).into(userImage);
 
         recyclerView = findViewById(R.id.comment_list);
@@ -151,6 +152,15 @@ public class ProductDetailsActivity extends AppCompatActivity {
         });
 
         getComments(productID);
+
+        tryItOnBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(ProductDetailsActivity.this, TryOnActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
+            }
+        });
     }
 
 

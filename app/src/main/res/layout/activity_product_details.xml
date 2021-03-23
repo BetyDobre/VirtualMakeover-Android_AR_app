@@ -55,6 +55,21 @@
         android:textAllCaps="true"
         android:gravity="center"
         android:layout_marginTop="20dp"/>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/ar_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/rll9"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="16dp"
+        app:srcCompat="@drawable/try_it"
+        android:backgroundTint="@color/colorPrimary"
+        app:borderWidth="0dp"
+        android:elevation="10dp"
+        />
+
     <ImageView
         android:id="@+id/product_image_details"
         android:layout_width="match_parent"
