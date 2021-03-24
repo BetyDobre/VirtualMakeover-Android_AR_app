@@ -158,6 +158,7 @@ public class ProductDetailsActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(ProductDetailsActivity.this, TryOnActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                intent.putExtra("pid", productID);
                 startActivity(intent);
             }
         });

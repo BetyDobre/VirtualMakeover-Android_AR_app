@@ -6,6 +6,8 @@ import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.widget.Toast;
@@ -22,14 +24,17 @@ import java.util.Objects;
 public class TryOnActivity extends AppCompatActivity {
 
     private ArFragment arCam;
-    private int clickNo = 0;
+    private int clickNo = 0, source = 0;
+    private String productID = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_try_on);
 
+        productID = getIntent().getStringExtra("pid");
         arCam = (ArFragment) getSupportFragmentManager().findFragmentById(R.id.arCameraArea);
+        checkSystemSupport(TryOnActivity.this);
 
         arCam.setOnTapArPlaneListener((hitResult, plane, motionEvent) -> {
             clickNo++;
@@ -37,34 +42,49 @@ public class TryOnActivity extends AppCompatActivity {
             // the 3d model comes to the scene only the first time we tap the screen
             if (clickNo == 1) {
                 Anchor anchor = hitResult.createAnchor();
+
+                if(productID.equals("24-03-202113:23:53 PM")){
+                    source = R.raw.vase1;
+                }
+                else{
+                    source = R.raw.basketball;
+                }
+
                 ModelRenderable.builder()
-                        .setSource(this, R.raw.scene)
+                        .setSource(this, source)
                         .setIsFilamentGltf(true)
                         .build()
                         .thenAccept(modelRenderable -> addModel(anchor, modelRenderable))
                         .exceptionally(throwable -> {
                             AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                            builder.setMessage("Something is not right" + throwable.getMessage()).show();
+                            builder.setMessage("Something is wrong" + throwable.getMessage()).show();
                             return null;
                         });
             }
         });
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent intent = new Intent(TryOnActivity.this, ProductDetailsActivity.class);
+        intent.putExtra("pid", productID);
+        startActivity(intent);
+    }
+
     private void addModel(Anchor anchor, ModelRenderable modelRenderable) {
 
         // Creating a AnchorNode with a specific anchor
         AnchorNode anchorNode = new AnchorNode(anchor);
-
         // attaching the anchorNode with the ArFragment
         anchorNode.setParent(arCam.getArSceneView().getScene());
         TransformableNode transform = new TransformableNode(arCam.getTransformationSystem());
-
+        transform.getScaleController().setMinScale((float) 0.9);
+        transform.getScaleController().setMaxScale((float) 1);
         // attaching the anchorNode with the TransformableNode
         transform.setParent(anchorNode);
 
-        // attaching the 3d model with the TransformableNode that is
-        // already attached with the node
+        // attaching the 3d model with the TransformableNode that is already attached with the node
         transform.setRenderable(modelRenderable);
         transform.select();
     }
