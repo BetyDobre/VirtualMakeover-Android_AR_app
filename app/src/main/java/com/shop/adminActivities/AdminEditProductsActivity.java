@@ -236,6 +236,62 @@ public class AdminEditProductsActivity extends AppCompatActivity {
 
     // delete a product from the database
     private void deleteSpecificProduct() {
+        // delete from user whislist the product too
+        FirebaseDatabase.getInstance().getReference().child("Whislist").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for(DataSnapshot whishUser : snapshot.getChildren()){
+                    for(DataSnapshot prod : whishUser.getChildren()){
+                        if(prod.child("pid").getValue().equals(productID)){
+                            FirebaseDatabase.getInstance().getReference().child("Whislist").child(whishUser.getKey()).child(productID).removeValue();
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+            }
+        });
+
+
+        // delete from cart the product too
+        FirebaseDatabase.getInstance().getReference().child("Cart List").child("User View").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for(DataSnapshot user : snapshot.getChildren()){
+                    for(DataSnapshot prod : user.child("Products").getChildren()){
+                        if(prod.child("pid").getValue().equals(productID)){
+                            FirebaseDatabase.getInstance().getReference().child("Cart List").child("User View").child(user.getKey()).child("Products").child(productID).removeValue();
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+            }
+        });
+
+        FirebaseDatabase.getInstance().getReference().child("Cart List").child("Admin View").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for(DataSnapshot user : snapshot.getChildren()){
+                    for(DataSnapshot prod : user.child("Products").getChildren()){
+                        if(prod.child("pid").getValue().equals(productID)){
+                            FirebaseDatabase.getInstance().getReference().child("Cart List").child("Admin View").child(user.getKey()).child("Products").child(productID).removeValue();
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+            }
+        });
+
+
+
         productsRef.removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
@@ -243,6 +299,7 @@ public class AdminEditProductsActivity extends AppCompatActivity {
                 startActivity(intent);
                 finish();
                 Toast.makeText(AdminEditProductsActivity.this, "Product deleted successfully!", Toast.LENGTH_SHORT).show();
+
             }
         });
     }

@@ -7,7 +7,6 @@ import android.app.ActivityManager;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.widget.Toast;
@@ -45,6 +44,9 @@ public class TryOnActivity extends AppCompatActivity {
 
                 if(productID.equals("24-03-202113:23:53 PM")){
                     source = R.raw.vase1;
+                }
+                else if (productID.equals("25-03-202117:10:34 PM")){
+                    source = R.raw.vase2;
                 }
                 else{
                     source = R.raw.basketball;

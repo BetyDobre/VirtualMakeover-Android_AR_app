@@ -43,18 +43,6 @@
             android:layout_marginBottom="10dp"
             />
     </RelativeLayout>
-    <TextView
-        android:id="@+id/product_name_details"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/product_image_details"
-        android:text= "Product name"
-        android:textColor="@color/black"
-        android:textSize="25dp"
-        android:textStyle="bold"
-        android:textAllCaps="true"
-        android:gravity="center"
-        android:layout_marginTop="20dp"/>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/ar_btn"
@@ -76,10 +64,23 @@
         android:layout_height="300dp"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
-        android:layout_marginTop="100dp"
+        android:layout_below="@id/ar_btn"
         android:scaleType="centerCrop"
+        android:layout_marginTop="5dp"
         />
 
+    <TextView
+        android:id="@+id/product_name_details"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/product_image_details"
+        android:text= "Product name"
+        android:textColor="@color/black"
+        android:textSize="25dp"
+        android:textStyle="bold"
+        android:textAllCaps="true"
+        android:gravity="center"
+        android:layout_marginTop="20dp"/>
 
     <TextView
         android:id="@+id/product_description_details"
