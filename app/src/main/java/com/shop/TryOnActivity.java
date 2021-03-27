@@ -48,6 +48,9 @@ public class TryOnActivity extends AppCompatActivity {
                 else if (productID.equals("25-03-202117:10:34 PM")){
                     source = R.raw.vase2;
                 }
+                else if (productID.equals("27-03-202118:54:57 PM")){
+                    source = R.raw.tabledecoration;
+                }
                 else{
                     source = R.raw.basketball;
                 }
