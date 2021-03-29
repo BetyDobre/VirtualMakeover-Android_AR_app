@@ -54,6 +54,9 @@ public class TryOnActivity extends AppCompatActivity {
                 else if (productID.equals("27-03-202118:54:57 PM")){
                     source = R.raw.tabledecoration;
                 }
+                else if (productID.equals("29-03-202112:49:15 PM")){
+                    source = R.raw.lamp;
+                }
                 else{
                     source = R.raw.basketball;
                 }
