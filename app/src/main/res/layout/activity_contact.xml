@@ -8,7 +8,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ContactActivity">
+    tools:context=".shopActivities.ContactActivity">
 
     <RelativeLayout
         android:id="@+id/rll15"
@@ -164,7 +164,7 @@
         android:layout_marginTop="20dp"
         android:layout_marginStart="10dp"
         android:layout_marginEnd="10dp"
-        android:name="com.shop.MapsFragment"/>
+        android:name="com.shop.shopActivities.MapsFragment"/>
     <TextView
         android:id="@+id/contact_hours_txt"
         android:layout_width="wrap_content"

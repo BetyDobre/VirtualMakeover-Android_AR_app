@@ -1,7 +1,6 @@
 package com.shop;
 
 import android.content.Context;
-import android.util.Log;
 
 import androidx.test.espresso.Espresso;
 import androidx.test.espresso.action.ViewActions;
@@ -9,15 +8,12 @@ import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.rule.ActivityTestRule;
 
+import com.shop.shopActivities.LoginActivity;
+
 import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.TestRule;
-import org.junit.runner.Description;
 import org.junit.runner.RunWith;
-import org.junit.runners.model.Statement;
-
-import kotlin.jvm.JvmField;
 
 import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static androidx.test.espresso.action.ViewActions.typeText;

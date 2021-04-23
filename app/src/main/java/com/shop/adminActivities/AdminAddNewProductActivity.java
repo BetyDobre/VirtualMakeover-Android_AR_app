@@ -24,7 +24,6 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.shop.R;
-import com.shop.SettingsActivity;
 import com.theartofdev.edmodo.cropper.CropImage;
 
 import java.text.SimpleDateFormat;

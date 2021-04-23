@@ -1,4 +1,4 @@
-package com.shop;
+package com.shop.shopActivities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -22,23 +22,19 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.shop.R;
 import com.shop.adminActivities.AdminEditProductsActivity;
 import com.shop.models.Products;
 import com.shop.viewholders.ProductViewHolder;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.Comparator;
-
-import io.paperdb.Book;
 
 public class SearchProductsActivity extends AppCompatActivity {
 

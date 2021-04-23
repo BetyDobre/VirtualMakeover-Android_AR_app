@@ -19,7 +19,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.shop.HomeActivity;
+import com.shop.shopActivities.HomeActivity;
 import com.shop.R;
 import com.shop.adminActivities.AdminOrderProductsActivity;
 import com.shop.models.AdminOrders;

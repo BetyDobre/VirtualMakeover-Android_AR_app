@@ -5,13 +5,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    tools:context=".ProductDetailsActivity"
+    tools:context=".shopActivities.ProductDetailsActivity"
     android:background="#fff">
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ProductDetailsActivity">
+    tools:context=".shopActivities.ProductDetailsActivity">
 
     <RelativeLayout
         android:id="@+id/rll9"

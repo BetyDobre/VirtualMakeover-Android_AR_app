@@ -1,4 +1,4 @@
-package com.shop;
+package com.shop.shopActivities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -19,6 +19,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.rey.material.widget.CheckBox;
+import com.shop.R;
 import com.shop.adminActivities.AdminHomeActivity;
 import com.shop.models.Users;
 import com.shop.prevalent.Prevalent;

@@ -1,4 +1,4 @@
-package com.shop;
+package com.shop.shopActivities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -19,6 +19,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.shop.R;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -65,7 +66,7 @@ class GMailSender extends javax.mail.Authenticator {
     private Session session;
 
     static {
-        Security.addProvider(new com.shop.JSSEProvider());
+        Security.addProvider(new JSSEProvider());
     }
 
     public GMailSender(String user, String password) {

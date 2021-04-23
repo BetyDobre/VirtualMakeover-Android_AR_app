@@ -1,8 +1,7 @@
-package com.shop;
+package com.shop.shopActivities;
 
 import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.Paint;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.Spannable;
@@ -31,6 +30,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.shop.R;
 import com.shop.adminActivities.AdminHomeActivity;
 import com.shop.adminActivities.AdminEditProductsActivity;
 import com.shop.models.Products;
@@ -41,7 +41,6 @@ import com.squareup.picasso.Picasso;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.widget.WithHint;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;

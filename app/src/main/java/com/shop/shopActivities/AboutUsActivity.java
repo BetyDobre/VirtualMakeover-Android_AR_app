@@ -1,14 +1,15 @@
-package com.shop;
+package com.shop.shopActivities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
+
+import com.shop.R;
 
 import java.util.ArrayList;
 

@@ -1,4 +1,4 @@
-package com.shop;
+package com.shop.shopActivities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -8,6 +8,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import com.shop.R;
 
 public class CategoriesActivity extends AppCompatActivity {
     private RelativeLayout layoutGlasses, layoutFoundation, layoutLipsticks, layoutDecorations;

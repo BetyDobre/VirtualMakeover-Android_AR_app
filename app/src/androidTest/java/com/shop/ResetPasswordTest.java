@@ -7,6 +7,8 @@ import androidx.test.espresso.action.ViewActions;
 import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.rule.ActivityTestRule;
 
+import com.shop.shopActivities.ResetPasswordActivity;
+
 import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;

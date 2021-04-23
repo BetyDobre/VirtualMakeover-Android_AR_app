@@ -1,4 +1,4 @@
-package com.shop;
+package com.shop.ARactivities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -16,6 +16,8 @@ import com.google.ar.sceneform.AnchorNode;
 import com.google.ar.sceneform.rendering.ModelRenderable;
 import com.google.ar.sceneform.ux.ArFragment;
 import com.google.ar.sceneform.ux.TransformableNode;
+import com.shop.R;
+import com.shop.shopActivities.ProductDetailsActivity;
 
 import java.util.Objects;
 
