@@ -35,7 +35,9 @@ public class TryOnActivity extends AppCompatActivity {
 
         productID = getIntent().getStringExtra("pid");
         arCam = (ArFragment) getSupportFragmentManager().findFragmentById(R.id.arCameraArea);
-        checkSystemSupport(TryOnActivity.this);
+        if(!checkSystemSupport(TryOnActivity.this)){
+            return;
+        }
 
         arCam.setOnTapArPlaneListener((hitResult, plane, motionEvent) -> {
             clickNo++;
@@ -86,7 +88,6 @@ public class TryOnActivity extends AppCompatActivity {
     }
 
     private void addModel(Anchor anchor, ModelRenderable modelRenderable) {
-
         // Creating a AnchorNode with a specific anchor
         AnchorNode anchorNode = new AnchorNode(anchor);
         // attaching the anchorNode with the ArFragment
@@ -103,7 +104,6 @@ public class TryOnActivity extends AppCompatActivity {
     }
 
     public static boolean checkSystemSupport(Activity activity) {
-
         // checking whether the API version of the running Android >= 24
         // that means Android Nougat 7.0
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {

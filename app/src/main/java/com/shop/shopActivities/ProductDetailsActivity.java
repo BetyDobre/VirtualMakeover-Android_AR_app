@@ -159,10 +159,30 @@ public class ProductDetailsActivity extends AppCompatActivity {
         tryItOnBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(ProductDetailsActivity.this, TryOnActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                intent.putExtra("pid", productID);
-                startActivity(intent);
+                FirebaseDatabase.getInstance().getReference().child("Products").child(productID).addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        if (snapshot.exists()){
+                            Products product = snapshot.getValue(Products.class);
+                            if (product.getCategory().equals("decorations")){
+                                Intent intent = new Intent(ProductDetailsActivity.this, TryOnActivity.class);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                intent.putExtra("pid", productID);
+                                startActivity(intent);
+                            }
+                            else {
+                                Intent intent = new Intent(ProductDetailsActivity.this, MakeUpActivity.class);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                intent.putExtra("pid", productID);
+                                startActivity(intent);
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                    }
+                });
             }
         });
     }
