@@ -12,6 +12,7 @@ import com.google.ar.core.AugmentedFace;
 import java.io.IOException;
 import java.nio.FloatBuffer;
 import java.nio.ShortBuffer;
+import java.util.ArrayList;
 
 import static com.shop.ARactivities.rendering.ShaderUtil.loadGLShader;
 
@@ -22,6 +23,7 @@ public class AugmentedFaceRenderer {
     private int modelViewProjectionUniform = 0;
 
     private int textureUniform = 0;
+    private int textureUniformEye = 0;
 
     private int lightingParametersUniform = 0;
 
@@ -30,6 +32,7 @@ public class AugmentedFaceRenderer {
     private int colorCorrectionParameterUniform = 0;
 
     private int tintColorUniform = 0;
+    private float[] tintColor = {0.647f, 0.357f, 0.33f, 1f};
 
     private int attriVertices = 0;
     private int attriUvs = 0;
@@ -67,6 +70,7 @@ public class AugmentedFaceRenderer {
         modelViewProjectionUniform = GLES20.glGetUniformLocation(program, "u_ModelViewProjection");
         modelViewUniform = GLES20.glGetUniformLocation(program, "u_ModelView");
         textureUniform = GLES20.glGetUniformLocation(program, "u_Texture");
+        //textureUniformEye = GLES20.glGetUniformLocation(program, "u_TextureEye");
         lightingParametersUniform = GLES20.glGetUniformLocation(program, "u_LightningParameters");
         materialParametersUniform = GLES20.glGetUniformLocation(program, "u_MaterialParameters");
         colorCorrectionParameterUniform =
@@ -89,7 +93,7 @@ public class AugmentedFaceRenderer {
         GLES20.glTexParameteri(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_MAG_FILTER, GLES20.GL_LINEAR);
         GLUtils.texImage2D(GLES20.GL_TEXTURE_2D, 0, textureBitmap, 0);
         GLES20.glGenerateMipmap(GLES20.GL_TEXTURE_2D);
-        GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, 0);
+        GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, textureId[0]);
         textureBitmap.recycle();
     }
 
@@ -132,7 +136,13 @@ public class AugmentedFaceRenderer {
         GLES20.glActiveTexture(GLES20.GL_TEXTURE0);
         GLES20.glUniform1i(textureUniform, 0);
         GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, textureId[0]);
-        GLES20.glUniform4f(tintColorUniform, 0f, 0f, 0f, 0f);
+        GLES20.glUniform4fv(tintColorUniform, 1, tintColor, 0);
+
+//        GLES20.glActiveTexture(GLES20.GL_TEXTURE1);
+//        GLES20.glUniform1i(textureUniformEye, 1);
+//        GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, textureId[1]);
+//        GLES20.glUniform4fv(tintColorUniform, 1, tintColor, 0);
+
         GLES20.glEnable(GLES20.GL_BLEND);
 
         // Textures are loaded with premultiplied alpha
@@ -163,5 +173,9 @@ public class AugmentedFaceRenderer {
         v[0] *= reciprocalLength;
         v[1] *= reciprocalLength;
         v[2] *= reciprocalLength;
+    }
+
+    public void setContourColor(float[] contourColor){
+        tintColor = contourColor;
     }
 }

@@ -26,6 +26,10 @@ varying vec3 v_ViewNormal;
 varying vec2 v_TexCoord;
 uniform vec4 u_ObjColor;
 
+uniform vec4 u_TintColor;
+
+//uniform sampler2D u_TextureEye;
+
 void main() {
     // We support approximate sRGB gamma.
     const float kGamma = 0.4545454;
@@ -48,6 +52,7 @@ void main() {
 
     // Flip the y-texture coordinate to address the texture from top-left.
     vec4 objectColor = texture2D(u_Texture, vec2(v_TexCoord.x, 1.0 - v_TexCoord.y));
+    objectColor.rgb = objectColor.rgb * u_TintColor.rgb;
 
     // Apply color to grayscale image only if the alpha of u_ObjColor is
     // greater and equal to 255.0.

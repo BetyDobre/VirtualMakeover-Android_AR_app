@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ARactivities.MakeUpActivity">
 
     <fragment android:name="com.shop.ARactivities.AugmentedFaceFragment"
@@ -10,5 +11,57 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="top" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/contour_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintBottom_toBottomOf="@id/contour_group"
+        app:layout_constraintTop_toTopOf="@id/contour_group"
+        android:layout_marginStart="18dp"
+        android:textStyle="bold"
+        android:text="Choose shade:"
+        android:textColor="@color/colorPrimary"
+        android:padding="5dp"
+        android:backgroundTint="@color/white"
+        android:elevation="10dp"
+        android:visibility="gone"/>
+
+    <com.google.android.material.chip.ChipGroup
+        android:id="@+id/contour_group"
+        app:singleSelection="true"
+        android:layout_marginStart="16dp"
+        android:layout_marginBottom="16dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:checkedChip="@id/chip_shade1"
+        app:layout_constraintLeft_toRightOf="@id/contour_text"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:visibility="gone">
+
+        <com.google.android.material.chip.Chip
+            android:theme="@style/Theme.MaterialComponents.Light"
+            android:id="@+id/chip_shade1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="#af8062"
+            android:text="Java"/>
+        <com.google.android.material.chip.Chip
+            android:theme="@style/Theme.MaterialComponents.Light"
+            android:id="@+id/chip_shade2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="#f3d9a9"
+            android:text="Banana" />
+        <com.google.android.material.chip.Chip
+            android:theme="@style/Theme.MaterialComponents.Light"
+            android:id="@+id/chip_shade3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="#c48a66"
+            android:text="Peachy"/>
+
+    </com.google.android.material.chip.ChipGroup>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -20,6 +20,7 @@
     </style>
 
     <style name="Theme.ARShop.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
-
+    <style name="AppTheme" parent="Theme.MaterialComponents.NoActionBar"/>
+    <style name="AppTheme2" parent="Theme.MaterialComponents.Light.Bridge"/>
 <!--    <style name="Theme.ARShop.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />-->
 </resources>

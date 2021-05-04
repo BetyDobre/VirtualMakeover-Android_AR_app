@@ -122,7 +122,7 @@ public class AugmentedFaceFragment extends Fragment implements GLSurfaceView.Ren
                     // Configure session to use front facing camera.
                     EnumSet<com.google.ar.core.Session.Feature> featureSet = EnumSet.of(com.google.ar.core.Session.Feature.FRONT_CAMERA);
                     // Create the session.
-                    session = new Session( /*context=*/getContext(), featureSet);
+                    session = new Session(/*context=*/getContext(), featureSet);
                     configureSession();
                 } else {
                     requestDangerousPermissions();

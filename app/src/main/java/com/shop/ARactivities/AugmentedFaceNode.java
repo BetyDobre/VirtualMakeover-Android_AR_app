@@ -7,6 +7,7 @@ import com.google.ar.core.Pose;
 import com.google.ar.core.TrackingState;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class AugmentedFaceNode {
@@ -29,6 +30,10 @@ public class AugmentedFaceNode {
 
         renderFaceMesh = false;
         augmentedFaceRenderer.setMaterialProperties(0.0f, 1.0f, 0.1f, 6.0f);
+    }
+
+    public void setContourColor(float[] contourColor){
+        augmentedFaceRenderer.setContourColor(contourColor);
     }
 
     public void setRegionModel(FaceLandmark faceLandmark, String modelName, String modelTexture) throws IOException {
