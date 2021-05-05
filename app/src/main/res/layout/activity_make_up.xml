@@ -45,23 +45,67 @@
             android:id="@+id/chip_shade1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:backgroundTint="#af8062"
-            android:text="Java"/>
+            android:backgroundTint="#8b3239"
+            android:text="Java"
+            android:textStyle="bold"/>
         <com.google.android.material.chip.Chip
             android:theme="@style/Theme.MaterialComponents.Light"
             android:id="@+id/chip_shade2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:backgroundTint="#f3d9a9"
-            android:text="Banana" />
+            android:backgroundTint="#fdf8bf"
+            android:text="Banana"
+            android:textStyle="bold"/>
         <com.google.android.material.chip.Chip
             android:theme="@style/Theme.MaterialComponents.Light"
             android:id="@+id/chip_shade3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:backgroundTint="#c48a66"
-            android:text="Peachy"/>
+            android:text="Peachy"
+            android:textStyle="bold"/>
 
+    </com.google.android.material.chip.ChipGroup>
+
+    <com.google.android.material.chip.ChipGroup
+        android:id="@+id/contour_group2"
+        app:singleSelection="true"
+        android:layout_marginStart="16dp"
+        android:layout_marginBottom="2dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:checkedChip="@id/chip_shade4"
+        app:layout_constraintLeft_toRightOf="@id/contour_text"
+        app:layout_constraintBottom_toTopOf="@id/contour_group"
+        android:visibility="gone"
+        app:selectionRequired="true">
+    <com.google.android.material.chip.Chip
+        android:theme="@style/Theme.MaterialComponents.Light"
+        android:id="@+id/chip_shade4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="#09be25"
+        android:text="Apple"
+        android:textStyle="bold"
+        android:textColor="@color/white"/>
+    <com.google.android.material.chip.Chip
+        android:theme="@style/Theme.MaterialComponents.Light"
+        android:id="@+id/chip_shade5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="#0500fa"
+        android:text="Ocean"
+        android:textColor="@color/white"
+        android:textStyle="bold"/>
+    <com.google.android.material.chip.Chip
+        android:theme="@style/Theme.MaterialComponents.Light"
+        android:id="@+id/chip_shade6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="#652d7b"
+        android:text="Liliac"
+        android:textColor="@color/white"
+        android:textStyle="bold" />
     </com.google.android.material.chip.ChipGroup>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

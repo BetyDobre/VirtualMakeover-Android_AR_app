@@ -27,8 +27,8 @@ public class MakeUpActivity extends AppCompatActivity implements AugmentedFaceLi
     private boolean contourChanged = false;
     private float[] contourColor = {0.686f, 0.5f, 0.38f, 1f};
     private MaterialTextView textMaterial;
-    private ChipGroup chipGroup;
-    private Chip shade1, shade2, shade3;
+    private ChipGroup chipGroup, chipGroup2;
+    private Chip shade1, shade2, shade3, shade4, shade5, shade6;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,35 +46,74 @@ public class MakeUpActivity extends AppCompatActivity implements AugmentedFaceLi
 
         textMaterial = findViewById((R.id.contour_text));
         chipGroup = findViewById(R.id.contour_group);
+        chipGroup2 = findViewById(R.id.contour_group2);
         shade1 = findViewById(R.id.chip_shade1);
         shade2 = findViewById(R.id.chip_shade2);
         shade3 = findViewById(R.id.chip_shade3);
+        shade4 = findViewById(R.id.chip_shade4);
+        shade5 = findViewById(R.id.chip_shade5);
+        shade6 = findViewById(R.id.chip_shade6);
 
-        if (productID.equals("04-05-202116:08:30 PM") || productID.equals("04-05-202116:06:30 PM")) {
+        if (productID.equals("04-05-202116:08:30 PM")) {
             textMaterial.setVisibility(View.VISIBLE);
             chipGroup.setVisibility(View.VISIBLE);
         }
+        else if (productID.equals("04-05-202116:06:30 PM")){
+            textMaterial.setVisibility(View.VISIBLE);
+            chipGroup.setVisibility(View.VISIBLE);
+            chipGroup2.setVisibility(View.VISIBLE);
+        }
 
+        // java
         shade1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                float[] color = {0.2f, 0.1f, 0.5f, 1f};
+                float[] color = {0.545f, 0.196f, 0.223f, 1f};
                 changeContour(color);
             }
         });
 
+        // banana
         shade2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                float[] color = {0.95f, 0.85f, 0.66f, 1f};
+                float[] color = {0.992f, 0.972f, 0.749f, 1f};
                 changeContour(color);
             }
         });
 
+        // peach
         shade3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 float[] color = {0.7686f, 0.5411f, 0.4f, 1f};
+                changeContour(color);
+            }
+        });
+
+        // green
+        shade4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                float[] color = {0.035f, 0.745f, 0.145f, 1f};
+                changeContour(color);
+            }
+        });
+
+        // blue
+        shade5.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                float[] color = {0.019f, 0f, 0.980f, 1f};
+                changeContour(color);
+            }
+        });
+
+        // purple
+        shade6.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                float[] color = {0.6f, 0.2f, 0.756f, 1f};
                 changeContour(color);
             }
         });
@@ -122,7 +161,7 @@ public class MakeUpActivity extends AppCompatActivity implements AugmentedFaceLi
             try {
                 face.setRegionModel(AugmentedFaceNode.FaceLandmark.NOSE_TIP,
                         "models/untitled.obj",
-                        "models/glasses.png ");
+                        "models/glasses.png");
             } catch (IOException e) {
                 e.printStackTrace();
             }
