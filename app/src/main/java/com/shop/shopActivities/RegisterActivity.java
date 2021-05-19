@@ -19,8 +19,13 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.shop.helpers.BCrypt;
 import com.shop.R;
 
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
 import java.util.HashMap;
 
 public class RegisterActivity extends AppCompatActivity {
@@ -77,12 +82,12 @@ public class RegisterActivity extends AppCompatActivity {
             Toast.makeText(this, "Passwords don't match!", Toast.LENGTH_SHORT).show();
         }
 
-        else if (!email.contains("@")) {
+        else if (!email.contains("@") && !email.contains(".") ) {
             Toast.makeText(this, "Not a valid email address!", Toast.LENGTH_SHORT).show();
         }
 
         else if (password.length() < 4){
-            Toast.makeText(this, "Minimum password length is 4!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Password must contain at least one lowercase letter, one capital letter, one number digit, one special character and minimum length is 4!", Toast.LENGTH_LONG).show();
         }
         else {
              loadingBar.setTitle("Create Account");
@@ -110,7 +115,8 @@ public class RegisterActivity extends AppCompatActivity {
                     HashMap<String, Object> userdataMap = new HashMap<>();
                     userdataMap.put("email", email);
                     userdataMap.put("name", name);
-                    userdataMap.put("password", password);
+                    String hashed = BCrypt.hashpw(password, BCrypt.gensalt());
+                    userdataMap.put("password", hashed);
 
                     RootRef.child("Users").child(EncodeString(email)).updateChildren(userdataMap)
                             .addOnCompleteListener(new OnCompleteListener<Void>() {

@@ -26,7 +26,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.shop.R;
 import com.shop.models.Products;
-import com.shop.prevalent.Prevalent;
+import com.shop.helpers.Prevalent;
 import com.shop.viewholders.ProductViewHolder;
 import com.squareup.picasso.Picasso;
 

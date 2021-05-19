@@ -1,4 +1,4 @@
-package com.shop.prevalent;
+package com.shop.helpers;
 
 import com.shop.models.Users;
 

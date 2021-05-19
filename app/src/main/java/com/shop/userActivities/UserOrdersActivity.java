@@ -24,7 +24,7 @@ import com.shop.R;
 import com.shop.adminActivities.AdminOrderProductsActivity;
 import com.shop.models.AdminOrders;
 import com.shop.models.UserHistoryOrders;
-import com.shop.prevalent.Prevalent;
+import com.shop.helpers.Prevalent;
 import com.shop.viewholders.UserOrdersViewHolder;
 
 import java.text.ParseException;

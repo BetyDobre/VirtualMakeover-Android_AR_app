@@ -68,7 +68,7 @@
         android:fontFamily="@font/alfaslabone_regular"
         android:layout_marginStart="10dp"
         android:layout_marginBottom="5dp"
-        android:text="Logged in with Google users:"
+        android:text="Google users:"
         android:textSize="20dp"
         android:textColor="@color/colorPrimary"
         android:layout_below="@id/users_list"

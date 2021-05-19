@@ -21,8 +21,9 @@ import com.google.firebase.database.ValueEventListener;
 import com.rey.material.widget.CheckBox;
 import com.shop.R;
 import com.shop.adminActivities.AdminHomeActivity;
+import com.shop.helpers.BCrypt;
 import com.shop.models.Users;
-import com.shop.prevalent.Prevalent;
+import com.shop.helpers.Prevalent;
 import io.paperdb.Paper;
 
 
@@ -118,7 +119,6 @@ public class LoginActivity extends AppCompatActivity {
 
             AllowAccesToAccount(email, password);
         }
-
     }
 
     public String EncodeString(String string) {
@@ -141,7 +141,7 @@ public class LoginActivity extends AppCompatActivity {
                 if (dataSnapshot.child(parentDbName).child(EncodeString(email)).exists()){
                     Users userData = dataSnapshot.child(parentDbName).child(EncodeString(email)).getValue(Users.class);
                     if (userData.getEmail().equals(email)){
-                        if (userData.getPassword().equals(password)){
+                        if (BCrypt.checkpw(password, userData.getPassword())){
                             if (parentDbName.equals("Admins")){
                                 Toast.makeText(LoginActivity.this, "Success login, admin!", Toast.LENGTH_SHORT).show();
                                 loadingBar.dismiss();
@@ -162,6 +162,10 @@ public class LoginActivity extends AppCompatActivity {
                             Toast.makeText(LoginActivity.this, "Password is incorrect!", Toast.LENGTH_SHORT).show();
                             loadingBar.dismiss();
                         }
+                    }
+                    else {
+                        Toast.makeText(LoginActivity.this, "Account with this email doesn't exist!", Toast.LENGTH_SHORT).show();
+                        loadingBar.dismiss();
                     }
                 }
                 else {

@@ -22,7 +22,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.shop.R;
-import com.shop.prevalent.Prevalent;
+import com.shop.helpers.Prevalent;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -143,7 +143,7 @@ import java.util.HashMap;
          SimpleDateFormat currentDate = new SimpleDateFormat("dd-MM-yyyy");
          saveCurrentDate = currentDate.format(calForDate.getTime());
 
-         SimpleDateFormat currentTime= new SimpleDateFormat("HH:mm:ss a");
+         SimpleDateFormat currentTime= new SimpleDateFormat("HH:mm:ss:SSS a");
          saveCurrentTime = currentTime.format(calForDate.getTime());
 
          final DatabaseReference ordersRef = FirebaseDatabase.getInstance().getReference().child("Orders")

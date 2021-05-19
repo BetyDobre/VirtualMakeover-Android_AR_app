@@ -26,7 +26,8 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.StorageTask;
 import com.shop.R;
-import com.shop.prevalent.Prevalent;
+import com.shop.helpers.BCrypt;
+import com.shop.helpers.Prevalent;
 import com.squareup.picasso.Picasso;
 import com.theartofdev.edmodo.cropper.CropImage;
 import java.util.HashMap;
@@ -37,7 +38,7 @@ public class SettingsActivity extends AppCompatActivity {
 
     private CircleImageView profileImageView;
     private EditText fullnameEditText, addressEditText, passwordEditText, confirmNewPasswordEditText;
-    private TextView profileChangeTextBtn, closeTextBtn, saveTextBtn, currentPasswordTxt, userEmailEditText;
+    private TextView profileChangeTextBtn, closeTextBtn, saveTextBtn, userEmailEditText;
     private Uri imageUri;
     private String myURL = "";
     private StorageTask uploadTask;
@@ -61,7 +62,6 @@ public class SettingsActivity extends AppCompatActivity {
         profileChangeTextBtn = findViewById(R.id.profile_image_change_btn);
         closeTextBtn = findViewById(R.id.close_settings);
         saveTextBtn = findViewById(R.id.update_account_settings);
-        currentPasswordTxt = findViewById(R.id.settings_current_password);
         deleteBtn = findViewById(R.id.settings_delete_account);
 
         userInfoDisplay(profileImageView, fullnameEditText, userEmailEditText, addressEditText);
@@ -131,14 +131,14 @@ public class SettingsActivity extends AppCompatActivity {
         Prevalent.currentOnlineUser.setName(fullnameEditText.getText().toString());
 
         if((passwordEditText.getText().toString()).equals(confirmNewPasswordEditText.getText().toString()) && passwordEditText.getText().toString().trim().length() > 3){
-            userMap.put("password", passwordEditText.getText().toString());
+            String hashed = BCrypt.hashpw(passwordEditText.getText().toString(), BCrypt.gensalt());
+            userMap.put("password", hashed);
             ref.child(EncodeString(Prevalent.currentOnlineUser.getEmail())).updateChildren(userMap);
             startActivity(new Intent(SettingsActivity.this, MainActivity.class));
             Toast.makeText(SettingsActivity.this, "Profile info updated successfully!", Toast.LENGTH_SHORT).show();
             finish();
         }
-        else if (passwordEditText.getText().toString().trim().length() == 0){
-            userMap.put("password", currentPasswordTxt.getText().toString());
+         if (passwordEditText.getText().toString().trim().length() == 0){
             ref.child(EncodeString(Prevalent.currentOnlineUser.getEmail())).updateChildren(userMap);
             startActivity(new Intent(SettingsActivity.this, HomeActivity.class));
             Toast.makeText(SettingsActivity.this, "Profile info updated successfully!", Toast.LENGTH_SHORT).show();
@@ -220,7 +220,8 @@ public class SettingsActivity extends AppCompatActivity {
                         Prevalent.currentOnlineUser.setImage(myURL);
 
                         if((passwordEditText.getText().toString()).equals(confirmNewPasswordEditText.getText().toString()) && passwordEditText.getText().toString().trim().length() > 3){
-                            userMap.put("password", passwordEditText.getText().toString());
+                            String hashed = BCrypt.hashpw(passwordEditText.getText().toString(), BCrypt.gensalt());
+                            userMap.put("password", hashed);
                             ref.child(EncodeString(Prevalent.currentOnlineUser.getEmail())).updateChildren(userMap);
                             Picasso.get().load(myURL).into(profileImageView);
                             startActivity(new Intent(SettingsActivity.this, MainActivity.class));
@@ -228,7 +229,6 @@ public class SettingsActivity extends AppCompatActivity {
                             finish();
                         }
                         else if (passwordEditText.getText().toString().trim().length() == 0){
-                            userMap.put("password", currentPasswordTxt.getText().toString());
                             ref.child(EncodeString(Prevalent.currentOnlineUser.getEmail())).updateChildren(userMap);
                             Picasso.get().load(myURL).into(profileImageView);
                             startActivity(new Intent(SettingsActivity.this, HomeActivity.class));
@@ -281,11 +281,9 @@ public class SettingsActivity extends AppCompatActivity {
                     }
                     String name = dataSnapshot.child("name").getValue().toString();
                     String email = dataSnapshot.child("email").getValue().toString();
-                    String password = dataSnapshot.child("password").getValue().toString();
 
                     fullnameEditText.setText(name);
                     userEmailEditText.setText(email);
-                    currentPasswordTxt.setText(password);
                 }
             }
 

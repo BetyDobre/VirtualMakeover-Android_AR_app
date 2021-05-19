@@ -109,7 +109,7 @@ public class SearchProductsActivity extends AppCompatActivity {
 
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("Products");
 
-        searchInput = inputText.getText().toString();
+        searchInput = inputText.getText().toString().trim();
 
         products.clear();
         searchList.removeAllViews();

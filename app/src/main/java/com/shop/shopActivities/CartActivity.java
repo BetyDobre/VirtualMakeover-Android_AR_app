@@ -29,7 +29,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.shop.R;
 import com.shop.models.Cart;
-import com.shop.prevalent.Prevalent;
+import com.shop.helpers.Prevalent;
 import com.shop.viewholders.CartViewHolder;
 import com.squareup.picasso.Picasso;
 

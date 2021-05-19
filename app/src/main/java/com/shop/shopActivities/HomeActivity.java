@@ -34,7 +34,7 @@ import com.shop.R;
 import com.shop.adminActivities.AdminHomeActivity;
 import com.shop.adminActivities.AdminEditProductsActivity;
 import com.shop.models.Products;
-import com.shop.prevalent.Prevalent;
+import com.shop.helpers.Prevalent;
 import com.shop.userActivities.UserOrdersActivity;
 import com.shop.viewholders.ProductViewHolder;
 import com.squareup.picasso.Picasso;

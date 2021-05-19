@@ -20,6 +20,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.shop.R;
+import com.shop.helpers.BCrypt;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -207,7 +208,8 @@ public class ResetPasswordActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()){
                     HashMap<String, Object> userdataMap = new HashMap<>();
-                    userdataMap.put("password", newPassword);
+                    String hashed = BCrypt.hashpw(newPassword, BCrypt.gensalt());
+                    userdataMap.put("password", hashed);
                     account.updateChildren(userdataMap).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {

@@ -32,7 +32,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.shop.R;
 import com.shop.adminActivities.AdminHomeActivity;
 import com.shop.models.Users;
-import com.shop.prevalent.Prevalent;
+import com.shop.helpers.Prevalent;
 import java.util.HashMap;
 
 import io.paperdb.Paper;

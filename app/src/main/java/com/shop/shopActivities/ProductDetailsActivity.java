@@ -40,7 +40,7 @@ import com.shop.ARactivities.TryOnActivity;
 import com.shop.R;
 import com.shop.models.Comments;
 import com.shop.models.Products;
-import com.shop.prevalent.Prevalent;
+import com.shop.helpers.Prevalent;
 import com.shop.viewholders.CommentsViewHolder;
 import com.squareup.picasso.Picasso;
 
@@ -248,7 +248,7 @@ public class ProductDetailsActivity extends AppCompatActivity {
         SimpleDateFormat currentDate = new SimpleDateFormat("dd-mmm-yyyy");
         saveCurrentDate = currentDate.format(calendar.getTime());
 
-        SimpleDateFormat currentTime= new SimpleDateFormat("HH:mm:ss a");
+        SimpleDateFormat currentTime= new SimpleDateFormat("HH:mm:ss:SSS a");
         saveCurrentTime = currentTime.format(calendar.getTime());
 
         final DatabaseReference cartListRef = FirebaseDatabase.getInstance().getReference().child("Cart List");
@@ -478,7 +478,7 @@ public class ProductDetailsActivity extends AppCompatActivity {
             SimpleDateFormat currentDate = new SimpleDateFormat("dd-MM-yyyy");
             String date = currentDate.format(calendar.getTime());
 
-            SimpleDateFormat currentTime = new SimpleDateFormat("HH:mm:ss a");
+            SimpleDateFormat currentTime = new SimpleDateFormat("HH:mm:ss:SSS a");
             String time = currentTime.format(calendar.getTime());
 
             HashMap<String, Object> commentMap = new HashMap<>();

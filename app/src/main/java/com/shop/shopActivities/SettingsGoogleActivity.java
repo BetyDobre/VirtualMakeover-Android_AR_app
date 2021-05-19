@@ -22,7 +22,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.shop.R;
-import com.shop.prevalent.Prevalent;
+import com.shop.helpers.Prevalent;
 import com.squareup.picasso.Picasso;
 
 import java.util.HashMap;
@@ -34,7 +34,7 @@ public class SettingsGoogleActivity extends AppCompatActivity {
 
     private EditText addressEditText;
     private CircleImageView profileImageView;
-    private TextView closeTextBtn, saveTextBtn, currentPasswordTxt, currentEmailTxt, currentNameTxt;
+    private TextView closeTextBtn, saveTextBtn, currentEmailTxt, currentNameTxt;
     private Button deleteBtn;
 
     public String EncodeString(String string) {
@@ -50,7 +50,6 @@ public class SettingsGoogleActivity extends AppCompatActivity {
         profileImageView = findViewById(R.id.settings_profile_image);
         closeTextBtn = findViewById(R.id.close_settings);
         saveTextBtn = findViewById(R.id.update_account_settings);
-        currentPasswordTxt = findViewById(R.id.settings_current_password);
         currentEmailTxt = findViewById(R.id.settings_email);
         currentNameTxt = findViewById(R.id.settings_full_name);
         deleteBtn = findViewById(R.id.settings_delete_account);

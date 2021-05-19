@@ -153,41 +153,11 @@
         android:backgroundTint="@color/colorPrimary"
         />
 
-
-    <TextView
-        android:id="@+id/current_password_textview"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/settings_address"
-        android:layout_marginTop="5dp"
-        android:layout_marginStart="25dp"
-        android:text="Password"
-        android:textStyle="bold"
-        android:textColor="@color/colorPrimary"
-        android:textSize="16dp"
-        />
-
-    <TextView
-        android:id="@+id/settings_current_password"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/current_password_textview"
-        android:hint="Password..."
-        android:layout_marginRight="15dp"
-        android:layout_marginLeft="15dp"
-        android:layout_marginTop="3dp"
-        android:padding="10dp"
-        android:inputType="textPassword"
-        android:backgroundTint="@color/colorPrimary"
-        />
-
-
-
     <TextView
         android:id="@+id/new_password_textview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/settings_current_password"
+        android:layout_below="@id/settings_address"
         android:layout_marginTop="5dp"
         android:layout_marginStart="25dp"
         android:text="New password"
