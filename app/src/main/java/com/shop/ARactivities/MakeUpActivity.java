@@ -165,7 +165,7 @@ public class MakeUpActivity extends AppCompatActivity implements AugmentedFaceLi
                 e.printStackTrace();
             }
         }
-        else {
+        else if (productID.equals("21-05-202112:01:57 PM")){
             try {
                 face.setRegionModel(AugmentedFaceNode.FaceLandmark.NOSE_TIP,
                         "models/sunglasses.obj",
