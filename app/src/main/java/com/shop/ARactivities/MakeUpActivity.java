@@ -12,7 +12,6 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.google.android.material.chip.Chip;
-import com.google.android.material.chip.ChipDrawable;
 import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.textview.MaterialTextView;
 import com.shop.R;
@@ -157,11 +156,20 @@ public class MakeUpActivity extends AppCompatActivity implements AugmentedFaceLi
                 e.printStackTrace();
             }
         }
+        else if (productID.equals("18-048-202100:48:50 AM")){
+            try {
+                face.setRegionModel(AugmentedFaceNode.FaceLandmark.NOSE_TIP,
+                        "models/sunglasses.obj",
+                        "models/sunglassesTexture.png");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
         else {
             try {
                 face.setRegionModel(AugmentedFaceNode.FaceLandmark.NOSE_TIP,
-                        "models/untitled.obj",
-                        "models/glasses.png");
+                        "models/sunglasses.obj",
+                        "models/sunglasses2Texture.png");
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -195,7 +203,7 @@ public class MakeUpActivity extends AppCompatActivity implements AugmentedFaceLi
             if (Double.parseDouble(openGlVersion) >= 3.0) {
                 return true;
             } else {
-                Toast.makeText(activity, "App needs OpenGl Version 3.0 or later", Toast.LENGTH_SHORT).show();
+                Toast.makeText(activity, "App needs OpenGl Version 2.0 or later", Toast.LENGTH_SHORT).show();
                 activity.finish();
                 return false;
             }
