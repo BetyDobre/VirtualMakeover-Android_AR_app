@@ -351,7 +351,7 @@ public class ProductDetailsActivity extends AppCompatActivity {
                             SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
                             String DateToStr = format.format(date);
 
-                            Date time= new SimpleDateFormat("HH:mm:ss a").parse(model.getTime());
+                            Date time= new SimpleDateFormat("HH:mm:ss:sss").parse(model.getTime());
                             SimpleDateFormat format2 = new SimpleDateFormat("HH:mm");
                             String TimeToStr = format2.format(time);
 

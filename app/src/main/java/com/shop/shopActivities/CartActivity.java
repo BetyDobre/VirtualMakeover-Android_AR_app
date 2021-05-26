@@ -42,7 +42,7 @@ public class CartActivity extends AppCompatActivity {
     private ImageView  emptyCartImg;
     private RelativeLayout layout;
     private String state = "normal";
-    private double totalPrice = 0;
+    private double totalPrice = 15;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -165,13 +165,7 @@ public class CartActivity extends AppCompatActivity {
                             double oneProductTotalPrice = model.getPrice() * Double.valueOf(model.getQuantity());
                             totalPrice = totalPrice + oneProductTotalPrice;
                             totalPrice = Math.round(totalPrice * 100.0) / 100.0;
-                            if(totalPrice < 400){
-                                deliveryTxt.setText("Delivery: 15 lei");
-                                totalPrice += 15;
-                            }
-                            else{
-                                deliveryTxt.setText("Delivery: free");
-                            }
+                            deliveryTxt.setText("Delivery: 15 lei");
                             totalPriceTxt.setText("Total price: " + String.valueOf(totalPrice) + " lei");
 
                             holder.itemView.setOnClickListener(new View.OnClickListener() {
