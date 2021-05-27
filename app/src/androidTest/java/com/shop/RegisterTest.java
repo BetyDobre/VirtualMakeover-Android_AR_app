@@ -17,10 +17,6 @@ import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
 
-import static androidx.test.espresso.matcher.ViewMatchers.withId;
-import static androidx.test.espresso.matcher.ViewMatchers.withText;
-import static org.hamcrest.Matchers.not;
-
 public class RegisterTest {
     @Rule
     public ActivityTestRule<RegisterActivity> rule = new ActivityTestRule<>(RegisterActivity.class);

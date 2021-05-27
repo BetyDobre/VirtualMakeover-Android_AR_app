@@ -7,7 +7,7 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 public class ProductsUnitTest {
-    Products product = new Products("Glasses", "for all ages","","glasses","", "06MAR2021", "2:47:00PM", 580);
+    Products product = new Products("Glasses", "for all ages","","glasses","", "06MAR2021", "2:47:00 PM", 580.0, 0, 580);
 
     @Test
     public void getPname() {
@@ -24,7 +24,12 @@ public class ProductsUnitTest {
     @Test
     public void getPrice() {
         assertNotEquals(product.getPrice(), 0);
-        assertEquals(product.getPrice(), 580);
+        assertEquals(product.getPrice(), 580.0, 0);
+    }
+
+    @Test
+    public void getDiscount() {
+        assertEquals(product.getDiscount(), 0);
     }
 
     @Test
@@ -43,6 +48,6 @@ public class ProductsUnitTest {
     public void getPid() {
         assertNotNull(product.getPid());
         product.setPid(product.getDate() + product.getTime());
-        assertEquals(product.getPid(), "06MAR20212:47:00PM");
+        assertEquals(product.getPid(), "06MAR20212:47:00 PM");
     }
 }

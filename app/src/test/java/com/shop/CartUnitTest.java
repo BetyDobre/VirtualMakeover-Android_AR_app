@@ -30,17 +30,12 @@ public class CartUnitTest {
     @Test
     public void getPrice() {
         assertNotEquals(cart.getPrice(), 0);
-        assertEquals(cart.getPrice(), 580);
+        assertEquals(cart.getPrice(), 580, 0);
     }
 
     @Test
     public void getQuantity() {
         assertNotNull(cart.getQuantity());
         assertEquals(cart.getQuantity(), "2");
-    }
-
-    @Test
-    public void getDiscount() {
-        assertEquals(cart.getDiscount(), "0");
     }
 }
