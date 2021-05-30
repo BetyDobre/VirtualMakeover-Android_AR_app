@@ -16,6 +16,7 @@ import com.google.ar.sceneform.AnchorNode;
 import com.google.ar.sceneform.rendering.ModelRenderable;
 import com.google.ar.sceneform.ux.ArFragment;
 import com.google.ar.sceneform.ux.TransformableNode;
+import com.shop.ARactivities.helpers.SnackbarHelper;
 import com.shop.R;
 import com.shop.shopActivities.ProductDetailsActivity;
 
@@ -39,31 +40,32 @@ public class TryOnActivity extends AppCompatActivity {
             return;
         }
 
+        if(productID.equals("24-03-202113:23:53 PM")){
+            source = R.raw.box;
+        }
+        else if (productID.equals("25-03-202117:10:34 PM")){
+            source = R.raw.vase1;
+        }
+        else if(productID.equals("28-03-202112:50:24 PM")){
+            source = R.raw.vase2;
+        }
+        else if (productID.equals("27-03-202118:54:57 PM")){
+            source = R.raw.tabledecoration;
+        }
+        else if (productID.equals("29-03-202112:49:15 PM")){
+            source = R.raw.lamp;
+        }
+
+        if (source == 0) {
+            Toast.makeText(this, "3D model for product not available!", Toast.LENGTH_SHORT).show();
+        }
+
         arCam.setOnTapArPlaneListener((hitResult, plane, motionEvent) -> {
             clickNo++;
 
             // the 3d model comes to the scene only the first time we tap the screen
             if (clickNo == 1) {
                 Anchor anchor = hitResult.createAnchor();
-
-                if(productID.equals("24-03-202113:23:53 PM")){
-                    source = R.raw.box;
-                }
-                else if (productID.equals("25-03-202117:10:34 PM")){
-                    source = R.raw.vase1;
-                }
-                else if(productID.equals("28-03-202112:50:24 PM")){
-                    source = R.raw.vase2;
-                }
-                else if (productID.equals("27-03-202118:54:57 PM")){
-                    source = R.raw.tabledecoration;
-                }
-                else if (productID.equals("29-03-202112:49:15 PM")){
-                    source = R.raw.lamp;
-                }
-                else{
-                    source = R.raw.basketball;
-                }
 
                 ModelRenderable.builder()
                         .setSource(this, source)

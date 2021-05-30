@@ -2,9 +2,11 @@ package com.shop.shopActivities;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -101,15 +103,36 @@ public class SettingsActivity extends AppCompatActivity {
         deleteBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FirebaseDatabase.getInstance().getReference().child("Users").child(EncodeString(Prevalent.currentOnlineUser.getEmail())).removeValue();
-                FirebaseDatabase.getInstance().getReference().child("Cart List").child("User View").child(EncodeString(Prevalent.currentOnlineUser.getEmail())).removeValue();
-                FirebaseDatabase.getInstance().getReference().child("Cart List").child("Admin View").child(EncodeString(Prevalent.currentOnlineUser.getEmail())).removeValue();
-                FirebaseDatabase.getInstance().getReference().child("Orders").child(EncodeString(Prevalent.currentOnlineUser.getEmail())).removeValue();
-                FirebaseDatabase.getInstance().getReference().child("Orders History").child(EncodeString(Prevalent.currentOnlineUser.getEmail())).removeValue();
 
-                Paper.book().destroy();
-                startActivity(new Intent(SettingsActivity.this, MainActivity.class));
-                Toast.makeText(SettingsActivity.this, "Account deleted!", Toast.LENGTH_SHORT).show();
+                CharSequence options[] = new CharSequence[]{
+                        "Yes",
+                        "No"
+                };
+                AlertDialog.Builder builder = new AlertDialog.Builder(SettingsActivity.this);
+                builder.setTitle("Are you sure?");
+
+                builder.setItems(options, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        //edit
+                        if (i == 0){
+                            FirebaseDatabase.getInstance().getReference().child("Users").child(EncodeString(Prevalent.currentOnlineUser.getEmail())).removeValue();
+                            FirebaseDatabase.getInstance().getReference().child("Cart List").child("User View").child(EncodeString(Prevalent.currentOnlineUser.getEmail())).removeValue();
+                            FirebaseDatabase.getInstance().getReference().child("Cart List").child("Admin View").child(EncodeString(Prevalent.currentOnlineUser.getEmail())).removeValue();
+                            FirebaseDatabase.getInstance().getReference().child("Orders").child(EncodeString(Prevalent.currentOnlineUser.getEmail())).removeValue();
+                            FirebaseDatabase.getInstance().getReference().child("Orders History").child(EncodeString(Prevalent.currentOnlineUser.getEmail())).removeValue();
+
+                            Paper.book().destroy();
+                            startActivity(new Intent(SettingsActivity.this, MainActivity.class));
+                            Toast.makeText(SettingsActivity.this, "Account deleted!", Toast.LENGTH_SHORT).show();
+                        }
+                        //delete
+                        if(i == 1){
+                            startActivity(new Intent(SettingsActivity.this, SettingsActivity.class));
+                        }
+                    }
+                });
+                builder.show();
             }
         });
     }

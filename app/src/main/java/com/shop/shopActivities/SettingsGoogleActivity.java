@@ -1,8 +1,10 @@
 package com.shop.shopActivities;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -115,15 +117,36 @@ public class SettingsGoogleActivity extends AppCompatActivity {
         deleteBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FirebaseDatabase.getInstance().getReference().child("Google Users").child(EncodeString(Prevalent.currentOnlineUser.getEmail())).removeValue();
-                FirebaseDatabase.getInstance().getReference().child("Cart List").child("User View").child(EncodeString(Prevalent.currentOnlineUser.getEmail())).removeValue();
-                FirebaseDatabase.getInstance().getReference().child("Cart List").child("Admin View").child(EncodeString(Prevalent.currentOnlineUser.getEmail())).removeValue();
-                FirebaseDatabase.getInstance().getReference().child("Orders").child(EncodeString(Prevalent.currentOnlineUser.getEmail())).removeValue();
-                FirebaseDatabase.getInstance().getReference().child("Orders History").child(EncodeString(Prevalent.currentOnlineUser.getEmail())).removeValue();
 
-                Paper.book().destroy();
-                startActivity(new Intent(SettingsGoogleActivity.this, MainActivity.class));
-                Toast.makeText(SettingsGoogleActivity.this, "Account deleted!", Toast.LENGTH_SHORT).show();
+                CharSequence options[] = new CharSequence[]{
+                        "Yes",
+                        "No"
+                };
+                AlertDialog.Builder builder = new AlertDialog.Builder(SettingsGoogleActivity.this);
+                builder.setTitle("Are you sure?");
+
+                builder.setItems(options, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        //edit
+                        if (i == 0){
+                            FirebaseDatabase.getInstance().getReference().child("Google Users").child(EncodeString(Prevalent.currentOnlineUser.getEmail())).removeValue();
+                            FirebaseDatabase.getInstance().getReference().child("Cart List").child("User View").child(EncodeString(Prevalent.currentOnlineUser.getEmail())).removeValue();
+                            FirebaseDatabase.getInstance().getReference().child("Cart List").child("Admin View").child(EncodeString(Prevalent.currentOnlineUser.getEmail())).removeValue();
+                            FirebaseDatabase.getInstance().getReference().child("Orders").child(EncodeString(Prevalent.currentOnlineUser.getEmail())).removeValue();
+                            FirebaseDatabase.getInstance().getReference().child("Orders History").child(EncodeString(Prevalent.currentOnlineUser.getEmail())).removeValue();
+
+                            Paper.book().destroy();
+                            startActivity(new Intent(SettingsGoogleActivity.this, MainActivity.class));
+                            Toast.makeText(SettingsGoogleActivity.this, "Account deleted!", Toast.LENGTH_SHORT).show();
+                        }
+                        //delete
+                        if(i == 1){
+                            startActivity(new Intent(SettingsGoogleActivity.this, SettingsGoogleActivity.class));
+                        }
+                    }
+                });
+                builder.show();
             }
         });
     }

@@ -14,6 +14,7 @@ import android.widget.Toast;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.textview.MaterialTextView;
+import com.shop.ARactivities.helpers.SnackbarHelper;
 import com.shop.R;
 import com.shop.shopActivities.ProductDetailsActivity;
 
@@ -28,6 +29,7 @@ public class MakeUpActivity extends AppCompatActivity implements AugmentedFaceLi
     private MaterialTextView textMaterial;
     private ChipGroup chipGroup, chipGroup2;
     private Chip shade1, shade2, shade3, shade4, shade5, shade6;
+    private SnackbarHelper messageSnackbarHelper= new SnackbarHelper();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -173,6 +175,9 @@ public class MakeUpActivity extends AppCompatActivity implements AugmentedFaceLi
             } catch (IOException e) {
                 e.printStackTrace();
             }
+        }
+        else {
+            messageSnackbarHelper.showError(this, "3D model for product not available!");
         }
     }
 
