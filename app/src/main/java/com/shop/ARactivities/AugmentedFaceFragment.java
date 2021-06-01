@@ -11,6 +11,7 @@ import android.opengl.GLSurfaceView;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 
 import android.provider.Settings;
@@ -125,7 +126,8 @@ public class AugmentedFaceFragment extends Fragment implements GLSurfaceView.Ren
                     session = new Session(/*context=*/getContext(), featureSet);
                     configureSession();
                 } else {
-                    requestDangerousPermissions();
+                    requestPermissions(new String[]{Manifest.permission.CAMERA}, RC_PERMISSIONS);
+                    //requestDangerousPermissions();
                 }
             } catch (UnavailableArcoreNotInstalledException e) {
                 String message = "Please install ARCore";
@@ -156,7 +158,9 @@ public class AugmentedFaceFragment extends Fragment implements GLSurfaceView.Ren
         }
 
         try {
-            session.resume();
+            if (session != null) {
+                session.resume();
+            }
         } catch (CameraNotAvailableException e) {
             messageSnackbarHelper.showError(
                     requireActivity(),

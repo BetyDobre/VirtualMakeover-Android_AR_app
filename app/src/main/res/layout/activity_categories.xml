@@ -87,7 +87,7 @@
 
 
     <RelativeLayout
-        android:id="@+id/layout_category_foundation"
+        android:id="@+id/layout_category_makeup"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/layout_category_glasses"
@@ -98,16 +98,16 @@
         >
 
         <ImageView
-            android:id="@+id/foundation_category"
+            android:id="@+id/makeup_category"
             android:layout_width="wrap_content"
             android:layout_height="80dp"
             android:layout_centerHorizontal="true"
-            android:src="@drawable/foundation"
+            android:src="@drawable/makeup"
             />
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/foundation_category"
+            android:layout_below="@id/makeup_category"
             android:text="Makeup"
             android:layout_centerHorizontal="true"
             android:gravity="center"
@@ -122,7 +122,7 @@
         android:id="@+id/layout_category_lipstick"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/layout_category_foundation"
+        android:layout_below="@+id/layout_category_makeup"
         android:orientation="horizontal"
         android:layout_centerHorizontal="true"
         android:gravity = "center"

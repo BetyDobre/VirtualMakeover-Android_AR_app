@@ -13,7 +13,7 @@ import io.paperdb.Paper;
 
 public class AdminHomeActivity extends AppCompatActivity {
 
-    private ImageView glasses, lipsticks, decorations, foundation, hats;
+    private ImageView glasses, lipsticks, decorations, makeup;
     private Button logoutBtn, checkOrdersBtn, maintaintProductsBtn;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,8 +23,7 @@ public class AdminHomeActivity extends AppCompatActivity {
         glasses = findViewById(R.id.glasses);
         lipsticks = findViewById(R.id.lipstick);
         decorations = findViewById(R.id.decoration);
-        foundation = findViewById(R.id.foundation);
-//        hats = findViewById(R.id.hats);
+        makeup = findViewById(R.id.makeup);
         logoutBtn = findViewById(R.id.admin_logout_btn);
         checkOrdersBtn = findViewById(R.id.check_orders_btn);
         maintaintProductsBtn = findViewById(R.id.maintain_btn);
@@ -90,24 +89,15 @@ public class AdminHomeActivity extends AppCompatActivity {
             }
         });
 
-        // click listener to add a product in foundation category
-        foundation.setOnClickListener(new View.OnClickListener() {
+        // click listener to add a product in makeup  category
+        makeup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(AdminHomeActivity.this, AdminAddNewProductActivity.class);
-                intent.putExtra("category", "foundation");
+                intent.putExtra("category", "makeup");
                 startActivity(intent);
             }
         });
 
-        // click listener to add a product in hats category
-//        hats.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Intent intent = new Intent(AdminCategoryActivity.this, AdminAddNewProductActivity.class);
-//                intent.putExtra("category", "hats");
-//                startActivity(intent);
-//            }
-//        });
     }
 }

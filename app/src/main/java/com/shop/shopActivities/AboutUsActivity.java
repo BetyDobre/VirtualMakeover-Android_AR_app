@@ -26,11 +26,11 @@ public class AboutUsActivity extends AppCompatActivity {
         v_flipper = findViewById(R.id.v_flipper);
 
         ArrayList<Integer> myImageList = new ArrayList<>();
+        myImageList.add(R.drawable.appicon);
         myImageList.add(R.drawable.eu);
-        myImageList.add(R.drawable.working3);
+        myImageList.add(R.drawable.working2);
         myImageList.add(R.drawable.ar);
         myImageList.add(R.drawable.working);
-        myImageList.add(R.drawable.working2);
         for (Integer img : myImageList) {
             //call function which assigns each photo to the flipper
             flipperImages(img);

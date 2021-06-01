@@ -59,10 +59,10 @@
         >
 
         <ImageView
-            android:id="@+id/foundation"
+            android:id="@+id/makeup"
             android:layout_width="wrap_content"
             android:layout_height="80dp"
-            android:src="@drawable/foundation"
+            android:src="@drawable/makeup"
             />
 
     </LinearLayout>

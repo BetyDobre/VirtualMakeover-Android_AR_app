@@ -12,7 +12,7 @@ import android.widget.TextView;
 import com.shop.R;
 
 public class CategoriesActivity extends AppCompatActivity {
-    private RelativeLayout layoutGlasses, layoutFoundation, layoutLipsticks, layoutDecorations;
+    private RelativeLayout layoutGlasses, layoutMakeup, layoutLipsticks, layoutDecorations;
     private TextView backBtn;
     private Button allProducts;
 
@@ -22,7 +22,7 @@ public class CategoriesActivity extends AppCompatActivity {
         setContentView(R.layout.activity_categories);
 
         layoutGlasses = findViewById(R.id.layout_category_glasses);
-        layoutFoundation = findViewById(R.id.layout_category_foundation);
+        layoutMakeup= findViewById(R.id.layout_category_makeup);
         layoutLipsticks = findViewById(R.id.layout_category_lipstick);
         layoutDecorations = findViewById(R.id.layout_category_decoration);
         allProducts = findViewById(R.id.all_categories_products_btn);
@@ -38,12 +38,12 @@ public class CategoriesActivity extends AppCompatActivity {
             }
         });
 
-        // go to foundation category products activity
-        layoutFoundation.setOnClickListener(new View.OnClickListener() {
+        // go to makeup category products activity
+        layoutMakeup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(CategoriesActivity.this, CategoryProductsActivity.class);
-                intent.putExtra("category", "foundation");
+                intent.putExtra("category", "makeup");
                 startActivity(intent);
             }
         });

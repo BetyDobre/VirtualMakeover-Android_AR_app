@@ -118,8 +118,8 @@ import java.util.HashMap;
         if (TextUtils.isEmpty(nameEdiText.getText().toString())){
             Toast.makeText(OrderActivity.this, "Please provide your full name!", Toast.LENGTH_SHORT).show();
         }
-        else if (TextUtils.isEmpty(phoneEditText.getText().toString())){
-            Toast.makeText(OrderActivity.this, "Please provide your phone number!", Toast.LENGTH_SHORT).show();
+        else if (TextUtils.isEmpty(phoneEditText.getText().toString()) || phoneEditText.length() != 10){
+            Toast.makeText(OrderActivity.this, "Please provide your correct phone number!", Toast.LENGTH_SHORT).show();
         }
         else if (TextUtils.isEmpty(addressEditText.getText().toString())){
             Toast.makeText(OrderActivity.this, "Please provide your address!", Toast.LENGTH_SHORT).show();
@@ -178,7 +178,7 @@ import java.util.HashMap;
                                  public void onComplete(@NonNull Task<Void> task) {
                                      if (task.isSuccessful()){
                                          Toast.makeText(OrderActivity.this, "Your order has been placed!", Toast.LENGTH_SHORT).show();
-                                         Intent intent = new Intent(OrderActivity.this, HomeActivity.class);
+                                         Intent intent = new Intent(OrderActivity.this, CartActivity.class);
                                          intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                          startActivity(intent);
                                      }
