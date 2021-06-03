@@ -35,8 +35,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.shop.ARactivities.MakeUpActivity;
-import com.shop.ARactivities.TryOnActivity;
+import com.shop.ARactivities.PlaceMakeUpActivity;
+import com.shop.ARactivities.PlaceDecorationsActivity;
 import com.shop.R;
 import com.shop.models.Comments;
 import com.shop.models.Products;
@@ -165,13 +165,13 @@ public class ProductDetailsActivity extends AppCompatActivity {
                         if (snapshot.exists()){
                             Products product = snapshot.getValue(Products.class);
                             if (product.getCategory().equals("decorations")){
-                                Intent intent = new Intent(ProductDetailsActivity.this, TryOnActivity.class);
+                                Intent intent = new Intent(ProductDetailsActivity.this, PlaceDecorationsActivity.class);
                                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                 intent.putExtra("pid", productID);
                                 startActivity(intent);
                             }
                             else {
-                                Intent intent = new Intent(ProductDetailsActivity.this, MakeUpActivity.class);
+                                Intent intent = new Intent(ProductDetailsActivity.this, PlaceMakeUpActivity.class);
                                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                 intent.putExtra("pid", productID);
                                 startActivity(intent);

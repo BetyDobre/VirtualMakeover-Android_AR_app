@@ -27,6 +27,8 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.HashMap;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class RegisterActivity extends AppCompatActivity {
 
@@ -53,6 +55,48 @@ public class RegisterActivity extends AppCompatActivity {
                 CreateAccount();
             }
         });
+    }
+
+    private static boolean checkPassword(String str) {
+        char ch;
+        boolean capitalFlag = false;
+        boolean lowerCaseFlag = false;
+        boolean numberFlag = false;
+        boolean specialFlag = false;
+        for(int i = 0; i < str.length(); i++) {
+            ch = str.charAt(i);
+            if(Character.isDigit(ch)) {
+                numberFlag = true;
+            }
+            else if (Character.isUpperCase(ch)) {
+                capitalFlag = true;
+            } else if (Character.isLowerCase(ch)) {
+                lowerCaseFlag = true;
+            }
+        }
+        int i = 0;
+        StringBuilder sb = new StringBuilder(str);
+        while (i != sb.length()){
+            ch = sb.charAt(i);
+            if (Character.isDigit(ch) || Character.isUpperCase(ch) || Character.isLowerCase(ch)){
+                sb.deleteCharAt(i);
+            }
+            else {
+                i++;
+            }
+        }
+        // regex for special characters
+        String regex = "[^a-zA-Z0-9]+";
+        Pattern p = Pattern.compile(regex);
+        Matcher m = p.matcher(sb);
+        if (m.matches()){
+            specialFlag = true;
+        }
+
+        if(numberFlag && capitalFlag && lowerCaseFlag && specialFlag)
+            return true;
+
+        return false;
     }
 
     // verify if every field is completed
@@ -86,7 +130,7 @@ public class RegisterActivity extends AppCompatActivity {
             Toast.makeText(this, "Not a valid email address!", Toast.LENGTH_SHORT).show();
         }
 
-        else if (password.length() < 4){
+        else if (password.length() < 4 || !checkPassword(password)){
             Toast.makeText(this, "Password must contain at least one lowercase letter, one capital letter, one number digit, one special character and minimum length is 4!", Toast.LENGTH_LONG).show();
         }
         else {

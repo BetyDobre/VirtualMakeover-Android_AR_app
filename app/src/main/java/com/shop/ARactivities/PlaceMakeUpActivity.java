@@ -21,7 +21,7 @@ import com.shop.shopActivities.ProductDetailsActivity;
 import java.io.IOException;
 import java.util.Objects;
 
-public class MakeUpActivity extends AppCompatActivity implements AugmentedFaceListener {
+public class PlaceMakeUpActivity extends AppCompatActivity implements AugmentedFaceListener {
 
     private String productID = "";
     private boolean contourChanged = false;
@@ -38,7 +38,7 @@ public class MakeUpActivity extends AppCompatActivity implements AugmentedFaceLi
 
         productID = getIntent().getStringExtra("pid");
 
-        if(!checkSystemSupport(MakeUpActivity.this)){
+        if(!checkSystemSupport(PlaceMakeUpActivity.this)){
             return;
         }
 
@@ -192,7 +192,7 @@ public class MakeUpActivity extends AppCompatActivity implements AugmentedFaceLi
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        Intent intent = new Intent(MakeUpActivity.this, ProductDetailsActivity.class);
+        Intent intent = new Intent(PlaceMakeUpActivity.this, ProductDetailsActivity.class);
         intent.putExtra("pid", productID);
         startActivity(intent);
     }

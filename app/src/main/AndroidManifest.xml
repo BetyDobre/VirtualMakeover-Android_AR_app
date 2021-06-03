@@ -25,9 +25,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ARShop"
         tools:replace="android:icon,android:theme">
-        <activity android:name=".ARactivities.MakeUpActivity"></activity>
+        <activity android:name=".ARactivities.PlaceMakeUpActivity"></activity>
 
-        <activity android:name=".ARactivities.TryOnActivity" />
+        <activity android:name=".ARactivities.PlaceDecorationsActivity" />
         <activity android:name=".shopActivities.WhislistActivity" />
         <activity android:name=".shopActivities.AboutUsActivity" />
         <!--

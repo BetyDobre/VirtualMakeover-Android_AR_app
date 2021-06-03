@@ -16,14 +16,13 @@ import com.google.ar.sceneform.AnchorNode;
 import com.google.ar.sceneform.rendering.ModelRenderable;
 import com.google.ar.sceneform.ux.ArFragment;
 import com.google.ar.sceneform.ux.TransformableNode;
-import com.shop.ARactivities.helpers.SnackbarHelper;
 import com.shop.R;
 import com.shop.shopActivities.ProductDetailsActivity;
 
 import java.util.Objects;
 
 
-public class TryOnActivity extends AppCompatActivity {
+public class PlaceDecorationsActivity extends AppCompatActivity {
 
     private ArFragment arCam;
     private int clickNo = 0, source = 0;
@@ -36,7 +35,7 @@ public class TryOnActivity extends AppCompatActivity {
 
         productID = getIntent().getStringExtra("pid");
         arCam = (ArFragment) getSupportFragmentManager().findFragmentById(R.id.arCameraArea);
-        if(!checkSystemSupport(TryOnActivity.this)){
+        if(!checkSystemSupport(PlaceDecorationsActivity.this)){
             return;
         }
 
@@ -84,7 +83,7 @@ public class TryOnActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        Intent intent = new Intent(TryOnActivity.this, ProductDetailsActivity.class);
+        Intent intent = new Intent(PlaceDecorationsActivity.this, ProductDetailsActivity.class);
         intent.putExtra("pid", productID);
         startActivity(intent);
     }
