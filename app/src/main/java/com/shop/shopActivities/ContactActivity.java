@@ -39,7 +39,7 @@ public class ContactActivity extends AppCompatActivity {
     }
 
     private void sendEmail() {
-        String[] TO = {"licentafmi2021@gmail.com"};
+        String[] TO = {"virtual.makeover2021@gmail.com"};
         String[] CC = {""};
         Intent emailIntent = new Intent(Intent.ACTION_SEND);
 
@@ -47,7 +47,7 @@ public class ContactActivity extends AppCompatActivity {
         emailIntent.setType("text/plain");
         emailIntent.putExtra(Intent.EXTRA_EMAIL, TO);
         emailIntent.putExtra(Intent.EXTRA_CC, CC);
-        emailIntent.putExtra(Intent.EXTRA_SUBJECT, "ARShop Client Support");
+        emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Virtual Makeover Client Support");
         emailIntent.putExtra(Intent.EXTRA_TEXT, "You message goes here");
 
         try {

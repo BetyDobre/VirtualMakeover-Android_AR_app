@@ -136,16 +136,21 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
         if (!type.equals("Admin")) {
             FirebaseUser account = FirebaseAuth.getInstance().getCurrentUser();
-            String email = account.getEmail();
-            if (Prevalent.currentOnlineUser.getEmail() != email) {
-                userNameTextView.setText(Prevalent.currentOnlineUser.getName());
-                Picasso.get().load(Prevalent.currentOnlineUser.getImage()).placeholder(R.drawable.profile).into(profileImageView);
-            } else {
-                String name = account.getDisplayName();
-                Uri picture = account.getPhotoUrl();
-                userNameTextView.setText(name);
-                Picasso.get().load(picture).placeholder(R.drawable.profile).into(profileImageView);
+            try {
+                String email = account.getEmail();
+                if (account.getEmail() != null && Prevalent.currentOnlineUser.getEmail() != email) {
+                    userNameTextView.setText(Prevalent.currentOnlineUser.getName());
+                    Picasso.get().load(Prevalent.currentOnlineUser.getImage()).placeholder(R.drawable.profile).into(profileImageView);
+                } else {
+                    String name = account.getDisplayName();
+                    Uri picture = account.getPhotoUrl();
+                    userNameTextView.setText(name);
+                    Picasso.get().load(picture).placeholder(R.drawable.profile).into(profileImageView);
+                }
             }
+            catch (Exception e){
+            }
+
         }
 
         recyclerView = findViewById(R.id.recycler_menu);

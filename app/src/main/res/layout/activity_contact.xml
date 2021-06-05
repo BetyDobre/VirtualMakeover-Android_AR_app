@@ -125,7 +125,7 @@
         android:layout_alignParentEnd="true"
         android:textSize="18dp"
         android:textColor="@color/black"
-        android:text="licentafmi2021@gmail.com"
+        android:text="virtual.makeover2021@gmail.com"
         android:contextClickable="true"
         android:fontFamily="sans-serif-condensed-light"
         android:textStyle="bold|italic"

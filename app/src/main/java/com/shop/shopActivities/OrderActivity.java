@@ -82,6 +82,32 @@ import java.util.HashMap;
             }
         });
 
+        user.child("name").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if(snapshot.exists()) {
+                    nameEdiText.setText(snapshot.getValue().toString());
+                }
+                else{
+                    DatabaseReference googleUser = FirebaseDatabase.getInstance().getReference().child("Google Users").child(EncodeString(Prevalent.currentOnlineUser.getEmail()));
+                    googleUser.child("name").addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            if(snapshot.exists()) {
+                                nameEdiText.setText(snapshot.getValue().toString());
+                            }
+                        }
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+                        }
+                    });
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+            }
+        });
+
         // place order button
         placeOrderBtn.setOnClickListener(new View.OnClickListener() {
             @Override

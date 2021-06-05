@@ -189,10 +189,10 @@ public class ResetPasswordActivity extends AppCompatActivity {
             try {
                 String newPassword = generateRandomString();
                 searchEmailAndChangePassword(resetEmail, newPassword);
-                GMailSender sender = new GMailSender("licentafmi2021@gmail.com", "licenta2021");
+                GMailSender sender = new GMailSender("virtual.makeover2021@gmail.com", "licenta2021");
                 sender.sendMail("Reset password - VirtualMakeover",
                         "Here is your new password: " + newPassword +"\nYou can login now and change it afterwards with your desired one from the Settings menu. \n \n VirtualMakeover team",
-                        "licentafmi2021@gmail.com",
+                        "virtual.makeover2021@gmail.com",
                         resetEmail);
             } catch (Exception e) {
                 Log.e("SendMail", e.getMessage(), e);
