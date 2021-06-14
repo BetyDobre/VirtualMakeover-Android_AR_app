@@ -315,7 +315,7 @@ public class AugmentedFaceFragment extends Fragment implements GLSurfaceView.Ren
                 for (AugmentedFace face : faces) {
                     if (!faceNodeMap.containsKey(face)) {
                         AugmentedFaceNode faceNode = new AugmentedFaceNode(face, requireContext());
-                        augmentedFaceListener.onFaceAdded(faceNode);
+                        augmentedFaceListener.afterFaceDetect(faceNode);
                         faceNodeMap.put(face, faceNode);
                     } else {
                         if(faceNodeMap.get(face) != null) {

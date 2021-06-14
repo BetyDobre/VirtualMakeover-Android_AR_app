@@ -1,7 +1,7 @@
 package com.shop.ARactivities;
 
 public interface AugmentedFaceListener {
-    void onFaceAdded(AugmentedFaceNode face);
+    void afterFaceDetect(AugmentedFaceNode face);
 
     void onFaceUpdate(AugmentedFaceNode face);
 }

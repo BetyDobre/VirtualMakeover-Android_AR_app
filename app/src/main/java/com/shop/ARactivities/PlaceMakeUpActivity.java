@@ -127,7 +127,7 @@ public class PlaceMakeUpActivity extends AppCompatActivity implements AugmentedF
     }
 
     @Override
-    public void onFaceAdded(AugmentedFaceNode face) {
+    public void afterFaceDetect(AugmentedFaceNode face) {
         if (productID.equals("26-04-202112:20:15 PM")){
             try {
                 face.setFaceMeshTexture("models/lipstick1.png");

@@ -30,8 +30,8 @@ public class RegisterTest {
 
     @Test
     public void correctData() {
-        Espresso.onView(ViewMatchers.withId(R.id.register_username_input)).perform(ViewActions.scrollTo(),ViewActions.typeText("Alina Ionescu"));
-        Espresso.onView(ViewMatchers.withId(R.id.register_email_input)).perform(ViewActions.scrollTo(),ViewActions.typeText("alinam@gmail.com"));
+        Espresso.onView(ViewMatchers.withId(R.id.register_username_input)).perform(ViewActions.scrollTo(),ViewActions.typeText("Ana Ionescu"));
+        Espresso.onView(ViewMatchers.withId(R.id.register_email_input)).perform(ViewActions.scrollTo(),ViewActions.typeText("anaionescu@gmail.com"));
         Espresso.onView(ViewMatchers.withId(R.id.register_password_input)).perform(ViewActions.scrollTo(),ViewActions.typeText("parola"));
         Espresso.onView(ViewMatchers.withId(R.id.register_confirm_password_input)).perform(ViewActions.scrollTo(),ViewActions.typeText("parola"));
 
