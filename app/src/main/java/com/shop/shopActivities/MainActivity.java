@@ -31,6 +31,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.shop.R;
 import com.shop.adminActivities.AdminHomeActivity;
+import com.shop.helpers.BCrypt;
 import com.shop.models.Users;
 import com.shop.helpers.Prevalent;
 import java.util.HashMap;
@@ -223,7 +224,7 @@ public class MainActivity extends AppCompatActivity {
                     Users userData = dataSnapshot.child("Users").child(EncodeString(email)).getValue(Users.class);
 
                     if (userData.getEmail().equals(email)){
-                        if (userData.getPassword().equals(password)){
+                        if (BCrypt.checkpw(password, userData.getPassword())){
                             Toast.makeText(MainActivity.this, "Success login!", Toast.LENGTH_SHORT).show();
                             loadingBar.dismiss();
 
@@ -241,7 +242,7 @@ public class MainActivity extends AppCompatActivity {
                 else if (dataSnapshot.child("Admins").child(EncodeString(email)).exists()){
                         Users userData = dataSnapshot.child("Admins").child(EncodeString(email)).getValue(Users.class);
                         if (userData.getEmail().equals(email)){
-                            if (userData.getPassword().equals(password)){
+                            if (BCrypt.checkpw(password, userData.getPassword())){
                                 Toast.makeText(MainActivity.this, "Success login, admin!", Toast.LENGTH_SHORT).show();
                                 loadingBar.dismiss();
 

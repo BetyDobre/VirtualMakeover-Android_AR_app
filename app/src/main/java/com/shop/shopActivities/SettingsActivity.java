@@ -4,12 +4,18 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
+import android.Manifest;
 import android.app.ProgressDialog;
+import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
@@ -32,7 +38,12 @@ import com.shop.helpers.BCrypt;
 import com.shop.helpers.Prevalent;
 import com.squareup.picasso.Picasso;
 import com.theartofdev.edmodo.cropper.CropImage;
+import com.theartofdev.edmodo.cropper.CropImageView;
+
 import java.util.HashMap;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import de.hdodenhof.circleimageview.CircleImageView;
 import io.paperdb.Paper;
 
@@ -48,12 +59,22 @@ public class SettingsActivity extends AppCompatActivity {
     private String checker = "";
     private Button deleteBtn;
 
+    private static final int CAMERA_REQUEST_CODE = 200;
+    private static final int STORAGE_REQUEST_CODE = 400;
+    private static final int IMAGE_PICK_GALLERY_CODE = 1000;
+    private static final int IMAGE_PICK_CAMERA_CODE = 1001;
+    String cameraPermission[];
+    String storagePermission[];
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
 
         storageProfilePictureReference = FirebaseStorage.getInstance().getReference().child("Profile pictures");
+
+        cameraPermission = new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE};
+        storagePermission = new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE};
 
         profileImageView = findViewById(R.id.settings_profile_image);
         fullnameEditText = findViewById(R.id.settings_full_name);
@@ -94,9 +115,7 @@ public class SettingsActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 checker = "clicked";
-                CropImage.activity(imageUri)
-                        .setAspectRatio(1, 1)
-                        .start(SettingsActivity.this);
+                showImagePicDialog();
             }
         });
 
@@ -143,6 +162,171 @@ public class SettingsActivity extends AppCompatActivity {
         finish();
     }
 
+
+    private void showImagePicDialog() {
+        String options[] = {"Camera", "Gallery"};
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Pick Image From");
+        builder.setItems(options, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                if (which == 0) {
+                    if (!checkCameraPermission()) {
+                        requestCameraPermission();
+                    } else {
+                        pickCamera();
+                    }
+                } else if (which == 1) {
+                    if (!checkStoragePermission()) {
+                        requestStoragePermission();
+                    } else {
+                        pickFromGallery();
+                    }
+                }
+            }
+        });
+        builder.create().show();
+    }
+
+    private void pickFromGallery() {
+        //intent to pick image from gallery
+        Intent intent = new Intent(Intent.ACTION_PICK);
+        //set intent type to image
+        intent.setType("image/*");
+        startActivityForResult(intent, IMAGE_PICK_GALLERY_CODE);
+    }
+
+    private void pickCamera() {
+        //intent to take image from camera, it will also be save to storage to get high quality
+        ContentValues values = new ContentValues();
+        values.put(MediaStore.Images.Media.TITLE, "NewPic"); //title of the picture
+        values.put(MediaStore.Images.Media.DESCRIPTION, "Image To Text"); //description
+        imageUri = getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+        Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
+        if (cameraIntent.resolveActivity(getPackageManager()) != null) {
+            startActivityForResult(cameraIntent, IMAGE_PICK_CAMERA_CODE);
+        }
+
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (resultCode == RESULT_OK) {
+            if (requestCode == IMAGE_PICK_GALLERY_CODE) {
+                CropImage.activity(data.getData()).setGuidelines(CropImageView.Guidelines.ON).start(this);
+            }
+            else if (requestCode == IMAGE_PICK_CAMERA_CODE) {
+                CropImage.activity(imageUri).setGuidelines(CropImageView.Guidelines.ON).start(SettingsActivity.this);
+            }
+            else if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+                CropImage.ActivityResult result = CropImage.getActivityResult(data);
+                if (resultCode == RESULT_OK) {
+                    imageUri = result.getUri();
+                    profileImageView.setImageURI(imageUri);
+                }
+            }
+            else {
+                Toast.makeText(this, "Error, try again", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(SettingsActivity.this, SettingsActivity.class));
+                finish();
+            }
+        }
+    }
+
+    private void requestStoragePermission() {
+        ActivityCompat.requestPermissions(this, storagePermission, STORAGE_REQUEST_CODE);
+    }
+
+    private boolean checkStoragePermission() {
+        return ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == (PackageManager.PERMISSION_GRANTED);
+    }
+
+    private void requestCameraPermission() {
+        ActivityCompat.requestPermissions(this, cameraPermission, CAMERA_REQUEST_CODE);
+    }
+
+    private boolean checkCameraPermission() {
+        /*Check camera permission and return the result
+         *In order to get high quality image we have to save the image into the external storage first
+         *before inserting to image view, that's why storage permission will also be required*/
+        boolean result = ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == (PackageManager.PERMISSION_GRANTED);
+        boolean result1 = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == (PackageManager.PERMISSION_GRANTED);
+        return result && result1;
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        switch (requestCode) {
+            case CAMERA_REQUEST_CODE:
+                if (grantResults.length > 0) {
+                    boolean cameraAccepted = grantResults[0] == PackageManager.PERMISSION_GRANTED;
+                    boolean writeStorageAccepted = grantResults[0] == PackageManager.PERMISSION_GRANTED;
+                    if (cameraAccepted && writeStorageAccepted) {
+                        pickCamera();
+                    } else {
+                        Toast.makeText(this, "permission denied", Toast.LENGTH_SHORT).show();
+                    }
+                }
+                break;
+
+            case STORAGE_REQUEST_CODE:
+                if (grantResults.length > 0) {
+                    boolean writeStorageAccepted = grantResults[0] == PackageManager.PERMISSION_GRANTED;
+                    if (writeStorageAccepted) {
+                        pickFromGallery();
+                    } else {
+                        Toast.makeText(this, "permission denied", Toast.LENGTH_SHORT).show();
+                    }
+                }
+                break;
+        }
+    }
+
+    private static boolean checkPassword(String str) {
+        char ch;
+        boolean capitalFlag = false;
+        boolean lowerCaseFlag = false;
+        boolean numberFlag = false;
+        boolean specialFlag = false;
+        for(int i = 0; i < str.length(); i++) {
+            ch = str.charAt(i);
+            if(Character.isDigit(ch)) {
+                numberFlag = true;
+            }
+            else if (Character.isUpperCase(ch)) {
+                capitalFlag = true;
+            } else if (Character.isLowerCase(ch)) {
+                lowerCaseFlag = true;
+            }
+        }
+        int i = 0;
+        StringBuilder sb = new StringBuilder(str);
+        while (i != sb.length()){
+            ch = sb.charAt(i);
+            if (Character.isDigit(ch) || Character.isUpperCase(ch) || Character.isLowerCase(ch)){
+                sb.deleteCharAt(i);
+            }
+            else {
+                i++;
+            }
+        }
+        // regex for special characters
+        String regex = "[^a-zA-Z0-9]+";
+        Pattern p = Pattern.compile(regex);
+        Matcher m = p.matcher(sb);
+        if (m.matches()){
+            specialFlag = true;
+        }
+
+        if(numberFlag && capitalFlag && lowerCaseFlag && specialFlag)
+            return true;
+
+        return false;
+    }
+
     // update user info expect profile picture
     private void updateOnlyUserInfo() {
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("Users");
@@ -153,7 +337,7 @@ public class SettingsActivity extends AppCompatActivity {
         userMap.put("email", userEmailEditText.getText().toString());
         Prevalent.currentOnlineUser.setName(fullnameEditText.getText().toString());
 
-        if((passwordEditText.getText().toString()).equals(confirmNewPasswordEditText.getText().toString()) && passwordEditText.getText().toString().trim().length() > 3){
+        if((passwordEditText.getText().toString()).equals(confirmNewPasswordEditText.getText().toString()) && passwordEditText.getText().toString().trim().length() > 3 && checkPassword(passwordEditText.getText().toString())){
             String hashed = BCrypt.hashpw(passwordEditText.getText().toString(), BCrypt.gensalt());
             userMap.put("password", hashed);
             ref.child(EncodeString(Prevalent.currentOnlineUser.getEmail())).updateChildren(userMap);
@@ -172,25 +356,15 @@ public class SettingsActivity extends AppCompatActivity {
             startActivity(new Intent(SettingsActivity.this, SettingsActivity.class));
             finish();
         }
-        else if(!(passwordEditText.getText().toString()).equals(confirmNewPasswordEditText.getText().toString())){
+        else if (!checkPassword(passwordEditText.getText().toString())){
             ref.child(EncodeString(Prevalent.currentOnlineUser.getEmail())).updateChildren(userMap);
-            Toast.makeText(SettingsActivity.this, "Passwords don't match", Toast.LENGTH_SHORT).show();
+            Toast.makeText(SettingsActivity.this, "Password must contain at least one lowercase letter, one capital letter, one number digit and one special character!", Toast.LENGTH_LONG).show();
             startActivity(new Intent(SettingsActivity.this, SettingsActivity.class));
             finish();
         }
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (requestCode==CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK && data != null){
-            CropImage.ActivityResult result = CropImage.getActivityResult(data);
-            imageUri = result.getUri();
-            profileImageView.setImageURI(imageUri);
-        }
-        else {
-            Toast.makeText(this, "Error, try again", Toast.LENGTH_SHORT).show();
+        else if(!(passwordEditText.getText().toString()).equals(confirmNewPasswordEditText.getText().toString())){
+            ref.child(EncodeString(Prevalent.currentOnlineUser.getEmail())).updateChildren(userMap);
+            Toast.makeText(SettingsActivity.this, "Passwords don't match", Toast.LENGTH_SHORT).show();
             startActivity(new Intent(SettingsActivity.this, SettingsActivity.class));
             finish();
         }
@@ -242,7 +416,7 @@ public class SettingsActivity extends AppCompatActivity {
                         Prevalent.currentOnlineUser.setName(fullnameEditText.getText().toString());
                         Prevalent.currentOnlineUser.setImage(myURL);
 
-                        if((passwordEditText.getText().toString()).equals(confirmNewPasswordEditText.getText().toString()) && passwordEditText.getText().toString().trim().length() > 3){
+                        if((passwordEditText.getText().toString()).equals(confirmNewPasswordEditText.getText().toString()) && passwordEditText.getText().toString().trim().length() > 3 && checkPassword(passwordEditText.getText().toString())){
                             String hashed = BCrypt.hashpw(passwordEditText.getText().toString(), BCrypt.gensalt());
                             userMap.put("password", hashed);
                             ref.child(EncodeString(Prevalent.currentOnlineUser.getEmail())).updateChildren(userMap);
@@ -260,6 +434,12 @@ public class SettingsActivity extends AppCompatActivity {
                         else if (passwordEditText.getText().toString().trim().length() < 4){
                             ref.child(EncodeString(Prevalent.currentOnlineUser.getEmail())).updateChildren(userMap);
                             Toast.makeText(SettingsActivity.this, "Password too short(minimum 4 characters)", Toast.LENGTH_SHORT).show();
+                            startActivity(new Intent(SettingsActivity.this, SettingsActivity.class));
+                            finish();
+                        }
+                        else if (!checkPassword(passwordEditText.getText().toString())){
+                            ref.child(EncodeString(Prevalent.currentOnlineUser.getEmail())).updateChildren(userMap);
+                            Toast.makeText(SettingsActivity.this, "Password must contain at least one lowercase letter, one capital letter, one number digit and one special character!", Toast.LENGTH_LONG).show();
                             startActivity(new Intent(SettingsActivity.this, SettingsActivity.class));
                             finish();
                         }
